@@ -1,18 +1,13 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
+<script setup>
+import ServerAsker from './components/ServerAsker.vue'
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+ServerAsker
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
 </script>
+
+<template>
+  <ServerAsker/>
+</template>
 
 <style>
 #app {

@@ -1,24 +1,11 @@
-# group-project-frontend
+# Repo for the frontend of our group project
 
-## Project setup
-```
-npm install
-```
+### First install node.js
 
-### Compiles and hot-reloads for development
-```
+### Then install vue by running
+
+npm install vue
+
+### Then run this, while being in the project's directory
+
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
