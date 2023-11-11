@@ -1,38 +1,15 @@
 <script setup>
-import { ref } from 'vue'
-
-const socket = new WebSocket('ws://localhost:8000/ws/game/student/?token=ca022b89-d2d3-4752-93d0-27d660c96edc')
-
-const reply = ref('')
-
-function winMove() {
-  const messageData = { 
-    type: 'win_move',
-    move: 'Winning move'
-  }
-
-  socket.send(JSON.stringify(messageData))
-}
-
-function madeMove() {
-  reply.value = "Made move"
-}
-
-socket.onmessage = (event) => {
-  reply.value = JSON.parse(event.data)
-}
+import SocketConnector from './SocketConnector.vue'
 
 </script>
 
 <template>
   <div class="server-asker">
-    <h3>Ask the server!</h3>
-    <button @click="winMove">Win move</button>
-    <button @click="madeMove">Made move</button>
-    <span class="response">
-      <h3>Response:</h3>
-      <p>{{ reply }}</p>
-    </span>
+    <h2>Ask the server!</h2>
+    <h3>Connect as a student</h3>
+    <SocketConnector :playerType="student"/>
+    <h3>Connect as a teacher</h3>
+    <SocketConnector :playerType="teacher"/>
   </div>
 </template>
 
@@ -53,6 +30,6 @@ a {
   color: #42b983;
 }
 button {
-  margin: 5px;
+  margin: 15px;
 }
 </style>
