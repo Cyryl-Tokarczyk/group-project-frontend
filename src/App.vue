@@ -1,12 +1,15 @@
 <script setup>
+import { ref } from 'vue';
+import LoginPrompt from './components/LoginPrompt.vue'
 import ServerAsker from './components/ServerAsker.vue'
 
-ServerAsker
+const loggedIn = ref(false)
 
 </script>
 
 <template>
-  <ServerAsker/>
+  <LoginPrompt v-if="!loggedIn" @logged-in="loggedIn = true" />
+  <ServerAsker v-else />
 </template>
 
 <style>

@@ -1,34 +1,15 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref } from 'vue'
 
-const props = defineProps({
-    playerType: String
-})
+const props = defineProps([
+    'playerType'
+])
 
 const socket = ref(null)
 
-const reply = ref('')
+const connected = ref(false)
 const token = ref('')
 const tokenInput = ref('')
-const connected = ref(false)
-
-function winMove() {
-  const messageData = { 
-    type: 'win_move',
-    move: 'Winning move'
-  }
-
-  socket.value.send(JSON.stringify(messageData))
-}
-
-function madeMove() {
-  const messageData = {
-    type: 'made_move',
-    move: 'Best move possible'
-  }
-  
-  socket.value.send(JSON.stringify(messageData))
-}
 
 // admin's token: ca022b89-d2d3-4752-93d0-27d660c96edc
 // user's token: e6290006-b5a7-49f8-a499-7005360af809
@@ -53,28 +34,60 @@ function socketConnected() {
   }
 }
 
+const move = ref('Type in the move you want to make')
+
+const reply = ref('')
+
+function winMove() {
+  const messageData = { 
+    type: 'win_move',
+    move: move.value
+  }
+
+  socket.value.send(JSON.stringify(messageData))
+}
+
+function madeMove() {
+  const messageData = {
+    type: 'made_move',
+    move: move.value
+  }
+  
+  socket.value.send(JSON.stringify(messageData))
+}
+
 </script>
 
 <template>
     <div>
-        <div>
-            <button @click="winMove">Win move</button>
-            <button @click="madeMove">Made move</button>
-        </div>
+      <h3>Connect as a {{ props.playerType }}</h3>
         <div>
             Type in the token: <input v-model="tokenInput"/>
             <button @click="connectToSocket">Connect</button>
         </div>
         <p v-if="connected">Connected!</p>
         <p v-else>Wait for the connection...</p>
-        <span class="response">
-            <h3>Response:</h3>
-            <p>{{ reply }}</p>
-        </span>
+        <div v-if="connected">
+          <textarea class="moveinput" v-model="move" ></textarea>
+          <div>
+            <button @click="winMove">Win move</button>
+            <button @click="madeMove">Made move</button>
+          </div>
+          <span class="response">
+              <h3>Response:</h3>
+              <p>{{ reply }}</p>
+          </span>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.moveinput {
+  width: 250px;
+  height: 40px;
+  text-align: left;
+  resize: none;
+}
 h3 {
   margin: 40px 0 0;
 }

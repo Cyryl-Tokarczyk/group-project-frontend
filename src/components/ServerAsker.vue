@@ -1,15 +1,28 @@
 <script setup>
+import { ref } from 'vue';
 import SocketConnector from './SocketConnector.vue'
+
+const playerTypeChosen = ref(false)
+const playerType = ref('')
+
+function choosePlayerType(type) {
+  playerTypeChosen.value = true
+  playerType.value = type
+
+  console.log(!playerTypeChosen.value);
+}
 
 </script>
 
 <template>
   <div class="server-asker">
     <h2>Ask the server!</h2>
-    <h3>Connect as a student</h3>
-    <SocketConnector :playerType="student"/>
-    <h3>Connect as a teacher</h3>
-    <SocketConnector :playerType="teacher"/>
+    <div v-if="!playerTypeChosen">
+      <h3>Choose your class:</h3>
+      <button @click="choosePlayerType('teacher')">Teacher</button>
+      <button @click="choosePlayerType('student')">Student</button>
+    </div>
+    <SocketConnector v-else :playerType=playerType />
   </div>
 </template>
 
