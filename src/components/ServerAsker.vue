@@ -2,14 +2,33 @@
 import { ref } from 'vue';
 import SocketConnector from './SocketConnector.vue'
 
+const props = defineProps([
+  'tokens'
+])
+
 const playerTypeChosen = ref(false)
 const playerType = ref('')
 
-function choosePlayerType(type) {
+const userURL = 'http://localhost:8000/users/token/'
+
+const gameToken = ref('')
+
+async function choosePlayerType(type) {
   playerTypeChosen.value = true
   playerType.value = type
 
+  gameToken.value = await getGameToken()
+
   console.log(!playerTypeChosen.value);
+}
+
+async function getGameToken() {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + gameToken.value },
+  }
+
+  await fetch()
 }
 
 </script>
@@ -22,7 +41,7 @@ function choosePlayerType(type) {
       <button @click="choosePlayerType('teacher')">Teacher</button>
       <button @click="choosePlayerType('student')">Student</button>
     </div>
-    <SocketConnector v-else :playerType=playerType />
+    <SocketConnector v-else :playerType=playerType :token=gameToken />
   </div>
 </template>
 

@@ -14,28 +14,28 @@ const password = ref('')
 
 const response = ref(null)
 
-function logIn() {
-    console.log(login.value, password.value);
+async function logIn() {
+  console.log(login.value, password.value);
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            'email': login.value,
-            'password': password.value
-        })
-    }
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      'email': login.value,
+      'password': password.value
+    })
+  }
 
-    fetch(userURL, requestOptions)
-        .then(r => {
-            loggedIn.value = true
-            return r.json()
-        })
-        .then(data => response.value = data)
+  await fetch(userURL, requestOptions)
+      .then(r => {
+          loggedIn.value = true
+          return r.json()
+      })
+      .then(data => response.value = data)
 
-    console.log(response)
+  console.log(response.value)
 
-    emit('logged-in') // TODO: przekazuj tokeny
+  emit('logged-in', response.value)
 }
 
 </script>

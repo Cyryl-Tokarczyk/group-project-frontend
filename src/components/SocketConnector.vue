@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 
 const props = defineProps([
-    'playerType'
+    'playerType',
+    'token'
 ])
 
 const socket = ref(null)
@@ -10,9 +11,6 @@ const socket = ref(null)
 const connected = ref(false)
 const token = ref('')
 const tokenInput = ref('')
-
-// admin's token: ca022b89-d2d3-4752-93d0-27d660c96edc
-// user's token: e6290006-b5a7-49f8-a499-7005360af809
 
 function connectToSocket() {
   if (connected.value) {
