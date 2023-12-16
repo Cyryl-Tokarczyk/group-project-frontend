@@ -1,12 +1,24 @@
 <script setup>
+import { ref } from 'vue';
+import LoginPrompt from './components/LoginPrompt.vue'
 import ServerAsker from './components/ServerAsker.vue'
 
-ServerAsker
+const isLoggedIn = ref(false)
+const tokens = ref(null)
+
+function loggedIn(t) {
+  isLoggedIn.value = true
+  tokens.value = t
+
+  console.log(tokens.value['access']);
+  console.log(tokens.value['refresh']);
+}
 
 </script>
 
 <template>
-  <ServerAsker/>
+  <LoginPrompt v-if="!isLoggedIn" @logged-in="loggedIn" />
+  <ServerAsker v-else :tokens="tokens" />
 </template>
 
 <style>
