@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const emit = defineEmits([
-    'logged-in'
+  'logged-in'
 ])
 
 const loggedIn = ref(false)
@@ -27,11 +27,11 @@ async function logIn() {
   }
 
   await fetch(userURL, requestOptions)
-      .then(r => {
-          loggedIn.value = true
-          return r.json()
-      })
-      .then(data => response.value = data)
+    .then(r => {
+      loggedIn.value = true
+      return r.json()
+    })
+    .then(data => response.value = data)
 
   console.log(response.value)
 
@@ -41,14 +41,14 @@ async function logIn() {
 </script>
 
 <template>
-    <div>
-        <h3>Log in</h3>
-        <form @submit.prevent="logIn">
-            <input v-model="login" />
-            <input v-model="password" type="password" />
-            <button type="submit">Log in</button>
-        </form>
-    </div>
+  <div>
+    <h3>Log in</h3>
+    <form @submit.prevent="logIn">
+      <input v-model="login" />
+      <input v-model="password" type="password" />
+      <button type="submit">Log in</button>
+    </form>
+  </div>
 </template>
 
 <style>

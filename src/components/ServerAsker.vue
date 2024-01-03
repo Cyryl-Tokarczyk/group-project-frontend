@@ -117,11 +117,11 @@ span{
 }
 
 .board:hover .left_board{
-  transform: rotateY(180deg);
+  /* transform: rotateY(180deg); */
 }
 
 .board:hover .right_board{
-  transform: rotateY(-180deg);
+  /* transform: rotateY(-180deg); */
 }
 
 
