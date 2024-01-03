@@ -22,7 +22,7 @@ function loggedIn(t) {
       <h1>Game title</h1>
     </div>
   </div>
-  <LoginPrompt v-if="isLoggedIn" @logged-in="loggedIn" />
+  <LoginPrompt v-if="!isLoggedIn" @logged-in="loggedIn" />
   <ServerAsker v-else :tokens="tokens" />
 </template>
 
