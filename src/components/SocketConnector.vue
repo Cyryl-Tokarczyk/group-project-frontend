@@ -68,8 +68,8 @@ function madeMove() {
         <div v-if="connected">
           <textarea class="moveinput" v-model="move" ></textarea>
           <div>
-            <button @click="winMove">Win move</button>
-            <button @click="madeMove">Made move</button>
+            <button @click="winMove"><span></span>Win move</button>
+            <button @click="madeMove"><span></span>Made move</button>
           </div>
           <span class="response">
               <h3>Response:</h3>
