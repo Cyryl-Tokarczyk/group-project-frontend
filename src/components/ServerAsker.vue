@@ -14,10 +14,19 @@ const gameTokenURL = 'http://localhost:8000/game/game_token/'
 const gameToken = ref('')
 
 async function choosePlayerType(type) {
+  var BoardLeft = document.querySelector(".left_board")
+  var BoardRight = document.querySelector(".right_board")
+  BoardLeft.classList.add("left_board_animation")
+  BoardRight.classList.add("right_board_animation")
+
+  setTimeout(async () => {
   playerTypeChosen.value = true
   playerType.value = type
 
   await getGameToken()
+
+  console.log(!playerTypeChosen.value);
+  }, 1000);
 }
 
 async function getGameToken() {
@@ -121,12 +130,12 @@ span{
   margin-left: -165px;
 }
 
-.board:hover .left_board{
-  /* transform: rotateY(180deg); */
+.left_board_animation{
+  transform: rotateY(180deg);
 }
 
-.board:hover .right_board{
-  /* transform: rotateY(-180deg); */
+.right_board_animation{
+  transform: rotateY(-180deg);
 }
 
 
