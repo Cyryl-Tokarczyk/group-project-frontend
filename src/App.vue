@@ -22,12 +22,12 @@ function loggedIn(t) {
       <h1>Game title</h1>
     </div>
   </div>
-  <LoginPrompt v-if="isLoggedIn" @logged-in="loggedIn" />
+  <LoginPrompt v-if="!isLoggedIn" @logged-in="loggedIn" />
   <ServerAsker v-else :tokens="tokens" />
 </template>
 
 <style>
-#app{
+#app {
   width: 100%;
   display: flex;
   align-items: center;
