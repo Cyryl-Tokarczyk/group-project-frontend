@@ -1,18 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-import LoginPrompt from './components/LoginPrompt.vue'
-import ServerAsker from './components/ServerAsker.vue'
-
-const isLoggedIn = ref(false)
-const tokens = ref(null)
-
-function loggedIn(t) {
-  isLoggedIn.value = true
-  tokens.value = t
-
-  console.log(tokens.value['access']);
-  console.log(tokens.value['refresh']);
-}
 
 </script>
 
@@ -21,13 +7,16 @@ function loggedIn(t) {
     <div id="ramka">
       <h1>Game title</h1>
     </div>
+    <div>
+      <router-link :to="{ name: 'home' }">Home</router-link> |
+      <router-link :to="{ name: 'login' }">Login</router-link>
+    </div>
   </div>
-  <LoginPrompt v-if="isLoggedIn" @logged-in="loggedIn" />
-  <ServerAsker v-else :tokens="tokens" />
+  <router-view />
 </template>
 
 <style>
-#app{
+#app {
   width: 100%;
   display: flex;
   align-items: center;
@@ -67,7 +56,7 @@ h1{
 
 @font-face {
   font-family: "DK";
-  src: url(fonts/DKLeftoverCrayon.otf) format('truetype');
+  src: url(assets/fonts/DKLeftoverCrayon.otf) format('truetype');
 }
 
 body {

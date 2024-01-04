@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 
-// const emit = defineEmits([
-//     'logged-in'
-// ])
+
+const emit = defineEmits([
+  'logged-in'
+])
 
 const loggedIn = ref(false)
 
-//const userURL = 'http://localhost:8000/users/token/'
+const userTokenURL = 'http://localhost:8000/users/token/'
 
 const login = ref('')
 const password = ref('')
@@ -22,27 +23,29 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 async function logIn() {
- // console.log(login.value, password.value);
-  loggedIn.value = true;
-//   const requestOptions = {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({
-//       'email': login.value,
-//       'password': password.value
-//     })
-//   }
 
-//   await fetch(userURL, requestOptions)
-//       .then(r => {
-//           loggedIn.value = true
-//           return r.json()
-//       })
-//       .then(data => response.value = data)
-//   response.value = true;
-//   console.log(response.value)
+  console.log(login.value, password.value);
 
-//   emit('logged-in', response.value)
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      'email': login.value,
+      'password': password.value
+    })
+  }
+
+  await fetch(userTokenURL, requestOptions)
+    .then(r => {
+      loggedIn.value = true
+      return r.json()
+    })
+    .then(data => response.value = data)
+
+  console.log(response.value)
+
+  emit('logged-in', response.value)
+
 }
 
 </script>

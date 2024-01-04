@@ -3,23 +3,21 @@ import { ref } from 'vue'
 
 const props = defineProps([
     'playerType',
-    'token'
+    'gameToken'
 ])
 
 const socket = ref(null)
 
 const connected = ref(false)
-const token = ref('')
-const tokenInput = ref('')
 
 function connectToSocket() {
   if (connected.value) {
     connected.value = !connected.value
   }
-  token.value = tokenInput.value
-  tokenInput.value = ''
 
-  socket.value = new WebSocket('ws://localhost:8000/ws/game/' + props.playerType + '/?token=' + token.value)
+  console.log(props.gameToken);
+
+  socket.value = new WebSocket('ws://localhost:8000/ws/game/' + props.playerType + '/?token=' + props.gameToken)
 
   socket.value.onopen = socketConnected
 }
@@ -57,26 +55,25 @@ function madeMove() {
 </script>
 
 <template>
+  <div>
+  <h3>Connect as a {{ props.playerType }}</h3>
     <div>
-      <h3>Connect as a {{ props.playerType }}</h3>
-        <div>
-            Type in the token: <input v-model="tokenInput"/>
-            <button @click="connectToSocket">Connect</button>
-        </div>
-        <p v-if="connected">Connected!</p>
-        <p v-else>Wait for the connection...</p>
-        <div v-if="connected">
-          <textarea class="moveinput" v-model="move" ></textarea>
-          <div>
-            <button @click="winMove"><span></span>Win move</button>
-            <button @click="madeMove"><span></span>Made move</button>
-          </div>
-          <span class="response">
-              <h3>Response:</h3>
-              <p>{{ reply }}</p>
-          </span>
-        </div>
+      <button @click="connectToSocket">Connect</button>
     </div>
+    <p v-if="connected">Connected!</p>
+    <p v-else>Wait for the connection...</p>
+    <div v-if="connected">
+      <textarea class="moveinput" v-model="move" ></textarea>
+      <div>
+        <button @click="winMove"><span></span>Win move</button>
+        <button @click="madeMove"><span></span>Made move</button>
+      </div>
+      <span class="response">
+        <h3>Response:</h3>
+        <p>{{ reply }}</p>
+      </span>
+    </div>
+  </div>
 </template>
 
 <style scoped>

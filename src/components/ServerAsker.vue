@@ -2,16 +2,16 @@
 import { ref, onMounted } from 'vue';
 import SocketConnector from './SocketConnector.vue'
 
-// const props = defineProps([
-//   'tokens'
-// ])
+const props = defineProps([
+  'tokens'
+])
 
 const playerTypeChosen = ref(false)
 const playerType = ref('')
 const left_board = ref(null)
 const right_board = ref(null)
 
-//const userURL = 'http://localhost:8000/users/token/'
+const gameTokenURL = 'http://localhost:8000/game/game_token/'
 
 const gameToken = ref('')
 
@@ -20,22 +20,31 @@ async function choosePlayerType(type) {
   left_board.value.classList.add('left_board_animation');
   right_board.value.classList.add('right_board_animation');
   setTimeout(async () => {
-  playerTypeChosen.value = true
-  playerType.value = type
+    playerTypeChosen.value = true
+    playerType.value = type
 
-  gameToken.value = await getGameToken()
+    await getGameToken()
 
-  console.log(!playerTypeChosen.value);
+    console.log(!playerTypeChosen.value);
   }, 1000);
 }
 
 async function getGameToken() {
-  // const requestOptions = {
-  //   method: 'POST',
-  //   headers: { 'Authorization': 'Bearer ' + gameToken.value },
-  // }
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + props.gameToken },
+  }
 
-  await fetch()
+  await fetch(gameTokenURL, requestOptions)
+    .then(r => {
+      return r.json()
+    })
+    .then(data => {
+      console.log(data)
+      gameToken.value = data['id']  // Two more properties: issue date and user id (only if it is the first issuer)
+    })
+
+  console.log(gameToken.value)
 }
 
 onMounted(() => {
@@ -60,10 +69,8 @@ onMounted(() => {
         <button class="right" @click="choosePlayerType('student')">Student<span></span></button>
       </div>  
     </div>
-    <SocketConnector v-else :playerType=playerType :token=gameToken />
+    <SocketConnector v-else :playerType=playerType :gameToken=gameToken />
   </div>
-
-
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
