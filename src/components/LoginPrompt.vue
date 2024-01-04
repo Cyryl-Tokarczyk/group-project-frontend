@@ -14,11 +14,10 @@ const password = ref('')
 
 const response = ref(null)
 
-
 document.addEventListener("DOMContentLoaded", function() {
-    var bodyElement = document.body;
-    bodyElement.style.backgroundColor = "#ae834e";
-    bodyElement.style.backgroundImage = "none";
+  var bodyElement = document.body;
+  bodyElement.style.backgroundColor = "#ae834e";
+  bodyElement.style.backgroundImage = "none";
 })
 
 async function logIn() {
@@ -50,14 +49,14 @@ async function logIn() {
 </script>
 
 <template>
-    <div class="paper">
-        <h3>Log in</h3>
-        <form @submit.prevent="logIn">
-            <input v-model="login" />
-            <input v-model="password" type="password" />
-            <button type="submit">Log in</button>
-        </form>
-    </div>
+  <div class="paper">
+    <h3>Log in</h3>
+    <form @submit.prevent="logIn">
+      <input v-model="login" />
+      <input v-model="password" type="password" />
+      <button type="submit">Log in</button>
+    </form>
+  </div>
 </template>
 
 <style>
@@ -68,21 +67,21 @@ async function logIn() {
 }
 
 input {
-    margin: auto;
-    display: block;
+  margin: auto;
+  display: block;
 }
 
 .paper{
-    background-image: url(../assets/paper.jpg);
-    background-size: 250px;
-    background-repeat:repeat;
-    width: 70%;
-    height: 650px;
-    transform: rotateZ(-2deg);
+  background-image: url(../assets/paper.jpg);
+  background-size: 250px;
+  background-repeat:repeat;
+  width: 70%;
+  height: 650px;
+  transform: rotateZ(-2deg);
 }
 
 input{
-    background: transparent;
+  background: transparent;
   font-family:"DK", Courier, monospace;
   border: transparent
 }
