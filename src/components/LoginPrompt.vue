@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 
-
 const emit = defineEmits([
   'logged-in'
 ])
@@ -13,7 +12,7 @@ const userTokenURL = 'http://localhost:8000/users/token/'
 const login = ref('')
 const password = ref('')
 
-//const response = ref(null)
+const response = ref(null)
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -65,7 +64,7 @@ async function logIn() {
 
 @font-face {
   font-family: "DK";
-  src: url(../fonts/DKLeftoverCrayon.otf) format('truetype');
+  src: url(../assets/fonts/DKLeftoverCrayon.otf) format('truetype');
 }
 
 input {
