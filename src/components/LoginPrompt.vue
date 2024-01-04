@@ -7,7 +7,7 @@ const emit = defineEmits([
 
 const loggedIn = ref(false)
 
-const userURL = 'http://localhost:8000/users/token/'
+const userTokenURL = 'http://localhost:8000/users/token/'
 
 const login = ref('')
 const password = ref('')
@@ -26,7 +26,7 @@ async function logIn() {
     })
   }
 
-  await fetch(userURL, requestOptions)
+  await fetch(userTokenURL, requestOptions)
     .then(r => {
       loggedIn.value = true
       return r.json()

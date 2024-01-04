@@ -27,7 +27,7 @@ function loggedIn(t) {
 </template>
 
 <style>
-#app{
+#app {
   width: 100%;
   display: flex;
   align-items: center;
