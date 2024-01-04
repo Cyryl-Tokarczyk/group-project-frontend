@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import SocketConnector from './SocketConnector.vue'
 
 const props = defineProps([
@@ -8,17 +8,17 @@ const props = defineProps([
 
 const playerTypeChosen = ref(false)
 const playerType = ref('')
+const left_board = ref(null)
+const right_board = ref(null)
 
 const gameTokenURL = 'http://localhost:8000/game/game_token/'
 
 const gameToken = ref('')
 
 async function choosePlayerType(type) {
-  var BoardLeft = document.querySelector(".left_board")
-  var BoardRight = document.querySelector(".right_board")
-  BoardLeft.classList.add("left_board_animation")
-  BoardRight.classList.add("right_board_animation")
 
+  left_board.value.classList.add('left_board_animation');
+  right_board.value.classList.add('right_board_animation');
   setTimeout(async () => {
     playerTypeChosen.value = true
     playerType.value = type
@@ -47,16 +47,25 @@ async function getGameToken() {
   console.log(gameToken.value)
 }
 
+onMounted(() => {
+  left_board.value.classList.add('left_board_animation');
+  right_board.value.classList.add('right_board_animation');
+
+  setTimeout(()=>{
+    left_board.value.classList.remove('left_board_animation');
+    right_board.value.classList.remove('right_board_animation');
+  },250)
+});
 </script>
 
 <template>
   <div class="server-asker">
     <div class="board" v-if="!playerTypeChosen">
-      <div class="left_board">
+      <div ref="left_board" class="left_board">
         <button class="left" @click="choosePlayerType('teacher')">Teacher<span></span></button>
       </div>
       <div class="tab"><h2>Choose your class:</h2></div>
-      <div class="right_board">
+      <div ref="right_board" class="right_board">
         <button class="right" @click="choosePlayerType('student')">Student<span></span></button>
       </div>  
     </div>
