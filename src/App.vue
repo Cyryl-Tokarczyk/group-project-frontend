@@ -45,7 +45,7 @@ html{
   width: 300px;
   height: 70px;
   margin-top: 25px;
-  border: 5px ridge rgb(245, 219, 67);
+  border: 5px ridge rgb(245, 165, 67);
   background: #e6e6e6;
   box-shadow: 5px 5px 12px;
   display: flex;
@@ -73,7 +73,9 @@ h1{
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #fbf3ed 90%, #7f593e 90% 90.3%, #482e1a 90.3% 90.6%, #26170a 90.7% 91%,#000000 91%, #d2b48c 91.8% 100%);
+  background-image: url(assets/wall.jpg);
+  background-size: 250px;
+  background-repeat:repeat;
   font-family:"DK", Courier, monospace;
   display: flex;
   align-items: center;
