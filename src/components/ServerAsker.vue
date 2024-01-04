@@ -14,12 +14,19 @@ const playerType = ref('')
 const gameToken = ref('')
 
 async function choosePlayerType(type) {
+  var BoardLeft = document.querySelector(".left_board")
+  var BoardRight = document.querySelector(".right_board")
+  BoardLeft.classList.add("left_board_animation")
+  BoardRight.classList.add("right_board_animation")
+
+  setTimeout(async () => {
   playerTypeChosen.value = true
   playerType.value = type
 
   gameToken.value = await getGameToken()
 
   console.log(!playerTypeChosen.value);
+  }, 1000);
 }
 
 async function getGameToken() {
@@ -116,11 +123,11 @@ span{
   margin-left: -165px;
 }
 
-.board:hover .left_board{
+.left_board_animation{
   transform: rotateY(180deg);
 }
 
-.board:hover .right_board{
+.right_board_animation{
   transform: rotateY(-180deg);
 }
 
