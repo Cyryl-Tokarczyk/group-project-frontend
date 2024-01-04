@@ -20,19 +20,19 @@ async function choosePlayerType(type) {
   BoardRight.classList.add("right_board_animation")
 
   setTimeout(async () => {
-  playerTypeChosen.value = true
-  playerType.value = type
+    playerTypeChosen.value = true
+    playerType.value = type
 
-  await getGameToken()
+    await getGameToken()
 
-  console.log(!playerTypeChosen.value);
+    console.log(!playerTypeChosen.value);
   }, 1000);
 }
 
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + props.tokens['access'] },
+    headers: { 'Authorization': 'Bearer ' + props.gameToken },
   }
 
   await fetch(gameTokenURL, requestOptions)
