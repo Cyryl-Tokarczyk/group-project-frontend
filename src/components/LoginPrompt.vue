@@ -7,7 +7,7 @@ const emit = defineEmits([
 
 const loggedIn = ref(false)
 
-const userTokenURL = 'http://localhost:8000/users/token/'
+const userTokenURL = '/api/users/token/'
 
 const login = ref('')
 const password = ref('')

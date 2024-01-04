@@ -17,7 +17,7 @@ function connectToSocket() {
 
   console.log(props.gameToken);
 
-  socket.value = new WebSocket('ws://localhost:8000/ws/game/' + props.playerType + '/?token=' + props.gameToken)
+  socket.value = new WebSocket('ws://localhost:8080/api/ws/game/' + props.playerType + '/?token=' + props.gameToken)
 
   socket.value.onopen = socketConnected
 }
