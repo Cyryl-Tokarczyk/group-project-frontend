@@ -11,7 +11,7 @@ const playerType = ref('')
 const left_board = ref(null)
 const right_board = ref(null)
 
-const gameTokenURL = 'http://localhost:8000/game/game_token/'
+const gameTokenURL = '/api/game/game_token/'
 
 const gameToken = ref('')
 
