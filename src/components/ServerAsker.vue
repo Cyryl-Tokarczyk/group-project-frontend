@@ -16,7 +16,6 @@ const gameTokenURL = 'http://localhost:8000/game/game_token/'
 const gameToken = ref('')
 
 async function choosePlayerType(type) {
-
   left_board.value.classList.add('left_board_animation');
   right_board.value.classList.add('right_board_animation');
   setTimeout(async () => {
@@ -32,7 +31,7 @@ async function choosePlayerType(type) {
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + props.gameToken },
+    headers: { 'Authorization': 'Bearer ' + props.tokens['access'] },
   }
 
   await fetch(gameTokenURL, requestOptions)
