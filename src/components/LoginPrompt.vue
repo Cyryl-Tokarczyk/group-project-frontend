@@ -59,7 +59,7 @@ async function logIn() {
           <div class="underline"></div>
         </div>
       </div>
-      <button type="submit">Signature</button>
+      <button id="sub_button" type="submit">Signature</button>
     </form>
   </div>
 </template>
@@ -119,7 +119,7 @@ p{
   padding-left: 20px;
 }
 
-button{
+.sub_button{
   border: transparent;
   background: transparent;
   transition: 0.2s;
