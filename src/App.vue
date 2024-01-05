@@ -9,13 +9,6 @@
 </script>
 
 <template>
-  <div id="nav">
-    <div id="ramka">
-      <router-link :to="{ name: 'home' }">
-        <h1>Game title</h1>
-      </router-link> 
-    </div>
-  </div>
   <router-view />
 </template>
 
@@ -77,13 +70,19 @@ body {
   justify-content: center;
   text-align: center;
   font-size: 30px;
-  text-transform: uppercase; 
+  text-transform: uppercase;
+   overflow: hidden;
 }
 
 button {
   font-family:'DK', Courier, monospace; 
   font-size: 45px;
   text-transform: uppercase;
+}
+
+a{
+  text-decoration: none;
+  color: black;
 }
 
 </style>
