@@ -14,12 +14,16 @@
 
 <style>
 #app {
-  width: 100%;
+  background-image: url(assets/table.jpg);
+  background-size: 400px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   flex-direction: column;
+  box-shadow: 0px 0px 20px;
 }
 
 html{
@@ -27,32 +31,6 @@ html{
   box-shadow: 10px 10px 25px inset #0000008f;
 }
 
-#nav {
-  width: 300px;
-  height: 70px;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  border: 5px ridge rgb(245, 165, 67);
-  background: #e6e6e6;
-  box-shadow: 5px 5px 12px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-}
-
-#ramka {
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  box-shadow: 2px 2px 6px inset #000000;
-}
-
-h1{
-  margin-top: 7px;
-  color: #000000;
-  font-weight: normal;
-}
 
 @font-face {
   font-family: "DK";
@@ -62,8 +40,8 @@ h1{
 body {
   margin: 0;
   padding: 0;
-  background-image: url(assets/table.jpg);
-  background-size: cover;
+  background-image: url(assets/floor.jpg);
+  background-size: 600px;
   font-family:"DK", Courier, monospace;
   display: flex;
   align-items: center;
