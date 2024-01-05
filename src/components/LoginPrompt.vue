@@ -14,11 +14,6 @@ const password = ref('')
 
 const response = ref(null)
 
-document.addEventListener("DOMContentLoaded", function() {
-  var bodyElement = document.body;
-  bodyElement.style.backgroundColor = "#ae834e";
-  bodyElement.style.backgroundImage = "none";
-})
 
 async function logIn() {
 
@@ -52,9 +47,19 @@ async function logIn() {
   <div class="paper">
     <h3>Log in</h3>
     <form @submit.prevent="logIn">
-      <input v-model="login" />
-      <input v-model="password" type="password" />
-      <button type="submit">Log in</button>
+      <div class="form_content">
+        <p>Name:</p>
+        <div class="inputs">
+          <input v-model="login" />
+          <div class="underline"></div>
+        </div>
+        <p>Password:</p>
+        <div class="inputs">
+          <input v-model="password" type="password" />
+          <div class="underline"></div>
+        </div>
+      </div>
+      <button type="submit">Signature</button>
     </form>
   </div>
 </template>
@@ -72,18 +77,57 @@ input {
 }
 
 .paper{
-  background-image: url(../assets/paper.jpg);
-  background-size: 250px;
-  background-repeat:repeat;
-  width: 70%;
-  height: 650px;
-  transform: rotateZ(-2deg);
+  margin-top: -15px;
+  width: 100%;
+  height: 100%;
 }
 
 input{
   background: transparent;
   font-family:"DK", Courier, monospace;
-  border: transparent
+  border: transparent;
+  width: 100%;
+  outline: none;
+  font-size: 30px;
+}
+
+.form_content{
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: left;
+}
+
+form{
+  display: block;
+  margin-top: -25px;
+}
+
+.inputs{
+  display: block;
+  padding-right: 20px;
+}
+
+.underline{
+  background: black;
+  width: 100%;
+  height: 1px;
+}
+
+p{
+  padding-right: 10px;
+  padding-left: 20px;
+}
+
+button{
+  border: transparent;
+  background: transparent;
+  transition: 0.2s;
+  margin-top: 35px;
+}
+
+button:hover{
+  color: #711a1ad6;
 }
 
 </style>
