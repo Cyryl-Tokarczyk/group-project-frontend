@@ -1,15 +1,19 @@
 <script setup>
-
+  document.addEventListener("mousemove", parallax);
+  function parallax(e){
+    const xAxis = (window.innerWidth / 2 + e.pageX) / 35 - 50;
+    const yAxis = (window.innerHeight / 2 + e.pageY) / 35 - 24;
+    document.body.style.transform = `translateX(${-xAxis * 2}px) translateY(${-yAxis * 2}px)`;
+    document.body.style.backgroundPosition = `${-xAxis * 2}px ${-yAxis * 2}px`;
+  }
 </script>
 
 <template>
   <div id="nav">
     <div id="ramka">
-      <h1>Game title</h1>
-    </div>
-    <div>
-      <router-link :to="{ name: 'home' }">Home</router-link> |
-      <router-link :to="{ name: 'login' }">Login</router-link>
+      <router-link :to="{ name: 'home' }">
+        <h1>Game title</h1>
+      </router-link> 
     </div>
   </div>
   <router-view />
@@ -34,6 +38,7 @@ html{
   width: 300px;
   height: 70px;
   margin-top: 25px;
+  margin-bottom: 25px;
   border: 5px ridge rgb(245, 165, 67);
   background: #e6e6e6;
   box-shadow: 5px 5px 12px;
@@ -52,6 +57,8 @@ html{
 
 h1{
   margin-top: 7px;
+  color: #000000;
+  font-weight: normal;
 }
 
 @font-face {
@@ -62,16 +69,15 @@ h1{
 body {
   margin: 0;
   padding: 0;
-  background-image: url(assets/wall.jpg);
-  background-size: 250px;
-  background-repeat:repeat;
+  background-image: url(assets/table.jpg);
+  background-size: cover;
   font-family:"DK", Courier, monospace;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-size: 30px;
-  text-transform: uppercase;
+  text-transform: uppercase; 
 }
 
 button {
