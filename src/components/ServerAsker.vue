@@ -1,10 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import SocketConnector from './SocketConnector.vue'
+import { useTokensStore } from '@/stores/tokens';
 
-const props = defineProps([
-  'tokens'
-])
+const tokensStore = useTokensStore()
 
 const playerTypeChosen = ref(false)
 const playerType = ref('')
@@ -31,7 +30,7 @@ async function choosePlayerType(type) {
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + props.tokens['access'] },
+    headers: { 'Authorization': 'Bearer ' + tokensStore.tokens['access'] },
   }
 
   await fetch(gameTokenURL, requestOptions)

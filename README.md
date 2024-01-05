@@ -9,3 +9,8 @@ npm install vue
 ### Then run this, while being in the project's directory
 
 npm run serve
+
+## Dependencies
+
+vue-router
+pinia
