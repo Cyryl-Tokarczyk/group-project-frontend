@@ -6,16 +6,33 @@ const emit = defineEmits([
 ])
 
 const loggedIn = ref(false)
+const loginError = ref(false)
 
 const userTokenURL = '/api/users/token/'
 
 const login = ref('')
 const password = ref('')
+const passwordLine = ref('')
+const loginLine = ref('')
 
 const response = ref(null)
 
 
 async function logIn() {
+  if (login.value == ""){
+    loginLine.value.classList.add('underlineError');
+  } else{
+    loginLine.value.classList.remove('underlineError');
+  }
+  if (password.value == ""){
+    passwordLine.value.classList.add('underlineError');
+  } else{
+    passwordLine.value.classList.remove('underlineError');
+  }
+  if (login.value == "" || password.value == ""){
+    return;
+  }
+
 
   console.log(login.value, password.value);
 
@@ -28,17 +45,24 @@ async function logIn() {
     })
   }
 
-  await fetch(userTokenURL, requestOptions)
-    .then(r => {
-      loggedIn.value = true
-      return r.json()
-    })
-    .then(data => response.value = data)
+  try {
+    const res = await fetch(userTokenURL, requestOptions);
+    const data = await res.json();
 
-  console.log(response.value)
+    if (res.ok) {
+      loggedIn.value = true;
+      response.value = data;
+      emit('logged-in', response.value);
+      console.log('Successfully logged in:', response.value);
+    } else {
+      // Tutaj możesz obsłużyć przypadek nieudanego logowania
+      loginError.value = true;
+      console.error('Login failed:', data);
+    }
 
-  emit('logged-in', response.value)
-
+  } catch (error) {
+    console.error('Error during login:', error);
+  }
 }
 
 </script>
@@ -46,18 +70,21 @@ async function logIn() {
 <template>
   <div class="paper">
     <h3>Log in</h3>
-    <form @submit.prevent="logIn">
+    <form @submit.prevent="logIn" novalidate>
       <div class="form_content">
         <p>Name:</p>
         <div class="inputs">
-          <input v-model="login" />
-          <div class="underline"></div>
+          <input v-model="login" required/>
+          <div class="underline" ref="loginLine"></div>
         </div>
         <p>Password:</p>
         <div class="inputs">
-          <input v-model="password" type="password" />
-          <div class="underline"></div>
+          <input v-model="password" type="password" required/>
+          <div class="underline" ref="passwordLine"></div>
         </div>
+      </div>
+      <div>
+        <p id="login_error" v-if="loginError">e-mail or password is incorrect</p>
       </div>
       <button id="sub_button" type="submit">Signature</button>
     </form>
@@ -112,7 +139,13 @@ form{
   background: black;
   width: 100%;
   height: 1px;
+  transition: 0.2s;
 }
+
+.underlineError{
+  background: rgb(168, 0, 0);
+}
+
 
 p{
   font-size: 1.5vw;
@@ -120,15 +153,23 @@ p{
   padding-left: 0.5vw;
 }
 
-.sub_button{
+#sub_button{
   border: transparent;
   background: transparent;
-  transition: 0.2s;
+  transition: 0.5s;
   margin-top: 35px;
+  position: absolute;
+  top: 8.2vw;
+  left: 8.2vw;
 }
 
 button:hover{
-  color: #711a1ad6;
+  color: #940000d6;
+}
+
+#login_error{
+  font-size: 0.9vw;
+  color: #940000d6;
 }
 
 </style>
