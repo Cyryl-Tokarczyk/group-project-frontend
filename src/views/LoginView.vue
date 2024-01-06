@@ -1,23 +1,21 @@
 <script setup>
 
-import { ref } from 'vue';
+import { useTokensStore } from '@/stores/tokens';
 import LoginPrompt from '@/components/LoginPrompt.vue'
 import ServerAsker from '@/components/ServerAsker.vue'
 
-const isLoggedIn = ref(false)
-const tokens = ref(null)
+const tokensStore = useTokensStore()
 
 function loggedIn(t) {
-  isLoggedIn.value = true
-  tokens.value = t
+  tokensStore.loggedIn(t)
 
-  console.log(tokens.value['access']);
-  console.log(tokens.value['refresh']);
+  console.log(tokensStore.tokens['access']);
+  console.log(tokensStore.tokens['refresh']);
 }
 
 </script>
 
 <template>
-  <LoginPrompt v-if="!isLoggedIn" @logged-in="loggedIn" />
-  <ServerAsker v-else :tokens="tokens" />
+  <LoginPrompt v-if="!tokensStore.isLoggedIn" @logged-in="loggedIn" />
+  <ServerAsker v-else />
 </template>
