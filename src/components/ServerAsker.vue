@@ -62,7 +62,7 @@ onMounted(() => {
       <div ref="left_board" class="left_board">
         <button class="left" @click="choosePlayerType('teacher')">Teacher<span></span></button>
       </div>
-      <div class="tab"><h2>Choose your class:</h2></div>
+      <div class="middle_board"><h2>Choose your class:</h2></div>
       <div ref="right_board" class="right_board">
         <button class="right" @click="choosePlayerType('student')">Student<span></span></button>
       </div>  
@@ -77,6 +77,9 @@ onMounted(() => {
 .server-asker{
   margin-top: 5%;
   width: 80%;
+  position: absolute;
+  top: 11vh;
+  right: 10.2vw;
 }
 
 .board{
@@ -86,18 +89,19 @@ onMounted(() => {
   perspective: 1000px;
 }
 
-.tab {
+.middle_board {
   height: 450px;
   width: 50vw;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #e1e1e1;
-  background: #285e31;
+  background-image: url(@/assets/board.jpg);
+  background-size:cover;
   border: 5px ridge rgb(176, 176, 176);
 }
 
-button {
+.left, .right {
   position: relative;
   background: transparent;
   color: #e1e1e1;
@@ -108,23 +112,28 @@ button {
   transition: 0.5s;
   backface-visibility: hidden;
   border: hidden;
+  font-size: 3vw;
+}
+
+.left_board, .right_board{
+  transition: transform 0.5s;
+  width: 25vw;
+  transform-style: preserve-3d;
+  border: 5px ridge rgb(176, 176, 176);
+  background-image: url(@/assets/board.jpg);
+  background-size:cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
 .left_board{
-  transition: transform 0.5s;
   transform-origin: right;
-  width: 25vw;
-  transform-style: preserve-3d;
-  border: 5px ridge rgb(176, 176, 176);
-  background: #285e31;
+
 }
 .right_board{
-  transition: transform 0.5s;
   transform-origin: left;
-  width: 25vw;
-  transform-style: preserve-3d;
-  border: 5px ridge rgb(176, 176, 176);
-  background: #285e31;
 }
 
 span{
@@ -138,11 +147,11 @@ span{
 }
 
 .left_board_animation{
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateX(5px);
 }
 
 .right_board_animation{
-  transform: rotateY(-180deg);
+  transform: rotateY(-180deg)  translateX(-5px);
 }
 
 

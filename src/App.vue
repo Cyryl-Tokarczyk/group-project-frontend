@@ -1,10 +1,10 @@
 <script setup>
   document.addEventListener("mousemove", parallax);
   function parallax(e){
-    const xAxis = (window.innerWidth / 2 + e.pageX) / 35 - 50;
-    const yAxis = (window.innerHeight / 2 + e.pageY) / 35 - 24;
-    document.body.style.transform = `translateX(${-xAxis * 2}px) translateY(${-yAxis * 2}px)`;
-    document.body.style.backgroundPosition = `${-xAxis * 2}px ${-yAxis * 2}px`;
+    const xAxis = (window.innerWidth / 2 - e.pageX)/400;
+    const yAxis = (window.innerHeight / 2 - e.pageY)/800;
+    document.body.style.transform = `translateX(${xAxis}vw) translateY(${yAxis}vw)`;
+    document.body.style.backgroundPosition = `${xAxis}vh ${yAxis}vh`;
   }
 </script>
 
@@ -14,16 +14,11 @@
 
 <style>
 #app {
-  background-image: url(assets/table.jpg);
-  background-size: 400px;
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  box-shadow: 0px 0px 20px;
 }
 
 html{
@@ -47,7 +42,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 30px;
+  font-size: 2vw;
   text-transform: uppercase;
    overflow: hidden;
 }

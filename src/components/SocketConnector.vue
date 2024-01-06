@@ -59,6 +59,7 @@ function madeMove() {
   <h3>Connect as a {{ props.playerType }}</h3>
     <div>
       <button @click="connectToSocket">Connect</button>
+      <router-link :to="{ name: 'home' }" class="link">Home</router-link>
     </div>
     <p v-if="connected">Connected!</p>
     <p v-else>Wait for the connection...</p>
@@ -95,7 +96,7 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  font-size: 35px;
 }
 button {
   margin: 15px;

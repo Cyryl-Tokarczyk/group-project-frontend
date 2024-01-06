@@ -88,7 +88,7 @@ input{
   border: transparent;
   width: 100%;
   outline: none;
-  font-size: 30px;
+  font-size: 1.5vw;
 }
 
 .form_content{
@@ -105,7 +105,7 @@ form{
 
 .inputs{
   display: block;
-  padding-right: 20px;
+  padding-right: 0.5vw;
 }
 
 .underline{
@@ -115,8 +115,9 @@ form{
 }
 
 p{
-  padding-right: 10px;
-  padding-left: 20px;
+  font-size: 1.5vw;
+  padding-right: 0.5vw;
+  padding-left: 0.5vw;
 }
 
 .sub_button{
