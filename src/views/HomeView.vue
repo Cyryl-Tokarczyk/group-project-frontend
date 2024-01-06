@@ -1,11 +1,16 @@
 <script setup>
-import LoginPrompt from '@/views/LoginView.vue'
+import LoginPrompt from '@/components/LoginComponent.vue'
 import SettingsPrompt from '@/components/SettingsPrompt.vue'
+import PlayPrompt from '@/components/PlayPrompt.vue'
+import { useTokensStore } from '@/stores/tokens';
 import { ref } from 'vue';
 
 const login = ref(null)
 const settings = ref(null)
 const notebook = ref(null)
+const game = ref(null)
+const tokensStore = useTokensStore()
+const refs = [login,settings,game]
 
 function hoverButton(tab){
       if (tab) {
@@ -30,45 +35,57 @@ function chooseTab(tab){
           tab.classList.add('tabSelect');
           notebook.value.classList.add('x');
         }
-        if(tab == login.value && settings.value.classList.contains('tabSelect')){
-          settings.value.classList.remove('tabSelect');
-        }
-        if(tab == settings.value && login.value.classList.contains('tabSelect')){
-          login.value.classList.remove('tabSelect');
-        }
+        refs.forEach(element => {
+          if (tab != element.value){
+            element.value.classList.remove('tabSelect');
+          }
+        });
       }
 }
 
 </script>
 
 <template>
-  <div id="notebook" ref="notebook">
-    <div id="cover">
-      <h1 id="notbook_title">Game title</h1>
-      <div id="line">
-        <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)">login</button>
-        <button @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Setings</button>
+  <div id="homeView">
+    <div id="notebook" ref="notebook">
+      <div id="cover">
+        <h1 id="notbook_title">Game title</h1>
+        <div id="line">
+          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="!tokensStore.isLoggedIn">Login</button>
+          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="tokensStore.isLoggedIn">User</button>
+          <button @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
+          <button @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)"   v-if="tokensStore.isLoggedIn">Game</button>
+        </div>
+      </div>
+
+      <div id="loginPrompt" ref="login" class="tab">
+        <LoginPrompt/>
+      </div>
+      <div id="setings" ref="settings"  class="tab">
+        <SettingsPrompt/>
+      </div>
+      <div id="game" ref="game"  class="tab">
+        <PlayPrompt/>
       </div>
     </div>
-
-    <div id="loginPrompt" ref="login" class="tab">
-      <LoginPrompt/>
-    </div>
-    <div id="setings" ref="settings"  class="tab">
-      <SettingsPrompt/>
-    </div>
   </div>
-  
 </template>
 
 <style>
+#homeView {
+  background-image: url(@/assets/table.jpg);
+  background-size: 400px;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: 0px 0px 20px;
+}
 
 .x{
   transform: translateX(-37.5vw);
 }
 
 #cover{
-  background-image: url(../assets/notebook.jpg);
+  background-image: url(@/assets/notebook.jpg);
   background-size: 2000px;
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
@@ -76,6 +93,7 @@ function chooseTab(tab){
   height: 100%;
   display: flex;
   position: absolute;
+  z-index: 1;
 }
 
 #notebook{
@@ -105,14 +123,14 @@ function chooseTab(tab){
   transition: 0.5s;
   position: absolute;
   transition: 0.5s;
-  z-index: -1;
+  z-index: 0;
 }
 
 button{
   margin: 20px;
   border: transparent;
   background: transparent;
-  font-size:30px;
+  font-size:1.5vw;
 }
 
 #line{
