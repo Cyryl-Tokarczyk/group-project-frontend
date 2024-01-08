@@ -4,6 +4,11 @@ import ConnectionView from "../views/ConnectionView.vue";
 import GameView from "../views/GameView.vue";
 
 const routes = [
+  // Temporary redirect to home on the main page
+  {
+    path: "/",
+    redirect: { name: "home" }
+  },
   {
     path: "/home",
     name: "home",
