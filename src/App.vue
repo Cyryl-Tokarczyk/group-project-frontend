@@ -35,7 +35,7 @@ html{
 body {
   margin: 0;
   padding: 0;
-  background-image: url(assets/floor.jpg);
+  background-image: url(assets/imgs/floor.jpg);
   background-size: 600px;
   font-family:"DK", Courier, monospace;
   display: flex;

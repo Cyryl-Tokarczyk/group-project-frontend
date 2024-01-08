@@ -73,7 +73,7 @@ function chooseTab(tab){
 
 <style>
 #homeView {
-  background-image: url(@/assets/table.jpg);
+  background-image: url(@/assets/imgs/table.jpg);
   background-size: 400px;
   width: 100vw;
   height: 100vh;
@@ -85,7 +85,7 @@ function chooseTab(tab){
 }
 
 #cover{
-  background-image: url(@/assets/notebook.jpg);
+  background-image: url(@/assets/imgs/notebook.jpg);
   background-size: 2000px;
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
@@ -115,7 +115,7 @@ function chooseTab(tab){
 .tab{
   width: 100%;
   height:  100%;
-  background-image: url(../assets/paper.jpg);
+  background-image: url(@/assets/imgs/paper.jpg);
   background-size: cover;
   box-shadow: 2px 2px 10px;
   border-bottom-right-radius: 10px;

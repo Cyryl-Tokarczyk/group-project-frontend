@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useSocketStore } from "@/stores/socket";
 
 const props = defineProps([
     'playerType',
     'gameToken'
 ])
 
-const socket = ref(null)
-
+const socketStore = useSocketStore()
 const connected = ref(false)
 
 function connectToSocket() {
@@ -17,39 +17,7 @@ function connectToSocket() {
 
   console.log(props.gameToken);
 
-  socket.value = new WebSocket('ws://localhost:8080/api/ws/game/' + props.playerType + '/?token=' + props.gameToken)
-
-  socket.value.onopen = socketConnected
-}
-
-function socketConnected() {
-  connected.value = true
-  
-  socket.value.onmessage = (event) => {
-    reply.value = JSON.parse(event.data)
-  }
-}
-
-const move = ref('Type in the move you want to make')
-
-const reply = ref('')
-
-function winMove() {
-  const messageData = { 
-    type: 'win_move',
-    move: move.value
-  }
-
-  socket.value.send(JSON.stringify(messageData))
-}
-
-function madeMove() {
-  const messageData = {
-    type: 'made_move',
-    move: move.value
-  }
-  
-  socket.value.send(JSON.stringify(messageData))
+  socketStore.connect('ws://localhost:8080/api/ws/game/' + props.playerType + '/?token=' + props.gameToken)
 }
 
 </script>
@@ -61,19 +29,9 @@ function madeMove() {
       <button @click="connectToSocket">Connect</button>
       <router-link :to="{ name: 'home' }" class="link">Home</router-link>
     </div>
-    <p v-if="connected">Connected!</p>
+    <p v-if="socketStore.isOpen">Connected!</p>
     <p v-else>Wait for the connection...</p>
-    <div v-if="connected">
-      <textarea class="moveinput" v-model="move" ></textarea>
-      <div>
-        <button @click="winMove"><span></span>Win move</button>
-        <button @click="madeMove"><span></span>Made move</button>
-      </div>
-      <span class="response">
-        <h3>Response:</h3>
-        <p>{{ reply }}</p>
-      </span>
-    </div>
+    <p v-if="socketStore.isOpen">Waiting for another player to join...</p>
   </div>
 </template>
 

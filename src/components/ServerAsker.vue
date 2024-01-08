@@ -96,7 +96,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   color: #e1e1e1;
-  background-image: url(@/assets/board.jpg);
+  background-image: url(@/assets/imgs/board.jpg);
   background-size:cover;
   border: 5px ridge rgb(176, 176, 176);
 }
@@ -120,7 +120,7 @@ onMounted(() => {
   width: 25vw;
   transform-style: preserve-3d;
   border: 5px ridge rgb(176, 176, 176);
-  background-image: url(@/assets/board.jpg);
+  background-image: url(@/assets/imgs/board.jpg);
   background-size:cover;
   display: flex;
   align-items: center;

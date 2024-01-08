@@ -22,7 +22,8 @@ const routes = [
   {
     path: '/game',
     name: 'game',
-    component: GameView
+    component: GameView,
+    props: true
   }
 ];
 

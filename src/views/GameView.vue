@@ -1,3 +1,8 @@
+<script setup>
+
+
+</script>
+
 <template>
-  <p>placeholder</p>
+  <p>essa:</p>
 </template>

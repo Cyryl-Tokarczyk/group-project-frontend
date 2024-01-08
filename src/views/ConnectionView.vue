@@ -2,7 +2,7 @@
 import ServerAsker from '@/components/ServerAsker.vue'
 import { onMounted } from 'vue';
 
-var pointer =  "url(src/assets/wall.jpg)";
+var pointer =  "url(src/assets/imgs/wall.jpg)";
 
 onMounted(() => {
   document.body.style.backgroundImage = pointer
@@ -19,7 +19,7 @@ onMounted(() => {
 
 <style>
 #connectionView {
-  background-image: url(@/assets/wall.jpg);
+  background-image: url(@/assets/imgs/wall.jpg);
   background-size: 400px;
   width: 200vw;
   height: 200vh;
@@ -35,7 +35,7 @@ onMounted(() => {
   width: 10vw;
   height: 50px;
   font-size: 2vw;
-  background-image: url("@/assets/paper.jpg");
+  background-image: url("@/assets/imgs/paper.jpg");
   background-size: cover;
   display: flex;
   align-items: center;
