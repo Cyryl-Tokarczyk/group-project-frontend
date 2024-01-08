@@ -30,27 +30,7 @@ function socketConnected() {
   }
 }
 
-const move = ref('Type in the move you want to make')
-
-const reply = ref('')
-
-function winMove() {
-  const messageData = { 
-    type: 'win_move',
-    move: move.value
-  }
-
-  socket.value.send(JSON.stringify(messageData))
-}
-
-function madeMove() {
-  const messageData = {
-    type: 'made_move',
-    move: move.value
-  }
-  
-  socket.value.send(JSON.stringify(messageData))
-}
+const reply = ref('') // TO BE DELETED
 
 </script>
 
@@ -63,17 +43,7 @@ function madeMove() {
     </div>
     <p v-if="connected">Connected!</p>
     <p v-else>Wait for the connection...</p>
-    <div v-if="connected">
-      <textarea class="moveinput" v-model="move" ></textarea>
-      <div>
-        <button @click="winMove"><span></span>Win move</button>
-        <button @click="madeMove"><span></span>Made move</button>
-      </div>
-      <span class="response">
-        <h3>Response:</h3>
-        <p>{{ reply }}</p>
-      </span>
-    </div>
+    <p v-if="connected">Waiting for another player to join...</p>
   </div>
 </template>
 
