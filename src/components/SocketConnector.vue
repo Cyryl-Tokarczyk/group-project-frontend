@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useSocketStore } from "@/stores/socket";
 
 const props = defineProps([
     'playerType',
     'gameToken'
 ])
 
-const socket = ref(null)
-
+const socketStore = useSocketStore()
 const connected = ref(false)
 
 function connectToSocket() {
@@ -17,20 +17,8 @@ function connectToSocket() {
 
   console.log(props.gameToken);
 
-  socket.value = new WebSocket('ws://localhost:8080/api/ws/game/' + props.playerType + '/?token=' + props.gameToken)
-
-  socket.value.onopen = socketConnected
+  socketStore.connect('ws://localhost:8080/api/ws/game/' + props.playerType + '/?token=' + props.gameToken)
 }
-
-function socketConnected() {
-  connected.value = true
-  
-  socket.value.onmessage = (event) => {
-    reply.value = JSON.parse(event.data)
-  }
-}
-
-const reply = ref('') // TO BE DELETED
 
 </script>
 
@@ -41,9 +29,9 @@ const reply = ref('') // TO BE DELETED
       <button @click="connectToSocket">Connect</button>
       <router-link :to="{ name: 'home' }" class="link">Home</router-link>
     </div>
-    <p v-if="connected">Connected!</p>
+    <p v-if="socketStore.isOpen">Connected!</p>
     <p v-else>Wait for the connection...</p>
-    <p v-if="connected">Waiting for another player to join...</p>
+    <p v-if="socketStore.isOpen">Waiting for another player to join...</p>
   </div>
 </template>
 
