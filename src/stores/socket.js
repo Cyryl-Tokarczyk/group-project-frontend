@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import router from '@/router';
+import { Queue } from "@/lib/Queue";
 
 export const useSocketStore = defineStore('socket', () => {
   const isOpen = ref(false)
   const socket = ref(null)
+  const messageQueue = ref(new Queue())
 
   function connect(url) {
     console.log(url);
@@ -25,8 +27,11 @@ export const useSocketStore = defineStore('socket', () => {
 
     if (reply['type'] == 'game_start' /* and if current route == connect */) {
       router.push({ name: 'game' })
+      return
     }
+
+    messageQueue.value.push(reply)
   }
 
-  return { isOpen, socket, connect, onOpen, onMessageHandler }
+  return { isOpen, socket, messageQueue, connect, onOpen, onMessageHandler }
 })
