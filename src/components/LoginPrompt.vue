@@ -58,6 +58,10 @@ async function logIn() {
       // Tutaj możesz obsłużyć przypadek nieudanego logowania
       loginError.value = true;
       console.error('Login failed:', data);
+      login.value = "";
+      password.value = "";
+      loginLine.value.classList.add('underlineError');
+      passwordLine.value.classList.add('underlineError');
     }
 
   } catch (error) {

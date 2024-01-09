@@ -76,12 +76,13 @@ function chooseTab(tab){
   background-image: url(@/assets/imgs/table.jpg);
   background-size: 400px;
   width: 100vw;
-  height: 100vh;
+  height: 50vw;
   box-shadow: 0px 0px 20px;
+  position: relative;
 }
 
 .x{
-  transform: translateX(-37.5vw);
+  transform: translateX(-35vw);
 }
 
 #cover{
@@ -97,13 +98,13 @@ function chooseTab(tab){
 }
 
 #notebook{
-  width: 25vw;
-  height: 70vh;
+  width: 27vw;
+  height: 35vw;
   box-shadow: 2px 2px 6px;
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
   position: absolute;
-  top: 16vh;
+  top: 15%;
   right: 37.5vw;
   transition: 0.5s;
 }
