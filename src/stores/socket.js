@@ -34,7 +34,7 @@ export const useSocketStore = defineStore('socket', () => {
       return
     }
 
-    messageQueue.value.push(reply)
+    console.log(messageQueue.value.push(reply));
   }
 
   return { isOpen, socket, messageQueue, connect, send, onOpen, onMessageHandler }
