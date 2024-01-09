@@ -1,4 +1,4 @@
-export class Queue { // eslint-disable-line no-unused-vars
+export class Queue {
 
   constructor() {
     this.items = {}
