@@ -17,6 +17,10 @@ export const useSocketStore = defineStore('socket', () => {
     socket.value.onmessage = onMessageHandler
   }
 
+  function send(data) {
+    socket.value.send(data)
+  }
+
   function onOpen() {
     isOpen.value = true
     console.log('Socket state: ' + socket.value.readyState);
@@ -33,5 +37,5 @@ export const useSocketStore = defineStore('socket', () => {
     messageQueue.value.push(reply)
   }
 
-  return { isOpen, socket, messageQueue, connect, onOpen, onMessageHandler }
+  return { isOpen, socket, messageQueue, connect, send, onOpen, onMessageHandler }
 })
