@@ -1,8 +1,7 @@
 <script setup>
 
-
 </script>
 
 <template>
-  <p>essa:</p>
+  <h2>Event: </h2>
 </template>

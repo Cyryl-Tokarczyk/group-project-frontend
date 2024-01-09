@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ConnectionView from "../views/ConnectionView.vue";
-import GameView from "../views/GameView.vue";
+import GameView from "../views/game/GameView.vue";
 
 const routes = [
   // Temporary redirect to home on the main page
