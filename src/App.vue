@@ -14,11 +14,10 @@
 
 <style>
 #app {
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 html{
