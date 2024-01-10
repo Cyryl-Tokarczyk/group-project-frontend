@@ -81,8 +81,11 @@ function handleCollectActionMessage(message) {
   collectionPhase.value = true
 }
 
-function handleCollectAction() {
-  console.log('Sending a response choice: ' + '');
+
+function handleCollectAction(choice) {
+
+  console.log('Sending a response choice: ' + choice);
+
 
   // Send a response
   socketStore.send({
@@ -106,6 +109,17 @@ function handleClashStart(message) {
 </script>
 
 <template>
-  <EventComponent v-if="collectionPhase" :message="messageProp" @choice-made="handleCollectAction" />
-  <ClashComponent v-if="clashPhase" :message="messageProp" />
+  <div id="game">
+    <EventComponent v-if="collectionPhase" :message="messageProp" @choice-made="handleCollectAction" /> 
+    <ClashComponent v-if="clashPhase" :message="messageProp" />
+  </div>
 </template>
+
+<style>
+
+#game{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

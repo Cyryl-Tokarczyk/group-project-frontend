@@ -2,12 +2,15 @@
 </script>
 
 <template>
-    <div id="playPrompt">
-        Game
+    <div class="paper">
+        <div id="playPrompt">
+            Game
+        </div>
+        <div>
+            <router-link :to="{ name: 'connection' }" class="link">Play</router-link>
+        </div>
     </div>
-    <div>
-        <router-link :to="{ name: 'connection' }" class="link">Play</router-link>
-    </div>
+
 </template>
 
 <style>
