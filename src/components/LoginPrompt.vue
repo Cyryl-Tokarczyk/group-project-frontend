@@ -162,7 +162,7 @@ p{
   left: 8.2vw;
 }
 
-button:hover{
+#sub_button:hover{
   color: #940000d6;
 }
 

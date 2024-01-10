@@ -72,9 +72,9 @@ function handleCollectActionMessage(message) {
   collectActionReceived.value = true
 }
 
-function handleCollectAction() {
+function handleCollectAction(choice) {
 
-  console.log('Sending a response choice: ' + '');
+  console.log('Sending a response choice: ' + choice);
 
   // Send a response
   socketStore.send({
@@ -90,5 +90,17 @@ function handleCollectAction() {
 </script>
 
 <template>
-  <EventComponent v-if="collectActionReceived" :message="messageProp" @choice-made="handleCollectAction" />
+  <div id="game">
+    <EventComponent v-if="collectActionReceived" :message="messageProp" @choice-made="handleCollectAction" /> 
+  </div>
 </template>
+
+<style>
+
+#game{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
