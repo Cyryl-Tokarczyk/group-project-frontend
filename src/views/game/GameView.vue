@@ -1,11 +1,14 @@
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import EventComponent from './components/EventComponent.vue';
 
 import { useSocketStore } from '@/stores/socket';
 
 var waitingForAnotherMessage = false
+const collectActionReceived = ref(false)
+const messageProp = ref(null)
 const socketStore = useSocketStore()
+
 // Not ideal, prefferably should watch a queue isEmpty parameter or something like that
 socketStore.$onAction(      // Returns an unsubscribe function if later needed
   ({ name, after }) => {
@@ -23,7 +26,7 @@ socketStore.$onAction(      // Returns an unsubscribe function if later needed
 /* Flow of reacting:
 First message is popped on mount
 After handling a message another message is popped from the queue
-If there are no messages on the queue it should make a watch function watching the queue ???
+If there are no messages on the queue it subscribes to the onAction event on socketStore and waits for an onMessageHandler call
 */
 
 onMounted(() => {
@@ -55,29 +58,37 @@ function nextMessage() {
 function handleMessage(message){
   switch (message.type) {
     case 'collect_action':
-      handleCollectAction(message)
+      handleCollectActionMessage(message)
       break;
     default:
       break;
   }
-
-  // Maybe just make a loop xd
-  nextMessage()
 }
 
-function handleCollectAction(message) {
-  // TODO: Handle the task
-  console.log(message);
+function handleCollectActionMessage(message) {
+  console.log(JSON.stringify(message));
+
+  messageProp.value = message
+  collectActionReceived.value = true
+}
+
+function handleCollectAction() {
+
+  console.log('Sending a response choice: ' + '');
 
   // Send a response
   socketStore.send({
     type: 'collecting_move',
     choice: ''
   })
+
+  collectActionReceived.value = false
+
+  nextMessage()
 }
 
 </script>
 
 <template>
-  <EventComponent />
+  <EventComponent v-if="collectActionReceived" :message="messageProp" @choice-made="handleCollectAction" />
 </template>

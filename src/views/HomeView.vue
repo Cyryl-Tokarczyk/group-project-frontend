@@ -13,34 +13,34 @@ const tokensStore = useTokensStore()
 const refs = [login,settings,game]
 
 function hoverButton(tab){
-      if (tab) {
-        tab.classList.add('tabOpen');
-      }
+  if (tab) {
+    tab.classList.add('tabOpen');
+  }
 }
 
 function resetTransform(tab){
-      if (tab) {
-        tab.classList.remove('tabOpen');
-      }
+  if (tab) {
+    tab.classList.remove('tabOpen');
+  }
 }
 
 function chooseTab(tab){
-      if (tab.classList.contains('tabSelect')){
-        tab.classList.remove('tabSelect');
-        tab.classList.remove('tabOpen');
-        notebook.value.classList.remove('x');
-      } else{
-        if (tab) {
-          tab.classList.remove('tabOpen');
-          tab.classList.add('tabSelect');
-          notebook.value.classList.add('x');
-        }
-        refs.forEach(element => {
-          if (tab != element.value){
-            element.value.classList.remove('tabSelect');
-          }
-        });
+  if (tab.classList.contains('tabSelect')){
+    tab.classList.remove('tabSelect');
+    tab.classList.remove('tabOpen');
+    notebook.value.classList.remove('x');
+  } else{
+    if (tab) {
+      tab.classList.remove('tabOpen');
+      tab.classList.add('tabSelect');
+      notebook.value.classList.add('x');
+    }
+    refs.forEach(element => {
+      if (tab != element.value){
+        element.value.classList.remove('tabSelect');
       }
+    });
+  }
 }
 
 </script>
