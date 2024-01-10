@@ -1,25 +1,24 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import EventComponent from './components/EventComponent.vue';
 
 import { useSocketStore } from '@/stores/socket';
+import ClashComponent from './components/ClashComponent.vue';
 
 var waitingForAnotherMessage = false
-const collectActionReceived = ref(false)
+const collectionPhase = ref(false)
+const clashPhase = ref(false)
 const messageProp = ref(null)
 const socketStore = useSocketStore()
 
-// Not ideal, prefferably should watch a queue isEmpty parameter or something like that
-socketStore.$onAction(      // Returns an unsubscribe function if later needed
-  ({ name, after }) => {
-    after(() => {
-      console.log(name + ' function was called; ' + waitingForAnotherMessage + ' <- waitingForAnotherMessage');
-      if (name == 'onMessageHandler' && waitingForAnotherMessage) {
-        console.log('Detected a new message, the wait is over...');
-        waitingForAnotherMessage = false
-        nextMessage()
-      }
-    })
+watch(
+  socketStore.messageQueue,
+  () => {
+    if (waitingForAnotherMessage) {
+      console.log('Detected a change to the queue, the wait is over...');
+      waitingForAnotherMessage = false
+      nextMessage()
+    }
   }
 )
 
@@ -60,6 +59,9 @@ function handleMessage(message){
     case 'collect_action':
       handleCollectActionMessage(message)
       break;
+    case 'clash_start':
+      handleClashStart(message)
+      break;
     default:
       break;
   }
@@ -68,13 +70,22 @@ function handleMessage(message){
 function handleCollectActionMessage(message) {
   console.log(JSON.stringify(message));
 
+  // Temporary adjustment, because we're not getting a clash started message
+  if (!('task' in message)) {
+    message.type = 'clash_start'
+    handleMessage(message)
+    return
+  }
+
   messageProp.value = message
-  collectActionReceived.value = true
+  collectionPhase.value = true
 }
+
 
 function handleCollectAction(choice) {
 
   console.log('Sending a response choice: ' + choice);
+
 
   // Send a response
   socketStore.send({
@@ -82,7 +93,15 @@ function handleCollectAction(choice) {
     choice: ''
   })
 
-  collectActionReceived.value = false
+  collectionPhase.value = false
+
+  nextMessage()
+}
+
+function handleClashStart(message) {
+  console.log('Handling clash start: ' + JSON.stringify(message));
+
+  clashPhase.value = true
 
   nextMessage()
 }
@@ -91,7 +110,8 @@ function handleCollectAction(choice) {
 
 <template>
   <div id="game">
-    <EventComponent v-if="collectActionReceived" :message="messageProp" @choice-made="handleCollectAction" /> 
+    <EventComponent v-if="collectionPhase" :message="messageProp" @choice-made="handleCollectAction" /> 
+    <ClashComponent v-if="clashPhase" :message="messageProp" />
   </div>
 </template>
 
@@ -103,4 +123,3 @@ function handleCollectAction(choice) {
   justify-content: center;
 }
 
-</style>
