@@ -69,8 +69,8 @@ onMounted(() => {
     <div class="board">
       <div ref="left_board" class="left_board">
         <button class="left" @click="choosePlayerType('teacher')">Teacher<span></span></button>
-        <div class="back" v-if="opponent == 'teacher'">Looking for student</div>
-        <div class="back" v-if="opponent == 'student'">Looking for teacher</div>
+        <div class="back" v-if="opponent == 'teacher'">Looking for a student</div>
+        <div class="back" v-if="opponent == 'student'">Looking for a teacher</div>
       </div>
       <div class="middle_board"><h2>Choose your class:</h2></div>
       <div ref="right_board" class="right_board">

@@ -18,7 +18,7 @@ export const useSocketStore = defineStore('socket', () => {
   }
 
   function send(data) {
-    socket.value.send(data)
+    socket.value.send(JSON.stringify(data))
   }
 
   function onOpen() {

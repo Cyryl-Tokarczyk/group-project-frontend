@@ -15,9 +15,6 @@ const password = ref('')
 const passwordLine = ref('')
 const loginLine = ref('')
 
-const response = ref(null)
-
-
 async function logIn() {
   if (login.value == ""){
     loginLine.value.classList.add('underlineError');
@@ -33,7 +30,6 @@ async function logIn() {
     return;
   }
 
-
   console.log(login.value, password.value);
 
   const requestOptions = {
@@ -46,16 +42,15 @@ async function logIn() {
   }
 
   try {
-    const res = await fetch(userTokenURL, requestOptions);
-    const data = await res.json();
+    const response = await fetch(userTokenURL, requestOptions);
+    const data = await response.json();
 
-    if (res.ok) {
+    if (response.ok) {
       loggedIn.value = true;
-      response.value = data;
-      emit('logged-in', response.value);
-      console.log('Successfully logged in:', response.value);
+      emit('logged-in', data);
+      console.log('Successfully logged in:', data);
     } else {
-      // Tutaj możesz obsłużyć przypadek nieudanego logowania
+      // Logging in failure handling
       loginError.value = true;
       console.error('Login failed:', data);
       login.value = "";
