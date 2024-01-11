@@ -49,6 +49,7 @@ async function logIn() {
       loggedIn.value = true;
       emit('logged-in', data);
       console.log('Successfully logged in:', data);
+      localStorage.setItem('usermail', login.value);
     } else {
       // Logging in failure handling
       loginError.value = true;

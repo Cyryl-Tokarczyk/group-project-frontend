@@ -12,7 +12,7 @@ onMounted(() => {
 
 <template>
   <div id="connectionView">
-    <div id="emblem">Game title</div>
+    <div id="emblem">Classroom Chronicles</div>
     <ServerAsker/>
   </div>
 </template>

@@ -123,3 +123,4 @@ function handleClashStart(message) {
   justify-content: center;
 }
 
+</style>
