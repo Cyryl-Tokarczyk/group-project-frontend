@@ -49,7 +49,7 @@ function chooseTab(tab){
   <div id="homeView">
     <div id="notebook" ref="notebook">
       <div id="cover">
-        <h1 id="notbook_title">Game title</h1>
+        <h1 id="notbook_title">Classroom Chronicles</h1>
         <div id="line">
           <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="!tokensStore.isLoggedIn">Login</button>
           <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="tokensStore.isLoggedIn">User</button>

@@ -8,6 +8,8 @@ export const useTokensStore = defineStore('tokens', () => {
   function loggedIn(t) {
     isLoggedIn.value = true
     tokens.value = t
+    localStorage.setItem('token', JSON.stringify(t));
+    localStorage.setItem('isLogged', isLoggedIn.value.toString());
   }
 
   return { isLoggedIn, tokens, loggedIn }
