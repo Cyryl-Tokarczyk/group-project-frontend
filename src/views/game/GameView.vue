@@ -86,11 +86,10 @@ function handleCollectAction(choice) {
 
   console.log('Sending a response choice: ' + choice);
 
-
   // Send a response
   socketStore.send({
     type: 'collecting_move',
-    choice: ''
+    choice: choice
   })
 
   collectionPhase.value = false
@@ -117,7 +116,7 @@ function handleClashStart(message) {
 
 <style>
 
-#game{
+#game {
   display: flex;
   align-items: center;
   justify-content: center;

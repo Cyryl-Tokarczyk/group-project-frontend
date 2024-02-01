@@ -5,7 +5,6 @@ const emit = defineEmits([
   'logged-in'
 ])
 
-const loggedIn = ref(false)
 const loginError = ref(false)
 
 const userTokenURL = '/api/users/token/'
@@ -46,10 +45,9 @@ async function logIn() {
     const data = await response.json();
 
     if (response.ok) {
-      loggedIn.value = true;
       emit('logged-in', data);
       console.log('Successfully logged in:', data);
-      localStorage.setItem('usermail', login.value);
+      localStorage.setItem('userEmail', login.value);
     } else {
       // Logging in failure handling
       loginError.value = true;

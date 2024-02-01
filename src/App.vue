@@ -10,23 +10,8 @@
     document.body.style.backgroundPosition = `${xAxis}vh ${yAxis}vh`;
   }
 
-  function loadFromLocalStorage() {
-        // Wczytaj zmienne z local storage
-        tokensStore.isLoggedIn = JSON.parse(localStorage.getItem('token'));
-        tokensStore.tokens = localStorage.getItem('isLogged');
-        tokensStore.tokens = tokensStore.tokens == "true";
-
-        // Sprawdź, czy zmienne istnieją w local storage
-        if (tokensStore.isLoggedIn && tokensStore.tokens) {
-            // Zmienne istnieją, możesz z nich skorzystać
-            console.log('Token successfully loaded:', tokensStore.isLoggedIn);
-            console.log('IsLogged successfully loaded:', tokensStore.tokens);
-        } else {
-            console.log('No data in local storage.');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
+  // Load tokens from local storage
+  document.addEventListener('DOMContentLoaded', tokensStore.loadFromLocalStorage);
 </script>
 
 <template>
@@ -37,8 +22,8 @@
 #app {
   height: 100vh;
   display: flex;
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 html{
@@ -64,7 +49,7 @@ body {
   text-align: center;
   font-size: 2vw;
   text-transform: uppercase;
-   overflow: hidden;
+  overflow: hidden;
 }
 
 button {
