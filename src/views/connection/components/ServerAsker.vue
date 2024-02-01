@@ -47,7 +47,7 @@ async function getGameToken() {
     })
     .then(data => {
       console.log(data)
-      gameToken.value = data['id']  // Two more properties: issue date and user id (only if it is the first issuer)
+      gameToken.value = data['id']
     })
 
   console.log(gameToken.value)

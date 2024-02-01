@@ -8,9 +8,44 @@ export const useTokensStore = defineStore('tokens', () => {
   function loggedIn(t) {
     isLoggedIn.value = true
     tokens.value = t
-    localStorage.setItem('token', JSON.stringify(t));
-    localStorage.setItem('isLogged', isLoggedIn.value.toString());
+    saveToLocalStorage()
+
+    console.log(tokens.value['access']);
+    console.log(tokens.value['refresh']);
   }
 
-  return { isLoggedIn, tokens, loggedIn }
+  function loggedOut() {
+    removeFromLocalStorage()
+    isLoggedIn.value  = false;
+    tokens.value = null;
+  }
+
+  function saveToLocalStorage() {    
+    localStorage.setItem('tokens', JSON.stringify(tokens.value));
+    localStorage.setItem('isLoggedIn', isLoggedIn.value.toString());
+  }
+
+  function loadFromLocalStorage() {
+    let localStorageisLoggedIn = localStorage.getItem('isLoggedIn');
+    let localStorageTokens = JSON.parse(localStorage.getItem('tokens'));
+
+    // Chcek if the variables exist in the local storage
+    if (localStorageisLoggedIn && localStorageTokens) {
+      isLoggedIn.value = localStorageisLoggedIn
+      tokens.value = localStorageTokens
+      
+      console.log('Data in local storage found');
+      console.log('Tokens successfully loaded:', tokens.value);
+      console.log('IsLoggedIn successfully loaded:', isLoggedIn.value);
+    } else {
+      console.log('No data in local storage.');
+    }
+  }
+
+  function removeFromLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('isLogged');
+  }
+
+  return { isLoggedIn, tokens, loggedIn, loggedOut, saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage }
 })
