@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import ConnectionView from "../views/ConnectionView.vue";
+import HomeView from "../views/home/HomeView.vue";
+import ConnectionView from "../views/connection/ConnectionView.vue";
 import GameView from "../views/game/GameView.vue";
 
 const routes = [

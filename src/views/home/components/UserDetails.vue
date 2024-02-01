@@ -7,6 +7,8 @@
   function logOut() {
     tokensStore.loggedOut()
     localStorage.removeItem('userEmail');
+
+    console.log('Logged out');
   }
 
   onMounted(() => {

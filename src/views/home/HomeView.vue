@@ -1,7 +1,7 @@
 <script setup>
-import LoginPrompt from '@/components/LoginComponent.vue'
-import SettingsPrompt from '@/components/SettingsPrompt.vue'
-import PlayPrompt from '@/components/PlayPrompt.vue'
+import LoginPrompt from './components/LoginPrompt.vue'
+import SettingsPrompt from './components/SettingsPrompt.vue'
+import PlayPrompt from './components/PlayPrompt.vue'
 import { useTokensStore } from '@/stores/tokens';
 import { ref } from 'vue';
 

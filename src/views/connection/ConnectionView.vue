@@ -1,5 +1,5 @@
 <script setup>
-import ServerAsker from '@/components/ServerAsker.vue'
+import ServerAsker from './components/ServerAsker.vue'
 import { onMounted } from 'vue';
 
 var pointer =  "url(src/assets/imgs/wall.jpg)";

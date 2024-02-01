@@ -1,14 +1,14 @@
 <script setup>
 import { useTokensStore } from '@/stores/tokens';
-import LoginPrompt from '@/components/LoginPrompt.vue'
-import UserDetails from '@/components/UserDetails.vue'
+import LoginComponent from './LoginComponent.vue'
+import UserDetails from './UserDetails.vue'
 
 const tokensStore = useTokensStore()
 
 </script>
 
 <template>
-  <LoginPrompt v-if="!tokensStore.isLoggedIn" @logged-in="tokensStore.loggedIn" />
+  <LoginComponent v-if="!tokensStore.isLoggedIn" @logged-in="tokensStore.loggedIn" />
   <UserDetails v-else/>
 </template>
 

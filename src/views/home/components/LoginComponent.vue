@@ -93,7 +93,7 @@ async function logIn() {
 
 @font-face {
   font-family: "DK";
-  src: url(../assets/fonts/DKLeftoverCrayon.otf) format('truetype');
+  src: url(@/assets/fonts/DKLeftoverCrayon.otf) format('truetype');
 }
 
 input {
