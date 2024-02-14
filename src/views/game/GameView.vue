@@ -109,7 +109,7 @@ function handleClashStart(message) {
 
 <template>
   <div id="game">
-    <EventComponent v-if="collectionPhase" :message="messageProp" @choice-made="handleCollectAction" /> 
+    <EventComponent v-if="!collectionPhase" :message="messageProp" @choice-made="handleCollectAction" /> 
     <ClashComponent v-if="clashPhase" :message="messageProp" />
   </div>
 </template>
