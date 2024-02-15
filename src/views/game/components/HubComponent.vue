@@ -1,5 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+
+const props = defineProps([
+  'message',
+  'money'
+])
+
+const emit = defineEmits([
+  'purchase-made'
+])
 
 const storeActionCardNumbers = ref([]);
 const storeReactionCardNumbers = ref([]);
@@ -8,13 +17,12 @@ const handReactionCardNumbers = ref([]);
 const playerCredits = ref(1000);
 const playerMorale = ref(100);
 
-const props = defineProps([
-  'message'
-])
-
-// const emit = defineEmits([
-//   'choice-made'
-// ])
+watch(
+  props.money,
+  () => {
+    playerCredits.value = props.money
+  }
+)
 
 function saveToLocalStorage(){
   localStorage.setItem('storeActionCardNumbers', JSON.stringify(storeActionCardNumbers.value));
@@ -52,33 +60,38 @@ function generateActionCardNumbers(){
 }
 
 function dynamicMargin(type) {
-      var CardNumber = 0;
-      if (type == 'action'){
-        CardNumber = handActionCardNumbers.value.length;
-      }else{
-        CardNumber = handReactionCardNumbers.value.length;
-      }
-      return `calc(40% / ${CardNumber} - 2.5vw)`;
-    }
+  var CardNumber = 0;
+  if (type == 'action') {
+    CardNumber = handActionCardNumbers.value.length;
+  } else {
+    CardNumber = handReactionCardNumbers.value.length;
+  }
+  return `calc(40% / ${CardNumber} - 2.5vw)`;
+}
 
 function generateReactionCardNumbers(){
   const reaction_card = {
-      number: Math.floor(Math.random() * 11),
-      cost: Math.floor(Math.random() * 30),
-      img: 'rgb(200,100,100)',
-    };
-    storeReactionCardNumbers.value.push(reaction_card);
+    number: Math.floor(Math.random() * 11),
+    cost: Math.floor(Math.random() * 30),
+    img: 'rgb(200,100,100)',
+  };
+  storeReactionCardNumbers.value.push(reaction_card);
 }
 
 function moveToActionHand(index){
   const clickedCard = storeActionCardNumbers.value[index];
+
   if (playerCredits.value >= clickedCard.cost) {
-    storeActionCardNumbers.value.splice(index, 1);
+    storeActionCardNumbers.value.splice(index, 1); // Remove the card from store
     handActionCardNumbers.value.push(clickedCard);
-    playerCredits.value = playerCredits.value - clickedCard.cost;
-    generateActionCardNumbers();
+    playerCredits.value -= clickedCard.cost;
     saveToLocalStorage();
-    //emit('choice-made',index)
+
+    const cardsBought = {
+      action_cards: [ index ],
+      reaction_cards: null
+    }
+    emit('purchase-made', cardsBought)
   } else {
     alert('Nie masz wystarczająco kredytów!');
   }
@@ -86,13 +99,18 @@ function moveToActionHand(index){
 
 function moveToReactionHand(index){
   const clickedCard = storeReactionCardNumbers.value[index];
+
   if (playerCredits.value >= clickedCard.cost) {
     storeReactionCardNumbers.value.splice(index, 1);
     handReactionCardNumbers.value.push(clickedCard);
-    playerCredits.value = playerCredits.value - clickedCard.cost;
-    generateReactionCardNumbers();
+    playerCredits.value -= clickedCard.cost;
     saveToLocalStorage();
-    //emit('choice-made',index)
+
+    const cardsBought = {
+      action_cards: null,
+      reaction_cards: [ index ] // Also not compatible with current server docs
+    }
+    emit('purchase-made', cardsBought)
   } else {
     alert('Nie masz wystarczająco kredytów!');
   }
@@ -116,6 +134,7 @@ onMounted(() => {
   const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
   const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
   const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
+
   if (storedStoreActionCardNumbers && storedHandActionCardNumbers && storedStoreReactionCardNumbers && storedHandReactionCardNumbers) {
     storeActionCardNumbers.value = storedStoreActionCardNumbers;
     handActionCardNumbers.value = storedHandActionCardNumbers;
@@ -125,11 +144,20 @@ onMounted(() => {
     playerMorale.value = storedPlayerMorale;
   } else {
     playerCredits.value = 1000;
-    generateCardNumbers();
-    saveToLocalStorage();
   }
-})
 
+  // Read action cards provided by the server
+  if (props.message['action_cards']) {
+    storeActionCardNumbers.value = props.message['action_cards']
+  }
+
+  // Read reaction cards provided by the server (currently not according to the message provided by the server)
+  if (props.message['reaction_cards']) {
+    storeReactionCardNumbers.value = props.message['reaction_cards']
+  }
+
+  saveToLocalStorage();
+})
 
 const showCardModal = ref(false);
 const modalCardData = ref(null);

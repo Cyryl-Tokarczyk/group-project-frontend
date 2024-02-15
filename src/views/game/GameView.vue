@@ -10,6 +10,7 @@ const collectionPhase = ref(false)
 const clashPhase = ref(false)
 const messageProp = ref(null)
 const socketStore = useSocketStore()
+const money = ref(1000)
 
 watch(
   socketStore.messageQueue,
@@ -57,7 +58,7 @@ function nextMessage() {
 function handleMessage(message){
   switch (message.type) {
     case 'card_package':
-      handleCardPackageMessage(message) // TODO
+      handleCardPackageMessage(message)
       break;
     case 'purchase_result': 
       handlePurchaseResultMessage(message) // TODO
@@ -86,35 +87,29 @@ function handleMessage(message){
 }
 
 function handleCardPackageMessage(message) {
-  console.log(JSON.stringify(message));
-
-  // Temporary adjustment, because we're not getting a clash started message
-  if (!('task' in message)) {
-    message.type = 'clash_start'
-    handleMessage(message)
-    return
-  }
+  console.log('Handling card package message: ' + JSON.stringify(message));
 
   messageProp.value = message
   collectionPhase.value = true
 }
 
 function handlePurchaseMove(choice) {
-
   console.log('Sending a response choice: ' + choice);
 
   // Send a response
   socketStore.send({
-    type: 'collecting_move',
-    choice: choice
+    type: 'purchase_move',
+    action_cards: choice['action_cards'],
+    reaction_cards: choice['reaction_cards']
   })
-
-  collectionPhase.value = false
 
   nextMessage()
 }
 
 function handlePurchaseResultMessage(message) {
+  console.log('Handling purchase result message: ' + JSON.stringify(message));
+
+  money.value = message['new_money_amount']
 
   nextMessage()
 }
@@ -156,7 +151,7 @@ function handleErrorMessage(message) {
 
 <template>
   <div id="game">
-    <HubComponent v-if="!collectionPhase" :message="messageProp" @choice-made="handlePurchaseMove" /> 
+    <HubComponent v-if="collectionPhase" :message="messageProp" :money="money" @purchase-made="handlePurchaseMove" /> 
     <ClashComponent v-if="clashPhase" :message="messageProp" />
   </div>
 </template>
