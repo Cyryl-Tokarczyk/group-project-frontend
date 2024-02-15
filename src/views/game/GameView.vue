@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import EventComponent from './components/EventComponent.vue';
+import HubComponent from './components/HubComponent.vue';
 
 import { useSocketStore } from '@/stores/socket';
 import ClashComponent from './components/ClashComponent.vue';
@@ -56,18 +56,36 @@ function nextMessage() {
 
 function handleMessage(message){
   switch (message.type) {
-    case 'collect_action':
-      handleCollectActionMessage(message)
+    case 'card_package':
+      handleCardPackageMessage(message) // TODO
+      break;
+    case 'purchase_result': 
+      handlePurchaseResultMessage(message) // TODO
       break;
     case 'clash_start':
-      handleClashStart(message)
+      handleClashStartMessage(message) // TODO
+      break;
+    case 'opponent_move':
+      handleOpponentMoveMessage(message) // TODO
+      break;
+    case 'clash_result':
+      handleClashResultMessage(message) // TODO
+      break;
+    case 'clash_end':
+      handleClashEndMessage(message) // TODO
+      break;
+    case 'game_end':
+      handleGameEndMessage(message) // TODO
+      break;
+    case 'error':
+      handleErrorMessage(message) // TODO
       break;
     default:
       break;
   }
 }
 
-function handleCollectActionMessage(message) {
+function handleCardPackageMessage(message) {
   console.log(JSON.stringify(message));
 
   // Temporary adjustment, because we're not getting a clash started message
@@ -81,8 +99,7 @@ function handleCollectActionMessage(message) {
   collectionPhase.value = true
 }
 
-
-function handleCollectAction(choice) {
+function handlePurchaseMove(choice) {
 
   console.log('Sending a response choice: ' + choice);
 
@@ -97,7 +114,12 @@ function handleCollectAction(choice) {
   nextMessage()
 }
 
-function handleClashStart(message) {
+function handlePurchaseResultMessage(message) {
+
+  nextMessage()
+}
+
+function handleClashStartMessage(message) {
   console.log('Handling clash start: ' + JSON.stringify(message));
 
   clashPhase.value = true
@@ -105,11 +127,36 @@ function handleClashStart(message) {
   nextMessage()
 }
 
+function handleOpponentMoveMessage(message) {
+  
+  nextMessage()
+}
+
+function handleClashResultMessage(message) {
+  
+  nextMessage()
+}
+
+function handleClashEndMessage(message) {
+  
+  nextMessage()
+}
+
+function handleGameEndMessage(message) {
+  
+  nextMessage()
+}
+
+function handleErrorMessage(message) {
+  
+  nextMessage()
+}
+
 </script>
 
 <template>
   <div id="game">
-    <EventComponent v-if="!collectionPhase" :message="messageProp" @choice-made="handleCollectAction" /> 
+    <HubComponent v-if="!collectionPhase" :message="messageProp" @choice-made="handlePurchaseMove" /> 
     <ClashComponent v-if="clashPhase" :message="messageProp" />
   </div>
 </template>
