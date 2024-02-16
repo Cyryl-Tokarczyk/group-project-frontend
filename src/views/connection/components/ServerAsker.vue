@@ -2,13 +2,14 @@
 import { ref, onMounted } from 'vue';
 import { useTokensStore } from '@/stores/tokens';
 import { useSocketStore } from "@/stores/socket";
+import { useGameStateStore } from "@/stores/gameState";
 
 
 const socketStore = useSocketStore()
 const tokensStore = useTokensStore()
+const gameStateStore = useGameStateStore()
 
 const playerTypeChosen = ref(false)
-const playerType = ref('')
 const left_board = ref(null)
 const right_board = ref(null)
 const opponent =  ref('')
@@ -24,14 +25,14 @@ async function choosePlayerType(type) {
 
   setTimeout(async () => {
     playerTypeChosen.value = true
-    playerType.value = type
+    gameStateStore.playerType = type
 
     await getGameToken()
 
     console.log(!playerTypeChosen.value);
     console.log(gameToken.value);
 
-    socketStore.connect('ws://localhost:8080/api/ws/game/' + playerType.value + '/?token=' + gameToken.value)
+    socketStore.connect('ws://localhost:8080/api/ws/game/' + type + '/?token=' + gameToken.value)
   }, 1000);
 }
 

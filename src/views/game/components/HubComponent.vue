@@ -1,37 +1,29 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useGameStateStore } from "@/stores/gameState";
 import { unpackReactionCards } from "@/lib/CardsHandling";
 
 const props = defineProps([
-  'message',
-  'money'
+  'message'
 ])
 
 const emit = defineEmits([
-  'purchase-made'
+  'purchase-made',
+  'ready'
 ])
 
-const storeActionCardNumbers = ref([]);
-const storeReactionCardNumbers = ref([]);
+const gameStateStore = useGameStateStore()
+
+const shopActionCardNumbers = ref([]);
+const shopReactionCardNumbers = ref([]);
 const handActionCardNumbers = ref([]);
 const handReactionCardNumbers = ref([]);
-const playerCredits = ref(1000);
-const playerMorale = ref(100);
-
-watch(
-  props.money,
-  () => {
-    playerCredits.value = props.money
-  }
-)
 
 function saveToLocalStorage(){
-  localStorage.setItem('storeActionCardNumbers', JSON.stringify(storeActionCardNumbers.value));
+  localStorage.setItem('shopActionCardNumbers', JSON.stringify(shopActionCardNumbers.value));
   localStorage.setItem('handActionCardNumbers', JSON.stringify(handActionCardNumbers.value));
-  localStorage.setItem('storeReactionCardNumbers', JSON.stringify(storeReactionCardNumbers.value));
+  localStorage.setItem('shopReactionCardNumbers', JSON.stringify(shopReactionCardNumbers.value));
   localStorage.setItem('handReactionCardNumbers', JSON.stringify(handReactionCardNumbers.value));
-  localStorage.setItem('playerCredits', JSON.stringify(playerCredits.value));
-  localStorage.setItem('playerMorale', JSON.stringify(playerMorale.value));
 }
 
 function generateCardNumbers(){
@@ -46,8 +38,8 @@ function generateCardNumbers(){
       cost: Math.floor(Math.random() * 30),
       img: 'rgb(200,100,100)',
     };
-    storeActionCardNumbers.value.push(action_card);
-    storeReactionCardNumbers.value.push(reaction_card);
+    shopActionCardNumbers.value.push(action_card);
+    shopReactionCardNumbers.value.push(reaction_card);
   }
 }
 
@@ -57,7 +49,7 @@ function generateActionCardNumbers(){
       cost: Math.floor(Math.random() * 30),
       img: 'rgb(100,100,200)',
     };
-    storeActionCardNumbers.value.push(action_card);
+    shopActionCardNumbers.value.push(action_card);
 }
 
 function dynamicMargin(type) {
@@ -76,16 +68,16 @@ function generateReactionCardNumbers(){
     cost: Math.floor(Math.random() * 30),
     img: 'rgb(200,100,100)',
   };
-  storeReactionCardNumbers.value.push(reaction_card);
+  shopReactionCardNumbers.value.push(reaction_card);
 }
 
 function moveToActionHand(index){
-  const clickedCard = storeActionCardNumbers.value[index];
+  const clickedCard = shopActionCardNumbers.value[index];
 
-  if (playerCredits.value >= clickedCard.cost) {
-    storeActionCardNumbers.value.splice(index, 1); // Remove the card from store
+  if (gameStateStore.money >= clickedCard.cost) {
+    shopActionCardNumbers.value.splice(index, 1); // Remove the card from shop
     handActionCardNumbers.value.push(clickedCard);
-    playerCredits.value -= clickedCard.cost;
+    gameStateStore.money -= clickedCard.cost;
     saveToLocalStorage();
 
     const cardsBought = {
@@ -94,17 +86,17 @@ function moveToActionHand(index){
     }
     emit('purchase-made', cardsBought)
   } else {
-    alert('Nie masz wystarczająco kredytów!');
+    alert("You don't have enough credits!");
   }
 }
 
 function moveToReactionHand(index){
-  const clickedCard = storeReactionCardNumbers.value[index];
+  const clickedCard = shopReactionCardNumbers.value[index];
 
-  if (playerCredits.value >= clickedCard.cost) {
-    storeReactionCardNumbers.value.splice(index, 1);
+  if (gameStateStore.money >= clickedCard.cost) {
+    shopReactionCardNumbers.value.splice(index, 1);
     handReactionCardNumbers.value.push(clickedCard);
-    playerCredits.value -= clickedCard.cost;
+    gameStateStore.money -= clickedCard.cost;
     saveToLocalStorage();
 
     const cardsBought = {
@@ -116,47 +108,47 @@ function moveToReactionHand(index){
     }
     emit('purchase-made', cardsBought)
   } else {
-    alert('Nie masz wystarczająco kredytów!');
+    alert("You don't have enough credits!");
   }
 }
 
-function resetStore(){
-  storeActionCardNumbers.value = [];
+function resetShop(){
+  shopActionCardNumbers.value = [];
   handActionCardNumbers.value = [];
-  storeReactionCardNumbers.value = [];
+  shopReactionCardNumbers.value = [];
   handReactionCardNumbers.value = [];
-  playerCredits.value = 1000;
-  playerMorale.value = 100;
+  gameStateStore.money = 1000;
+  gameStateStore.setPlayersMorale(100)
   saveToLocalStorage();
 }
 
 onMounted(() => {
-  const storedStoreActionCardNumbers = JSON.parse(localStorage.getItem('storeActionCardNumbers'));
+  const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
   const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
-  const storedStoreReactionCardNumbers = JSON.parse(localStorage.getItem('storeReactionCardNumbers'));
+  const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
   const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
   const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
   const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
 
-  if (storedStoreActionCardNumbers && storedHandActionCardNumbers && storedStoreReactionCardNumbers && storedHandReactionCardNumbers) {
-    storeActionCardNumbers.value = storedStoreActionCardNumbers;
+  if (storedShopActionCardNumbers && storedHandActionCardNumbers && storedShopReactionCardNumbers && storedHandReactionCardNumbers) {
+    shopActionCardNumbers.value = storedShopActionCardNumbers;
     handActionCardNumbers.value = storedHandActionCardNumbers;
-    storeReactionCardNumbers.value = storedStoreReactionCardNumbers;
+    shopReactionCardNumbers.value = storedShopReactionCardNumbers;
     handReactionCardNumbers.value = storedHandReactionCardNumbers;
-    playerCredits.value = storedPlayerCredits;
-    playerMorale.value = storedPlayerMorale;
+    gameStateStore.money = storedPlayerCredits;
+    gameStateStore.setPlayersMorale(storedPlayerMorale);
   } else {
-    playerCredits.value = 1000;
+    gameStateStore.money = storedPlayerCredits;
   }
 
   // Read action cards provided by the server
   if (props.message['action_cards']) {
-    storeActionCardNumbers.value = props.message['action_cards']
+    shopActionCardNumbers.value = props.message['action_cards']
   }
 
   // Read reaction cards provided by the server
   if (props.message['reaction_cards']) {
-    storeReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
+    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
 
   saveToLocalStorage();
@@ -198,16 +190,16 @@ function hideReactionCardsModal(){
 
 <template>
   <div id="event">
-    <button class="db" @click="resetStore()">HUB </button>
+    <button class="db" @click="resetShop()">HUB </button>
     <div id="shop">
       <div id="action_shop">
-        <div v-for="(card, index) in storeActionCardNumbers" :key="index" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(index)">
+        <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(index)">
           <p>{{ card.number }}</p>
           <p>Cost: {{ card.cost }}</p>
         </div>
       </div>
       <div id="reaction_shop">
-        <div v-for="(card, index) in storeReactionCardNumbers" :key="index" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(index)">
+        <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(index)">
           <p>{{ card.number }}</p>
           <p>Cost: {{ card.cost }}</p>
         </div>
@@ -218,10 +210,10 @@ function hideReactionCardsModal(){
     <div id="user_part">
       <div class="info">
         <p>Morale</p>
-        {{ playerMorale }}
+        {{ gameStateStore.playersMorale }}
         <p>Credits</p>
-        {{ playerCredits }}
-        <button>READY</button>
+        {{ gameStateStore.money }}
+        <button @click="emit('ready')">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">

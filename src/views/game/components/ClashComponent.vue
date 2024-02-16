@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { getAppropriateActionState } from "@/lib/ClashState.js";
+import { useGameStateStore } from "@/stores/gameState";
 
 const props = defineProps([
   'firstPlayer',
@@ -12,6 +13,7 @@ const props = defineProps([
 // ])
 
 const clashState = ref(null)
+const gameStateStore = useGameStateStore()
 
 watch(
   props.opponentMove,
@@ -41,9 +43,9 @@ onMounted(() => {
     <div id="profile">
       <div class="stats">
         <p>Morale</p>
-        {{ playerMorale }}
+        {{ gameStateStore.playersMorale }}
         <p>Credits</p>
-        {{ playerCredits }}
+        {{ gameStateStore.money }}
       </div>
       <div id="clash_hand">
         <div id="hand_action">

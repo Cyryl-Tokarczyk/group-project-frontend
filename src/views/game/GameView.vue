@@ -1,19 +1,17 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import HubComponent from './components/HubComponent.vue';
-
 import { useSocketStore } from '@/stores/socket';
+import { useGameStateStore } from '@/stores/gameState';
+import HubComponent from './components/HubComponent.vue';
 import ClashComponent from './components/ClashComponent.vue';
 
 var waitingForAnotherMessage = false
-const collectionPhase = ref(false)
+const hubPhase = ref(false)
 const clashPhase = ref(false)
 const messageProp = ref(null)
 const socketStore = useSocketStore()
 
-// Hub phase
-
-const money = ref(1000)
+const gameStateStore = useGameStateStore()
 
 // Clash phase 
 
@@ -98,7 +96,9 @@ function handleCardPackageMessage(message) {
   console.log('Handling card package message: ' + JSON.stringify(message));
 
   messageProp.value = message
-  collectionPhase.value = true
+  hubPhase.value = true
+
+  nextMessage()
 }
 
 function handlePurchaseMove(choice) {
@@ -110,22 +110,28 @@ function handlePurchaseMove(choice) {
     action_cards: choice['action_cards'],
     reaction_cards: choice['reaction_cards']
   })
-
-  nextMessage()
 }
 
 function handlePurchaseResultMessage(message) {
   console.log('Handling purchase result message: ' + JSON.stringify(message));
 
-  money.value = message['new_money_amount']
+  gameStateStore.money = message['new_money_amount']
 
   nextMessage()
+}
+
+function handleReadyMove() {
+  console.log('Sending a ready_move message');
+
+  socketStore.send({
+    type: 'ready_move'
+  })
 }
 
 function handleClashStartMessage(message) {
   console.log('Handling clash start message: ' + JSON.stringify(message));
 
-  collectionPhase.value = false
+  hubPhase.value = false
   clashPhase.value = true
 
   firstPlayer.value = message['next_move_player']
@@ -144,11 +150,16 @@ function handleOpponentMoveMessage(message) {
 function handleClashResultMessage(message) {
   console.log('Handling clash result message: ' + JSON.stringify(message));
 
+  gameStateStore.morale['student'] = message['new_student_morale']
+  gameStateStore.morale['teacher'] = message['new_teacher_morale']
+
   nextMessage()
 }
 
 function handleClashEndMessage(message) {
   console.log('Handling clash end message: ' + JSON.stringify(message));
+
+  clashPhase.value = false
 
   nextMessage()
 }
@@ -169,7 +180,7 @@ function handleErrorMessage(message) {
 
 <template>
   <div id="game">
-    <HubComponent v-if="collectionPhase" :message="messageProp" :money="money" @purchase-made="handlePurchaseMove" /> 
+    <HubComponent v-if="hubPhase" :message="messageProp" @purchase-made="handlePurchaseMove" @ready="handleReadyMove" /> 
     <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :opponentMove="opponentMove" />
   </div>
 </template>
