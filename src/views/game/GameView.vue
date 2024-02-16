@@ -158,7 +158,7 @@ function handleErrorMessage(message) {
 <template>
   <div id="game">
     <HubComponent v-if="collectionPhase" :message="messageProp" :money="money" @purchase-made="handlePurchaseMove" /> 
-    <ClashComponent v-if="!clashPhase" :message="messageProp" />
+    <ClashComponent v-if="clashPhase" :message="messageProp" />
   </div>
 </template>
 

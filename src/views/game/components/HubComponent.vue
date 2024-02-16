@@ -86,7 +86,6 @@ function moveToActionHand(index){
     storeActionCardNumbers.value.splice(index, 1); // Remove the card from store
     handActionCardNumbers.value.push(clickedCard);
     playerCredits.value -= clickedCard.cost;
-    generateActionCardNumbers();
     saveToLocalStorage();
 
     const cardsBought = {
@@ -106,7 +105,6 @@ function moveToReactionHand(index){
     storeReactionCardNumbers.value.splice(index, 1);
     handReactionCardNumbers.value.push(clickedCard);
     playerCredits.value -= clickedCard.cost;
-    generateReactionCardNumbers();
     saveToLocalStorage();
 
     const cardsBought = {
@@ -129,7 +127,6 @@ function resetStore(){
   handReactionCardNumbers.value = [];
   playerCredits.value = 1000;
   playerMorale.value = 100;
-  generateCardNumbers();
   saveToLocalStorage();
 }
 
