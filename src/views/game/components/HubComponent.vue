@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+import { unpackReactionCards } from "@/lib/CardsHandling";
 
 const props = defineProps([
   'message',
@@ -108,7 +109,10 @@ function moveToReactionHand(index){
 
     const cardsBought = {
       action_cards: null,
-      reaction_cards: [ index ] // Also not compatible with current server docs
+      reaction_cards: [ {
+        id: index,
+        amount: 1
+      } ]
     }
     emit('purchase-made', cardsBought)
   } else {
@@ -151,9 +155,9 @@ onMounted(() => {
     storeActionCardNumbers.value = props.message['action_cards']
   }
 
-  // Read reaction cards provided by the server (currently not according to the message provided by the server)
+  // Read reaction cards provided by the server
   if (props.message['reaction_cards']) {
-    storeReactionCardNumbers.value = props.message['reaction_cards']
+    storeReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
 
   saveToLocalStorage();

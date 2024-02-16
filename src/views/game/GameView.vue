@@ -61,7 +61,7 @@ function handleMessage(message){
       handleCardPackageMessage(message)
       break;
     case 'purchase_result': 
-      handlePurchaseResultMessage(message) // TODO
+      handlePurchaseResultMessage(message)
       break;
     case 'clash_start':
       handleClashStartMessage(message) // TODO
@@ -115,8 +115,9 @@ function handlePurchaseResultMessage(message) {
 }
 
 function handleClashStartMessage(message) {
-  console.log('Handling clash start: ' + JSON.stringify(message));
+  console.log('Handling clash start message: ' + JSON.stringify(message));
 
+  collectionPhase.value = false
   clashPhase.value = true
 
   nextMessage()
