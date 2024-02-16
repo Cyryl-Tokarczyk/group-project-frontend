@@ -86,6 +86,7 @@ function moveToActionHand(index){
     storeActionCardNumbers.value.splice(index, 1); // Remove the card from store
     handActionCardNumbers.value.push(clickedCard);
     playerCredits.value -= clickedCard.cost;
+    generateActionCardNumbers();
     saveToLocalStorage();
 
     const cardsBought = {
@@ -105,6 +106,7 @@ function moveToReactionHand(index){
     storeReactionCardNumbers.value.splice(index, 1);
     handReactionCardNumbers.value.push(clickedCard);
     playerCredits.value -= clickedCard.cost;
+    generateReactionCardNumbers();
     saveToLocalStorage();
 
     const cardsBought = {
@@ -401,7 +403,7 @@ box-shadow: 0px 0px 10px inset;
   margin-top: 25vw;
 }
 
-#event{
+#event, #clash{
   background-image: url(@/assets/imgs/table.jpg);
   background-size: 400px;
   width: 100vw;

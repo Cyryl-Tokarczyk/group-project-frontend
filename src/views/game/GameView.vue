@@ -124,27 +124,32 @@ function handleClashStartMessage(message) {
 }
 
 function handleOpponentMoveMessage(message) {
-  
+  console.log('Handling opponent move: ' + JSON.stringify(message));
+
   nextMessage()
 }
 
 function handleClashResultMessage(message) {
-  
+  console.log('Handling clash result: ' + JSON.stringify(message));
+
   nextMessage()
 }
 
 function handleClashEndMessage(message) {
-  
+  console.log('Handling clash end: ' + JSON.stringify(message));
+
   nextMessage()
 }
 
 function handleGameEndMessage(message) {
-  
+  console.log('Handling game end: ' + JSON.stringify(message));
+
   nextMessage()
 }
 
 function handleErrorMessage(message) {
-  
+  console.log('Handling error: ' + JSON.stringify(message));
+
   nextMessage()
 }
 
@@ -153,7 +158,7 @@ function handleErrorMessage(message) {
 <template>
   <div id="game">
     <HubComponent v-if="collectionPhase" :message="messageProp" :money="money" @purchase-made="handlePurchaseMove" /> 
-    <ClashComponent v-if="clashPhase" :message="messageProp" />
+    <ClashComponent v-if="!clashPhase" :message="messageProp" />
   </div>
 </template>
 
