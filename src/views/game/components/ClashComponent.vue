@@ -1,12 +1,28 @@
 <script setup>
+import { ref, onMounted, watch } from 'vue';
+import { getAppropriateActionState } from "@/lib/ClashState.js";
 
 const props = defineProps([
-  'message'
+  'firstPlayer',
+  'opponentMove'
 ])
 
 // const emit = defineEmits([
 //   'choice-made'
 // ])
+
+const clashState = ref(null)
+
+watch(
+  props.opponentMove,
+  () => {
+    // Implement clash logic
+  }
+)
+
+onMounted(() => {
+  clashState.value = getAppropriateActionState(props.firstPlayer)
+})
 
 </script>
 

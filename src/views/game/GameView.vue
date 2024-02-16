@@ -10,7 +10,15 @@ const collectionPhase = ref(false)
 const clashPhase = ref(false)
 const messageProp = ref(null)
 const socketStore = useSocketStore()
+
+// Hub phase
+
 const money = ref(1000)
+
+// Clash phase 
+
+const firstPlayer = ref(null)
+const opponentMove = ref(null)
 
 watch(
   socketStore.messageQueue,
@@ -64,10 +72,10 @@ function handleMessage(message){
       handlePurchaseResultMessage(message)
       break;
     case 'clash_start':
-      handleClashStartMessage(message) // TODO
+      handleClashStartMessage(message)
       break;
     case 'opponent_move':
-      handleOpponentMoveMessage(message) // TODO
+      handleOpponentMoveMessage(message)
       break;
     case 'clash_result':
       handleClashResultMessage(message) // TODO
@@ -120,35 +128,39 @@ function handleClashStartMessage(message) {
   collectionPhase.value = false
   clashPhase.value = true
 
+  firstPlayer.value = message['next_move_player']
+
   nextMessage()
 }
 
 function handleOpponentMoveMessage(message) {
-  console.log('Handling opponent move: ' + JSON.stringify(message));
+  console.log('Handling opponent move message: ' + JSON.stringify(message));
+
+  opponentMove.value = message
 
   nextMessage()
 }
 
 function handleClashResultMessage(message) {
-  console.log('Handling clash result: ' + JSON.stringify(message));
+  console.log('Handling clash result message: ' + JSON.stringify(message));
 
   nextMessage()
 }
 
 function handleClashEndMessage(message) {
-  console.log('Handling clash end: ' + JSON.stringify(message));
+  console.log('Handling clash end message: ' + JSON.stringify(message));
 
   nextMessage()
 }
 
 function handleGameEndMessage(message) {
-  console.log('Handling game end: ' + JSON.stringify(message));
+  console.log('Handling game end message: ' + JSON.stringify(message));
 
   nextMessage()
 }
 
 function handleErrorMessage(message) {
-  console.log('Handling error: ' + JSON.stringify(message));
+  console.log('Handling error message: ' + JSON.stringify(message));
 
   nextMessage()
 }
@@ -158,7 +170,7 @@ function handleErrorMessage(message) {
 <template>
   <div id="game">
     <HubComponent v-if="collectionPhase" :message="messageProp" :money="money" @purchase-made="handlePurchaseMove" /> 
-    <ClashComponent v-if="clashPhase" :message="messageProp" />
+    <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :opponentMove="opponentMove" />
   </div>
 </template>
 
