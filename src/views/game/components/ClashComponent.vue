@@ -8,9 +8,10 @@ const props = defineProps([
   'opponentMove'
 ])
 
-// const emit = defineEmits([
-//   'choice-made'
-// ])
+const emit = defineEmits([
+  'action-move',
+  'reaction-move'
+])
 
 const clashState = ref(null)
 const gameStateStore = useGameStateStore()

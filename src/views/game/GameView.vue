@@ -4,10 +4,12 @@ import { useSocketStore } from '@/stores/socket';
 import { useGameStateStore } from '@/stores/gameState';
 import HubComponent from './components/HubComponent.vue';
 import ClashComponent from './components/ClashComponent.vue';
+import GameEndComponent from "./components/GameEndComponent.vue";
 
 var waitingForAnotherMessage = false
 const hubPhase = ref(false)
 const clashPhase = ref(false)
+const gameEnd = ref(false)
 const messageProp = ref(null)
 const socketStore = useSocketStore()
 
@@ -76,13 +78,13 @@ function handleMessage(message){
       handleOpponentMoveMessage(message)
       break;
     case 'clash_result':
-      handleClashResultMessage(message) // TODO
+      handleClashResultMessage(message)
       break;
     case 'clash_end':
-      handleClashEndMessage(message) // TODO
+      handleClashEndMessage(message)
       break;
     case 'game_end':
-      handleGameEndMessage(message) // TODO
+      handleGameEndMessage(message)
       break;
     case 'error':
       handleErrorMessage(message) // TODO
@@ -139,6 +141,24 @@ function handleClashStartMessage(message) {
   nextMessage()
 }
 
+function handleActionMove(card) {
+  console.log('Handling action move: ' + card);
+
+  socketStore.send({
+    type: 'action_move',
+    action_card: card
+  })
+}
+
+function handleReactionMove(cards) {
+  console.log('Handling reaction move: ' + cards);
+
+  socketStore.send({
+    type: 'reaction_move',
+    reaction_cards: cards
+  })
+}
+
 function handleOpponentMoveMessage(message) {
   console.log('Handling opponent move message: ' + JSON.stringify(message));
 
@@ -167,6 +187,11 @@ function handleClashEndMessage(message) {
 function handleGameEndMessage(message) {
   console.log('Handling game end message: ' + JSON.stringify(message));
 
+  hubPhase.value = false
+  clashPhase.value = false
+  messageProp.value = message
+  gameEnd.value = true
+
   nextMessage()
 }
 
@@ -181,7 +206,8 @@ function handleErrorMessage(message) {
 <template>
   <div id="game">
     <HubComponent v-if="hubPhase" :message="messageProp" @purchase-made="handlePurchaseMove" @ready="handleReadyMove" /> 
-    <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :opponentMove="opponentMove" />
+    <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :opponentMove="opponentMove" @action-move="handleActionMove" @reaction-move="handleReactionMove" />
+    <GameEndComponent v-if="gameEnd" :message="messageProp" />
   </div>
 </template>
 

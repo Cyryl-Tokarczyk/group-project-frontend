@@ -3,6 +3,17 @@ import { computed, ref } from "vue";
 
 export const useGameStateStore = defineStore('gameState', () => {
   const playerType = ref('')
+  const opponentType = computed(() => {
+    if (playerType.value == 'student') {
+      return 'teacher'
+    }
+    if (playerType.value == 'teacher') {
+      return 'student'
+    }
+
+    // Error if playerType doesn't match 'student' or 'teacher'
+    throw new Error('Wrong/No playerType set')
+  })
 
   const money = ref(1000)
   const morale = ref({
@@ -21,6 +32,9 @@ export const useGameStateStore = defineStore('gameState', () => {
     throw new Error('Wrong/No playerType set')
   })
 
+  const actionCards = ref([])
+  const reactionCards = ref([])
+
   function setPlayerMorale(value) {
     if (playerType.value == 'student') {
       morale.value['student'] = value
@@ -34,5 +48,5 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
   }
 
-  return { playerType, money, morale, playersMorale, setPlayerMorale }
+  return { playerType, opponentType, money, morale, playersMorale, actionCards, reactionCards, setPlayerMorale }
 })
