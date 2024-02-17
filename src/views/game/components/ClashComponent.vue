@@ -8,13 +8,23 @@ const props = defineProps([
   'opponentMove'
 ])
 
-const emit = defineEmits([
-  'action-move',
-  'reaction-move'
-])
+// const emit = defineEmits([
+//   'action-move',
+//   'reaction-move'
+// ])
 
 const clashState = ref(null)
 const gameStateStore = useGameStateStore()
+
+function dynamicMargin(type) {
+  var CardNumber = 0;
+  if (type == 'action') {
+    CardNumber = gameStateStore.actionCards.length;
+  } else {
+    CardNumber = gameStateStore.reactionCards.length;
+  }
+  return `calc(40% / ${CardNumber} - 1.5vw)`;
+}
 
 watch(
   props.opponentMove,
@@ -25,19 +35,29 @@ watch(
 
 onMounted(() => {
   clashState.value = getAppropriateActionState(props.firstPlayer)
+  // const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
+  // const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
+  // const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
+  // const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
+  // const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
+  // const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
+
+
+
 })
 
 </script>
 
 <template>
-  <div id="debug">
-    <button class="de">phase</button>
-    <button class="de">opponent</button>
-    <h2>Clash</h2>
-    <p>{{ JSON.stringify(props.message) }}</p>
-  </div>
   <div id="clash">
     <div id="oponnent_cards">
+      <div v-for="(card, index) in handActionCardNumbers"
+        @click="displayActionCardsModal(card)"
+        @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
+        :key="index" class="action_card_hand"
+        :style="{ backgroundColor: card.img, marginRight: dynamicMargin('action'), marginLeft: dynamicMargin('action') }">
+        <p>{{ card.number }}</p>
+      </div>
     </div>
     <div id="thrown_cards">
     </div>
@@ -62,7 +82,7 @@ onMounted(() => {
           <div v-for="(card, index) in handReactionCardNumbers"
             @click="displayReactionCardsModal(card)"
             @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-            :key="index" class="reaction_card_hand"
+            :key="index" class="reaction_card_hand scale"
             :style="{ backgroundColor: card.img, marginRight: dynamicMargin('reaction'), marginLeft: dynamicMargin('reaction') }">
             <p>{{ card.number }}</p>
           </div>
@@ -77,25 +97,10 @@ onMounted(() => {
 
 <style>
 
-#debug{
-  display: flex;
-  background: rgba(0, 128, 0, 0.349);
-  width: 10vw;
-  height: 10vw;
-  position: absolute;
-  top: 0vw;
-  left: 0vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  font-size: 0.5vw;
-}
+oponnent_cards
 
-.de{
-  height: 15%;
-  width: 100%;
-  font-size: 0.75vw;
+.scale:hover{
+  transform: scale(1.5) translateY(-1vw);
 }
 
 #profile{
