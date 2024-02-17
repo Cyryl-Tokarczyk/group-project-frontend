@@ -23,7 +23,7 @@ function dynamicMargin(type) {
   } else {
     CardNumber = gameStateStore.reactionCards.length;
   }
-  return `calc(40% / ${CardNumber} - 1.5vw)`;
+  return `calc(40% / ${CardNumber} - 2.5vw)`;
 }
 
 watch(
