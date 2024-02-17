@@ -1,135 +1,154 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-
-const storeActionCardNumbers = ref([]);
-const storeReactionCardNumbers = ref([]);
-const handActionCardNumbers = ref([]);
-const handReactionCardNumbers = ref([]);
-const playerCredits = ref(1000);
-const playerMorale = ref(100);
+import { useGameStateStore } from "@/stores/gameState";
+import { unpackReactionCards } from "@/lib/CardsHandling";
 
 const props = defineProps([
   'message'
 ])
 
-// const emit = defineEmits([
-//   'choice-made'
-// ])
+const emit = defineEmits([
+  'purchase-made',
+  'ready'
+])
+
+const gameStateStore = useGameStateStore()
+
+const shopActionCardNumbers = ref([]);
+const shopReactionCardNumbers = ref([]);
 
 function saveToLocalStorage(){
-  localStorage.setItem('storeActionCardNumbers', JSON.stringify(storeActionCardNumbers.value));
-  localStorage.setItem('handActionCardNumbers', JSON.stringify(handActionCardNumbers.value));
-  localStorage.setItem('storeReactionCardNumbers', JSON.stringify(storeReactionCardNumbers.value));
-  localStorage.setItem('handReactionCardNumbers', JSON.stringify(handReactionCardNumbers.value));
-  localStorage.setItem('playerCredits', JSON.stringify(playerCredits.value));
-  localStorage.setItem('playerMorale', JSON.stringify(playerMorale.value));
+  localStorage.setItem('shopActionCardNumbers', JSON.stringify(shopActionCardNumbers.value));
+  localStorage.setItem('shopReactionCardNumbers', JSON.stringify(shopReactionCardNumbers.value));
 }
 
-function generateCardNumbers(){
-  for (let i = 0; i < 3; i++) {
-    const action_card = {
-      number: Math.floor(Math.random() * 11),
-      cost: Math.floor(Math.random() * 30),
-      img: 'rgb(100,100,200)',
-    };
-    const reaction_card = {
-      number: Math.floor(Math.random() * 11),
-      cost: Math.floor(Math.random() * 30),
-      img: 'rgb(200,100,100)',
-    };
-    storeActionCardNumbers.value.push(action_card);
-    storeReactionCardNumbers.value.push(reaction_card);
-  }
-}
+// function generateCardNumbers(){
+//   for (let i = 0; i < 3; i++) {
+//     const action_card = {
+//       number: Math.floor(Math.random() * 11),
+//       cost: Math.floor(Math.random() * 30),
+//       img: 'rgb(100,100,200)',
+//     };
+//     const reaction_card = {
+//       number: Math.floor(Math.random() * 11),
+//       cost: Math.floor(Math.random() * 30),
+//       img: 'rgb(200,100,100)',
+//     };
+//     shopActionCardNumbers.value.push(action_card);
+//     shopReactionCardNumbers.value.push(reaction_card);
+//   }
+// }
 
-function generateActionCardNumbers(){
-  const action_card = {
-      number: Math.floor(Math.random() * 11),
-      cost: Math.floor(Math.random() * 30),
-      img: 'rgb(100,100,200)',
-    };
-    storeActionCardNumbers.value.push(action_card);
-}
+// function generateActionCardNumbers(){
+//   const action_card = {
+//       number: Math.floor(Math.random() * 11),
+//       cost: Math.floor(Math.random() * 30),
+//       img: 'rgb(100,100,200)',
+//     };
+//     shopActionCardNumbers.value.push(action_card);
+// }
 
 function dynamicMargin(type) {
-      var CardNumber = 0;
-      if (type == 'action'){
-        CardNumber = handActionCardNumbers.value.length;
-      }else{
-        CardNumber = handReactionCardNumbers.value.length;
-      }
-      return `calc(40% / ${CardNumber} - 2.5vw)`;
-    }
-
-function generateReactionCardNumbers(){
-  const reaction_card = {
-      number: Math.floor(Math.random() * 11),
-      cost: Math.floor(Math.random() * 30),
-      img: 'rgb(200,100,100)',
-    };
-    storeReactionCardNumbers.value.push(reaction_card);
+  var CardNumber = 0;
+  if (type == 'action') {
+    CardNumber = gameStateStore.actionCards.length;
+  } else {
+    CardNumber = gameStateStore.reactionCards.length;
+  }
+  return `calc(40% / ${CardNumber} - 2.5vw)`;
 }
 
+// function generateReactionCardNumbers(){
+//   const reaction_card = {
+//     number: Math.floor(Math.random() * 11),
+//     cost: Math.floor(Math.random() * 30),
+//     img: 'rgb(200,100,100)',
+//   };
+//   shopReactionCardNumbers.value.push(reaction_card);
+// }
+
 function moveToActionHand(index){
-  const clickedCard = storeActionCardNumbers.value[index];
-  if (playerCredits.value >= clickedCard.cost) {
-    storeActionCardNumbers.value.splice(index, 1);
-    handActionCardNumbers.value.push(clickedCard);
-    playerCredits.value = playerCredits.value - clickedCard.cost;
-    generateActionCardNumbers();
+  const clickedCard = shopActionCardNumbers.value[index];
+
+  if (gameStateStore.money >= clickedCard.cost) {
+    shopActionCardNumbers.value.splice(index, 1); // Remove the card from shop
+    gameStateStore.actionCards.push(clickedCard);
+    gameStateStore.money -= clickedCard.cost;
     saveToLocalStorage();
-    //emit('choice-made',index)
+
+    const cardsBought = {
+      action_cards: [ index ],
+      reaction_cards: null
+    }
+    emit('purchase-made', cardsBought)
   } else {
-    alert('Nie masz wystarczająco kredytów!');
+    alert("You don't have enough credits!");
   }
 }
 
 function moveToReactionHand(index){
-  const clickedCard = storeReactionCardNumbers.value[index];
-  if (playerCredits.value >= clickedCard.cost) {
-    storeReactionCardNumbers.value.splice(index, 1);
-    handReactionCardNumbers.value.push(clickedCard);
-    playerCredits.value = playerCredits.value - clickedCard.cost;
-    generateReactionCardNumbers();
+  const clickedCard = shopReactionCardNumbers.value[index];
+
+  if (gameStateStore.money >= clickedCard.cost) {
+    shopReactionCardNumbers.value.splice(index, 1);
+    gameStateStore.reactionCards.push(clickedCard);
+    gameStateStore.money -= clickedCard.cost;
     saveToLocalStorage();
-    //emit('choice-made',index)
+
+    const cardsBought = {
+      action_cards: null,
+      reaction_cards: [ {
+        id: index,
+        amount: 1
+      } ]
+    }
+    emit('purchase-made', cardsBought)
   } else {
-    alert('Nie masz wystarczająco kredytów!');
+    alert("You don't have enough credits!");
   }
 }
 
-function resetStore(){
-  storeActionCardNumbers.value = [];
-  handActionCardNumbers.value = [];
-  storeReactionCardNumbers.value = [];
-  handReactionCardNumbers.value = [];
-  playerCredits.value = 1000;
-  playerMorale.value = 100;
-  generateCardNumbers();
+function resetShop(){
+  shopActionCardNumbers.value = [];
+  gameStateStore.actionCards = [];
+  shopReactionCardNumbers.value = [];
+  gameStateStore.reactionCards = [];
+  gameStateStore.money = 1000;
+  gameStateStore.setPlayersMorale(100)
   saveToLocalStorage();
 }
 
 onMounted(() => {
-  const storedStoreActionCardNumbers = JSON.parse(localStorage.getItem('storeActionCardNumbers'));
+  const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
   const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
-  const storedStoreReactionCardNumbers = JSON.parse(localStorage.getItem('storeReactionCardNumbers'));
+  const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
   const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
   const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
   const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
-  if (storedStoreActionCardNumbers && storedHandActionCardNumbers && storedStoreReactionCardNumbers && storedHandReactionCardNumbers) {
-    storeActionCardNumbers.value = storedStoreActionCardNumbers;
-    handActionCardNumbers.value = storedHandActionCardNumbers;
-    storeReactionCardNumbers.value = storedStoreReactionCardNumbers;
-    handReactionCardNumbers.value = storedHandReactionCardNumbers;
-    playerCredits.value = storedPlayerCredits;
-    playerMorale.value = storedPlayerMorale;
-  } else {
-    playerCredits.value = 1000;
-    generateCardNumbers();
-    saveToLocalStorage();
-  }
-})
 
+  if (storedShopActionCardNumbers && storedHandActionCardNumbers && storedShopReactionCardNumbers && storedHandReactionCardNumbers) {
+    shopActionCardNumbers.value = storedShopActionCardNumbers;
+    gameStateStore.actionCards = storedHandActionCardNumbers;
+    shopReactionCardNumbers.value = storedShopReactionCardNumbers;
+    gameStateStore.reactionCards = storedHandReactionCardNumbers;
+    gameStateStore.money = storedPlayerCredits;
+    gameStateStore.setPlayersMorale(storedPlayerMorale);
+  } else {
+    gameStateStore.money = storedPlayerCredits;
+  }
+
+  // Read action cards provided by the server
+  if (props.message['action_cards']) {
+    shopActionCardNumbers.value = props.message['action_cards']
+  }
+
+  // Read reaction cards provided by the server
+  if (props.message['reaction_cards']) {
+    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
+  }
+
+  saveToLocalStorage();
+})
 
 const showCardModal = ref(false);
 const modalCardData = ref(null);
@@ -167,16 +186,16 @@ function hideReactionCardsModal(){
 
 <template>
   <div id="event">
-    <button class="db" @click="resetStore()">HUB </button>
+    <button class="db" @click="resetShop()">HUB </button>
     <div id="shop">
       <div id="action_shop">
-        <div v-for="(card, index) in storeActionCardNumbers" :key="index" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(index)">
+        <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(index)">
           <p>{{ card.number }}</p>
           <p>Cost: {{ card.cost }}</p>
         </div>
       </div>
       <div id="reaction_shop">
-        <div v-for="(card, index) in storeReactionCardNumbers" :key="index" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(index)">
+        <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(index)">
           <p>{{ card.number }}</p>
           <p>Cost: {{ card.cost }}</p>
         </div>
@@ -187,14 +206,14 @@ function hideReactionCardsModal(){
     <div id="user_part">
       <div class="info">
         <p>Morale</p>
-        {{ playerMorale }}
+        {{ gameStateStore.playersMorale }}
         <p>Credits</p>
-        {{ playerCredits }}
-        <button>READY</button>
+        {{ gameStateStore.money }}
+        <button @click="emit('ready')">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">
-          <div v-for="(card, index) in handActionCardNumbers"
+          <div v-for="(card, index) in gameStateStore.actionCards"
             @click="displayActionCardsModal(card)"
             @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
             :key="index" class="action_card_hand"
@@ -203,7 +222,7 @@ function hideReactionCardsModal(){
           </div>
         </div>
         <div id="hand_reaction">
-          <div v-for="(card, index) in handReactionCardNumbers"
+          <div v-for="(card, index) in gameStateStore.reactionCards"
             @click="displayReactionCardsModal(card)"
             @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
             :key="index" class="reaction_card_hand"
@@ -225,7 +244,7 @@ function hideReactionCardsModal(){
       <div v-if="showActionCards" class="actionAllCard" @click="hideActionCardsModal()">
         <h1 class="h1_all_cards">Action cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in handActionCardNumbers" :key="index" class="action_card_all" :style="{ backgroundColor: card.img}">
+          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" :style="{ backgroundColor: card.img}">
             <p>{{ card.number }}</p>
             <p>Description:</p>
           <p>{{ card.cost }}</p>
@@ -236,7 +255,7 @@ function hideReactionCardsModal(){
       <div v-if="showReactionCards" class="reactionAllCard" @click="hideReactionCardsModal()">        
         <h1 class="h1_all_cards">Reaction cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in handReactionCardNumbers" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img}">
+          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img}">
             <p>{{ card.number }}</p>
             <p>Description:</p>
           <p>{{ card.cost }}</p>
@@ -369,7 +388,7 @@ box-shadow: 0px 0px 10px inset;
   margin-top: 25vw;
 }
 
-#event{
+#event, #clash{
   background-image: url(@/assets/imgs/table.jpg);
   background-size: 400px;
   width: 100vw;
