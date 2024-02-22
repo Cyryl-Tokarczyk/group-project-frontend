@@ -29,6 +29,6 @@ export function getAppropriateActionState(player) {
     case 'teacher':
       return ClashState.TeacherAction
     default:
-      throw new Error('Incorrect player type given')
+      throw new Error('Incorrect player type given: ' + player)
   }                     
 }
