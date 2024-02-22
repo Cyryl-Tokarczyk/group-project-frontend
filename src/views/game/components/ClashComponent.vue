@@ -97,8 +97,6 @@ onMounted(() => {
 
 <style>
 
-oponnent_cards
-
 .scale:hover{
   transform: scale(1.5) translateY(-1vw);
 }

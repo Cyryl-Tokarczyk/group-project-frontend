@@ -53,7 +53,7 @@ onMounted(() => {
   // In result, it tries to pop the queue, which is empty, so it subscribes to the onMessageHandler method,
   // which in turn is called before the mounting, so it doesn't intercept the function call.
   // !!!!! THIS IS AN AD HOC SOLUTION, CHANGE IT ASAP !!!!!
-
+  
   clearLocalStorage();
 
   setTimeout( () => {

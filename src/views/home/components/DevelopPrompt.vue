@@ -3,11 +3,11 @@
 
 <template>
     <div class="paper">
-        <div id="playPrompt">
+        <div id="devPrompt">
             Develop
         </div>
         <div>
-            <router-link :to="{ name: 'connection' }" class="link">Play</router-link>
+            <router-link :to="{ name: 'dev' }" class="link">Develop</router-link>
         </div>
     </div>
 
@@ -15,7 +15,7 @@
 
 <style>
 
-#playPrompt{
+#devPrompt{
     margin-top: 20px;
     margin-bottom: 100px;
 }
