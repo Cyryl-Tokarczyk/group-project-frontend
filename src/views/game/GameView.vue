@@ -71,7 +71,7 @@ function nextMessage() {
   handleMessage(socketStore.messageQueue.pop())
 }
 
-// TODO: Make an enum out of message types
+// TODO: Maybe make an enum out of message types (it's not neccessary now)
 
 function handleMessage(message){
   switch (message.type) {
@@ -146,7 +146,7 @@ function handleClashStartMessage(message) {
   hubPhase.value = false
   clashPhase.value = true
 
-  firstPlayer.value = message['next_move_player']
+  firstPlayer.value = message['next_move']
 
   nextMessage()
 }

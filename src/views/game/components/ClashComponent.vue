@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { getAppropriateActionState } from "@/lib/ClashState.js";
+import { getAppropriateActionState } from "@/lib/enums/ClashState.js";
 import { useGameStateStore } from "@/stores/gameState";
 
 const props = defineProps([
@@ -41,9 +41,6 @@ onMounted(() => {
   // const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
   // const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
   // const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
-
-
-
 })
 
 </script>
