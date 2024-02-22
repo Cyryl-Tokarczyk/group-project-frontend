@@ -37,14 +37,24 @@ After handling a message another message is popped from the queue
 If there are no messages on the queue it subscribes to the onAction event on socketStore and waits for an onMessageHandler call
 */
 
+function clearLocalStorage() {
+  localStorage.removeItem('shopActionCardNumbers');
+  localStorage.removeItem('handActionCardNumbers');
+  localStorage.removeItem('shopReactionCardNumbers');
+  localStorage.removeItem('handReactionCardNumbers');
+  localStorage.removeItem('playerCredits');
+  localStorage.removeItem('playerMorale');
+}
+
 onMounted(() => {
   // Pop the first message
 
   // The first message is being processed, while this component mounts, but it ends mounting before the message is processed.
   // In result, it tries to pop the queue, which is empty, so it subscribes to the onMessageHandler method,
   // which in turn is called before the mounting, so it doesn't intercept the function call.
-
   // !!!!! THIS IS AN AD HOC SOLUTION, CHANGE IT ASAP !!!!!
+
+  clearLocalStorage();
 
   setTimeout( () => {
     console.log('Delay is over');
