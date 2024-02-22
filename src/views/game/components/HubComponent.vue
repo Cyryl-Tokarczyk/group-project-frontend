@@ -22,32 +22,6 @@ function saveToLocalStorage(){
   localStorage.setItem('shopReactionCardNumbers', JSON.stringify(shopReactionCardNumbers.value));
 }
 
-// function generateCardNumbers(){
-//   for (let i = 0; i < 3; i++) {
-//     const action_card = {
-//       number: Math.floor(Math.random() * 11),
-//       cost: Math.floor(Math.random() * 30),
-//       img: 'rgb(100,100,200)',
-//     };
-//     const reaction_card = {
-//       number: Math.floor(Math.random() * 11),
-//       cost: Math.floor(Math.random() * 30),
-//       img: 'rgb(200,100,100)',
-//     };
-//     shopActionCardNumbers.value.push(action_card);
-//     shopReactionCardNumbers.value.push(reaction_card);
-//   }
-// }
-
-// function generateActionCardNumbers(){
-//   const action_card = {
-//       number: Math.floor(Math.random() * 11),
-//       cost: Math.floor(Math.random() * 30),
-//       img: 'rgb(100,100,200)',
-//     };
-//     shopActionCardNumbers.value.push(action_card);
-// }
-
 function dynamicMargin(type) {
   var CardNumber = 0;
   if (type == 'action') {
@@ -57,15 +31,6 @@ function dynamicMargin(type) {
   }
   return `calc(40% / ${CardNumber} - 2.5vw)`;
 }
-
-// function generateReactionCardNumbers(){
-//   const reaction_card = {
-//     number: Math.floor(Math.random() * 11),
-//     cost: Math.floor(Math.random() * 30),
-//     img: 'rgb(200,100,100)',
-//   };
-//   shopReactionCardNumbers.value.push(reaction_card);
-// }
 
 function moveToActionHand(index){
   const clickedCard = shopActionCardNumbers.value[index];
