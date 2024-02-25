@@ -5,6 +5,7 @@ export class ClashState extends Enumify {
   static OpponentReaction = new ClashState()
   static OpponentAction = new ClashState()
   static MyReaction = new ClashState()
+  static _ = this.closeEnum();
 }
 
 export function nextState(state) {

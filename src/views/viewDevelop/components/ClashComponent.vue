@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { ClashState, getAppropriateActionState } from "@/lib/ClashState.js"
+import { getAppropriateActionState } from "@/lib/ClashState.js"
 import { useGameStateStore } from "@/stores/gameStateDev"
 import { unpackReactionCards } from "@/lib/CardsHandling.js";
 
@@ -9,26 +9,15 @@ const props = defineProps([
   'opponentMove'
 ])
 
-// const emit = defineEmits([
-//   'action-move',
-//   'reaction-move'
-// ])
+const emit = defineEmits([
+  'action-move',
+  'reaction-move'
+])
 
-const clashState = ref(null)
+const clashState = ref("")
 const gameStateStore = useGameStateStore()
 const opponentCards = ref([])
 const myCards = ref([])
-
-function dynamicMargin(type) {
-  var CardNumber = 0
-  if (type == 'action') {
-    CardNumber = gameStateStore.actionCards.length
-  } else {
-    CardNumber = gameStateStore.reactionCards.length
-  }
-  if (CardNumber < 6) return 0
-  return `calc(50vw / ${CardNumber} - 4.3vw)`
-}
 
 watch(
   props.opponentMove,
@@ -43,24 +32,24 @@ watch(
   }
 )
 
-
 onMounted(() => {
-  clashState.value = getAppropriateActionState(props.firstPlayer, gameStateStore.playerType)
-  //const myActionPosition = dynamicWidth(gameStateStore.actionCards.length);
-  // const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
-  // const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
-  // const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
-  // const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
-  // const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
-  // const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
-  opponentCards.value = gameStateStore.opRactionCards
+  clashState.value = getAppropriateActionState("sd", gameStateStore.playerType).enumKey 
+  opponentCards.value = (clashState.value == 'MyAction'  ? gameStateStore.opRactionCards : gameStateStore.opActionCards)
   
+
   table.value.addEventListener("mouseover", handleMouseEnter);
   table.value.addEventListener("mouseleave", handleMouseLeave);
 })
 
 
-
+function isOneAction(){
+  if (clashState.value == "MyAction"){
+    if(myCards.value.length == 1){
+      return true
+    }
+  }
+  return false
+}
 
 function startDrag(event, index, hoverCard){
   isCardHold.value = true
@@ -71,12 +60,10 @@ function startDrag(event, index, hoverCard){
   document.body.style.userSelect = 'none';
   const ot = card.offsetTop
   const ol = card.offsetLeft
-  const margin = card.style.marginRight
-  card.style.marginRight = '0'
-  card.style.marginLeft = '0'
-  card.style.position = `absolute`
   card.style.zIndex  = `100`
   card.style.transition = '0s'
+  const cardTop = card.style.top
+  const cardLeft = card.style.left
   pos3 = event.pageY
   pos4 = event.pageX
   card.style.top = ot + "px";
@@ -92,7 +79,6 @@ function startDrag(event, index, hoverCard){
   }
 
   function stopDrag(){
-    card.style.position = ``
     card.style.pointerEvents = 'auto';
     card.style.transform = ''
     card.style.transition = '0.2s'
@@ -100,16 +86,22 @@ function startDrag(event, index, hoverCard){
     card.style.zIndex  = `1`
     document.onmousemove = null;
     document.onmouseup = null;
-    card.style.marginRight = margin
-    card.style.marginLeft = margin
     isCardHold.value = false
-    if(isTableHovered.value){
-      if(clashState.value == ClashState.MyAction){
+    card.style.left = cardLeft
+    card.style.top = cardTop
+    if(isTableHovered.value && !isOneAction() && !moveMade.value){
+      if(clashState.value == "MyAction"){
         gameStateStore.actionCards.splice(index, 1);
       } else {
         gameStateStore.reactionCards.splice(index, 1);
       }
       myCards.value.push(hoverCard);
+      card.style.transition = '0s'
+    } else {
+      card.style.pointerEvents = "none"
+      setTimeout(()=>{
+        card.style.pointerEvents = ""
+      },200)
     }
   }
 }
@@ -146,8 +138,7 @@ function modalShow(e) {
     modal.value.style.opacity = '100%'
     modal.value.style.transform = 'scale(1.2) translateY(-2vw)'
     card.style.transition = '0s'
-    modal.value.style.left = card.offsetLeft + 'px';
-    modal.value.style.top = card.offsetTop + 'px';
+    modal.value.style.left = `calc(${card.offsetLeft}px + 25.35vw)`
   }
 }
 
@@ -155,29 +146,54 @@ function cardReset(e) {
   showModal.value = false
   const card = e.target;
   card.onmousemove = null
-  if(isCardHold.value==false){
-    card.style.transform = ''
-  }
   card.style.opacity = '100%'
+}
+
+
+const showOtherCards = ref(false);
+
+function displayOtherCards(){
+  showOtherCards.value = true;
+}
+
+function hideOtherCards(){
+  showOtherCards.value = false;
+}
+
+const moveMade = ref(false)
+const readyButton = ref(null)
+
+
+function ready(){
+  moveMade.value = true
+  emit(clashState.value == 'MyAction' ? 'action-move' : 'reaction-move', myCards)
+  readyButton.value.style.color = "red"
+}
+
+function undo(){
+  if (myCards.value.length > 0 && !moveMade.value) {
+    const lastElement = myCards.value.pop();
+    (clashState.value == 'MyAction' ? gameStateStore.actionCards : gameStateStore.reactionCards).push(lastElement);
+  }
 }
 
 </script>
 
 <template>
   <div id="clash">
-    <div id="oponnent_cards">
+    <div id="oponnent_cards" :class="(clashState == 'MyAction'  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards"
-        :key="index" class="table_cards"
-        :style="{ backgroundColor: card.color, marginRight: dynamicMargin('action'), marginLeft: dynamicMargin('action') }">
+        :key="index" class="table_cards  dynamic_position"
+        :style="{ backgroundColor: card.color, '--order': index + 1, '--quantity': opponentCards.length + 1}">
         <p>{{ card.id }}</p>
         <p>{{ card.des }}</p>
       </div>
     </div>
 
-    <div id="thrown_cards" ref="table">
+    <div id="thrown_cards" ref="table" :class="(clashState == 'MyAction'  ? 'action' : '')">
       <div v-for="(card, index) in myCards"
-        :key="index" class="table_cards"
-        :style="{ backgroundColor: card.color, marginRight: dynamicMargin('action'), marginLeft: dynamicMargin('action')}">
+        :key="index" class="table_cards dynamic_position"
+        :style="{ backgroundColor: card.color, '--order': index + 1, '--quantity': myCards.length + 1}">
         {{ card.id }}
         <p></p>
         {{ card.des }}
@@ -187,20 +203,21 @@ function cardReset(e) {
     <div id="profile">
       <div class="stats">
         <p>Morale {{ gameStateStore.playersMorale }}</p>
-        <p>Credits {{ gameStateStore.money }}</p>
+        <button @click="displayOtherCards()">{{ clashState == 'MyAction' ? 'Reaction' : 'Action' }} cards</button>
       </div>
       <div id="clash_hand" ref="hand">
-        <div v-for="(card, index) in (clashState == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards)"
-          :key="index" class="hand_cards dragable" ref="draggableCards" @mousedown="startDrag($event, index, card)"
+        <div v-for="(card, index) in (clashState == 'MyAction'  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
+          :key="index" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, index, card)"
           @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)"
-          :style="{ backgroundColor: card.color, marginRight: dynamicMargin('reaction'), marginLeft: dynamicMargin('reaction') }">
+          :style="{ backgroundColor: card.color, '--order': index + 1, '--quantity': (clashState == 'MyAction' ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
           {{ card.id }}
           <p></p>
           {{ card.des }}
         </div>
       </div> 
       <div class="stats">
-        <button>READY</button> 
+        <button @click="ready()" ref="readyButton">READY</button> 
+        <button @click="undo()">undo</button> 
       </div>
     </div>
     <div v-if="showModal" ref="modal" class="modal_cont" :style="{ backgroundColor: modalCardData.color}">
@@ -208,34 +225,70 @@ function cardReset(e) {
       <p></p>
       {{ modalCardData.des }}
     </div>
+    <div v-if="showOtherCards" class="reactionAllCard" @click="hideOtherCards()">        
+      <h1 class="h1_all_cards">{{ clashState == 'MyAction' ? 'Reaction' : 'Action' }} cards</h1>
+      <div class="all_cards">
+        <div v-for="(card, index) in (clashState == 'OpponentAction'  ? gameStateStore.actionCards : gameStateStore.reactionCards)" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.color}">
+          {{ card.id }}
+          <p>Descritpion:</p>
+          {{ card.des }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style>
 
+#clash{
+  --width: 74;
+}
+
+#xd{
+  height: 100%;
+  width: 1px;
+  background: red;
+  position: absolute;
+  top: 0;
+  left: 50vw;
+}
 .scale:hover{
   transform: scale(1.5) translateY(-1vw);
 }
 
+.table_cards{
+  margin-top: 1.5vw;
+}
+
 .table_cards, .hand_cards, .modal_cont{
-  border: 1px solid black;
+  border: 1.5px solid rgb(0, 0, 0);
+  box-shadow: 0px 0px 3px;
   width: 8vw;
+  --card-width: 8;
   height: 11vw;
   min-width: 8vw;
   align-items: center;
   border-radius: 5%;
+  box-sizing: border-box;
+}
+
+.dynamic_position{
+  position: absolute;
+  top: 0.4vw;
+  left: calc((var(--width)/var(--quantity) * var(--order)*1vw) - var(--card-width)/2 * 1vw);
 }
 
 .hand_cards, .modal_cont{
   width: 6.4vw;
+  --card-width: 6.4;
   height: 8.8vw;
   min-width: 6.4vw;
-  transition: 0.2s;
   z-index: 1;
 }
 
 .modal_cont{
   position: absolute;
+  top: 36.1vw;
   pointer-events: none;
   opacity: 0;
 }
@@ -245,39 +298,47 @@ function cardReset(e) {
 }
 
 #profile{
-  border: 1px solid black;
   width: 90vw;
   height: 10vw;
   display: flex;
   align-items: center;
-  border-radius:0%;
-  margin-left: 10px;
-  margin-right: 10px;
+  border: 0px;
 }
 
 #clash_hand{
-  border: 1px solid rgb(0, 0, 0);
   width: 50vw;
+  --width: 50;
   height: 10vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius:0%;
+  position: relative;
+  margin: 0;
+  border: 0px;
 }
 
 .stats{
-  width: 20vw
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
 }
 
 #oponnent_cards, #thrown_cards{
-  width: 75%;
+  position: relative;
+  width: 74vw;
   height: 30%;
   border: 1px solid black;
   margin-bottom: 1vw;
   align-items: center;
   display: flex;
   justify-content: center;
+  margin: 0;
+}
+
+.action{
+  max-width: 12vw;
+  --width: 12;
 }
 
 </style>
