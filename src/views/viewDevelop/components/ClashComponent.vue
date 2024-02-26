@@ -241,12 +241,13 @@ function undo(){
 #oponnent_cards, #thrown_cards{
   width: 74vw;
   height: 30%;
-  border: 0.2vw solid rgba(161, 151, 121, 0.87);
+  border: 0.2vw  inset rgba(255, 255, 255, 0.377);
   border-radius: 1vw;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 0px 25px inset;
 }
 
 .dynamic_position{
@@ -259,7 +260,7 @@ function undo(){
   border: 1.5px solid rgb(0, 0, 0);
   border-radius: 0.5vw;
   box-sizing: border-box;
-  box-shadow: 0px 0px 3px;
+  box-shadow: 0px 0px 8px;
   align-items: center;
 }
 
