@@ -97,42 +97,6 @@ onMounted(() => {
 
 <style>
 
-.scale:hover{
-  transform: scale(1.5) translateY(-1vw);
-}
 
-#profile{
-  border: 1px solid black;
-  width: 90%;
-  height: 10vw;
-  display: flex;
-  align-items: center;
-  border-radius: 5%;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-#clash_hand{
-  border: 1px solid black;
-  width: 45%;
-  height: 10vw;
-  display: flex;
-  align-items: center;
-  border-radius: 5%;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.stats{
-  width: 25.5%
-}
-
-
-#oponnent_cards, #thrown_cards{
-  width: 75%;
-  height: 30%;
-  border: 1px solid black;
-  margin-bottom: 1vw;
-}
 
 </style>

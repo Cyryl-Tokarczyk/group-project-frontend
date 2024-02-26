@@ -194,6 +194,7 @@ function undo(){
 
     <div id="profile">
       <div class="stats">
+        <p>{{ clashState }}</p>
         <p>Morale {{ gameStateStore.playersMorale }}</p>
         <button @click="displayOtherCards()">{{ (clashState == 'MyAction' || clashState == 'OpponentReaction') ? 'Reaction' : 'Action' }} cards</button>
       </div>
@@ -233,6 +234,9 @@ function undo(){
 </template>
 
 <style>
+p{
+  margin: 0;
+}
 
 #clash{
   --width: 74;
