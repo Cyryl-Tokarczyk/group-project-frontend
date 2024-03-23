@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { getAppropriateActionState } from "@/lib/ClashState.js"
+import { getAppropriateActionState } from "@/lib/enums/ClashState.js"
 import { useGameStateStore } from "@/stores/gameStateDev"
 import { unpackReactionCards } from "@/lib/CardsHandling.js";
 

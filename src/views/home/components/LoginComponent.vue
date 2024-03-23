@@ -63,6 +63,20 @@ async function logIn() {
   }
 }
 
+function logInAsAdmin() {
+  login.value = 'admin@admin.admin'
+  password.value = 'admin'
+
+  logIn()
+}
+
+function logInAsUser() {
+  login.value = 'user@user.user'
+  password.value = 'user1234'
+
+  logIn()
+}
+
 </script>
 
 <template>
@@ -86,6 +100,8 @@ async function logIn() {
       </div>
       <button id="sub_button" type="submit">Signature</button>
     </form>
+    <button @click="logInAsAdmin">Log in as admin</button>
+    <button @click="logInAsUser">Log in as user</button>
   </div>
 </template>
 
