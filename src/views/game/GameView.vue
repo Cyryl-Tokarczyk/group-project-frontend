@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onBeforeMount, onMounted, watch } from 'vue';
 import { useSocketStore } from '@/stores/socket';
 import { useGameStateStore } from '@/stores/gameState';
 import HubComponent from './components/HubComponent.vue';
@@ -31,12 +31,6 @@ watch(
   }
 )
 
-/* Flow of reacting:
-First message is popped on mount
-After handling a message another message is popped from the queue
-If there are no messages on the queue it subscribes to the onAction event on socketStore and waits for an onMessageHandler call
-*/
-
 function clearLocalStorage() {
   localStorage.removeItem('shopActionCardNumbers');
   localStorage.removeItem('handActionCardNumbers');
@@ -46,20 +40,19 @@ function clearLocalStorage() {
   localStorage.removeItem('playerMorale');
 }
 
-onMounted(() => {
+/* Flow of reacting:
+First message is popped on mount
+After handling a message another message is popped from the queue
+If there are no messages on the queue it subscribes to the onAction event on socketStore and waits for an onMessageHandler call
+*/
+
+onBeforeMount(() => {
   // Pop the first message
+  nextMessage()
+})
 
-  // The first message is being processed, while this component mounts, but it ends mounting before the message is processed.
-  // In result, it tries to pop the queue, which is empty, so it subscribes to the onMessageHandler method,
-  // which in turn is called before the mounting, so it doesn't intercept the function call.
-  // !!!!! THIS IS AN AD HOC SOLUTION, CHANGE IT ASAP !!!!!
-  
+onMounted(() => {
   clearLocalStorage();
-
-  setTimeout( () => {
-    console.log('Delay is over');
-    nextMessage()
-   }, 1000)
 })
 
 function nextMessage() {
@@ -75,6 +68,9 @@ function nextMessage() {
 
 function handleMessage(message){
   switch (message.type) {
+    case 'game_start':
+      handleGameStartMessage(message)
+      break;
     case 'card_package':
       handleCardPackageMessage(message)
       break;
@@ -104,6 +100,15 @@ function handleMessage(message){
   }
 }
 
+function handleGameStartMessage(message) {
+  console.log('Handling game start message: ' + JSON.stringify(message))
+
+  gameStateStore.money = message['initial_money_amount']
+  gameStateStore.setPlayerMorale(message['initial_morale'])
+
+  nextMessage()
+}
+
 function handleCardPackageMessage(message) {
   console.log('Handling card package message: ' + JSON.stringify(message));
 
@@ -114,7 +119,7 @@ function handleCardPackageMessage(message) {
 }
 
 function handlePurchaseMove(choice) {
-  console.log('Sending a response choice: ' + choice);
+  console.log('Sending a response choice: ' + JSON.stringify(choice));
 
   // Send a response
   socketStore.send({

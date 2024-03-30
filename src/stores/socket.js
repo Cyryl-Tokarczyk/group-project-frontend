@@ -30,6 +30,7 @@ export const useSocketStore = defineStore('socket', () => {
     var reply = JSON.parse(event.data)
 
     if (reply['type'] == 'game_start' /* and if current route == connect */) {
+      messageQueue.value.push(reply)
       router.push({ name: 'game' })
       return
     }
