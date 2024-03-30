@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useGameStateStore } from "@/stores/gameState";
-import { unpackReactionCards } from "@/lib/CardsHandling";
+// import { unpackReactionCards } from "@/lib/CardsHandling";
 
 const props = defineProps([
   'message'
@@ -32,18 +32,17 @@ function dynamicMargin(type) {
   return `calc(40% / ${CardNumber} - 2.5vw)`;
 }
 
-function moveToActionHand(index){
-  const clickedCard = shopActionCardNumbers.value[index];
+function moveToActionHand(card){
 
-  if (gameStateStore.money >= clickedCard.cost) {
-    shopActionCardNumbers.value.splice(index, 1); // Remove the card from shop
-    gameStateStore.actionCards.push(clickedCard);
-    gameStateStore.money -= clickedCard.cost;
+  if (gameStateStore.money >= card.price) {
+    shopActionCardNumbers.value.splice(card, 1); // Remove the card from shop
+    gameStateStore.actionCards.push(card);
+    gameStateStore.money -= card.price;
     saveToLocalStorage();
 
     const cardsBought = {
-      action_cards: [ index ],
-      reaction_cards: null
+      action_cards: [ card.id ],
+      reaction_cards: []
     }
     emit('purchase-made', cardsBought)
   } else {
@@ -51,19 +50,18 @@ function moveToActionHand(index){
   }
 }
 
-function moveToReactionHand(index){
-  const clickedCard = shopReactionCardNumbers.value[index];
+function moveToReactionHand(card){
 
-  if (gameStateStore.money >= clickedCard.cost) {
-    shopReactionCardNumbers.value.splice(index, 1);
-    gameStateStore.reactionCards.push(clickedCard);
-    gameStateStore.money -= clickedCard.cost;
+  if (gameStateStore.money >= card.price) {
+    shopReactionCardNumbers.value.splice(card, 1);
+    gameStateStore.reactionCards.push(card);
+    gameStateStore.money -= card.price;
     saveToLocalStorage();
 
     const cardsBought = {
       action_cards: null,
       reaction_cards: [ {
-        id: index,
+        id: card.id,
         amount: 1
       } ]
     }
@@ -84,23 +82,25 @@ function resetShop(){
 }
 
 onMounted(() => {
-  const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
-  const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
-  const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
-  const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
-  const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
-  const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
 
-  if (storedShopActionCardNumbers && storedHandActionCardNumbers && storedShopReactionCardNumbers && storedHandReactionCardNumbers) {
-    shopActionCardNumbers.value = storedShopActionCardNumbers;
-    gameStateStore.actionCards = storedHandActionCardNumbers;
-    shopReactionCardNumbers.value = storedShopReactionCardNumbers;
-    gameStateStore.reactionCards = storedHandReactionCardNumbers;
-    gameStateStore.money = storedPlayerCredits;
-    gameStateStore.setPlayersMorale(storedPlayerMorale);
-  } else {
-    gameStateStore.money = storedPlayerCredits;
-  }
+  // Load data from local storage
+  // const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
+  // const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
+  // const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
+  // const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
+  // const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
+  // const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
+
+  // if (storedShopActionCardNumbers && storedHandActionCardNumbers && storedShopReactionCardNumbers && storedHandReactionCardNumbers) {
+  //   shopActionCardNumbers.value = storedShopActionCardNumbers;
+  //   gameStateStore.actionCards = storedHandActionCardNumbers;
+  //   shopReactionCardNumbers.value = storedShopReactionCardNumbers;
+  //   gameStateStore.reactionCards = storedHandReactionCardNumbers;
+  //   gameStateStore.money = storedPlayerCredits;
+  //   gameStateStore.setPlayersMorale(storedPlayerMorale);
+  // } else {
+  //   gameStateStore.money = storedPlayerCredits;
+  // }
 
   // Read action cards provided by the server
   if (props.message['action_cards']) {
@@ -109,7 +109,8 @@ onMounted(() => {
 
   // Read reaction cards provided by the server
   if (props.message['reaction_cards']) {
-    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
+    shopReactionCardNumbers.value = props.message['reaction_cards']
+    // shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
 
   saveToLocalStorage();
@@ -151,58 +152,59 @@ function hideReactionCardsModal(){
 
 <template>
   <div id="event">
-    <button class="db" @click="resetShop()">HUB </button>
+    <button class="db" @click="resetShop()">HUB</button>
     <div id="shop">
       <div id="action_shop">
-        <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(index)">
-          <p>{{ card.number }}</p>
-          <p>Cost: {{ card.cost }}</p>
+        <div v-for="card in shopActionCardNumbers" :key="card.id" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(card)">
+          <p>{{ card.name }}</p>
+          <p>{{ card.description }}</p>
+          <p>Price: {{ card.price }}</p>
         </div>
       </div>
       <div id="reaction_shop">
-        <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(index)">
-          <p>{{ card.number }}</p>
-          <p>Cost: {{ card.cost }}</p>
+        <div v-for="card in shopReactionCardNumbers" :key="card.id" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(card)">
+          <p>{{ card.name }}</p>
+          <p>{{ card.description }}</p>
+          <p>Price: {{ card.price }}</p>
         </div>
       </div>
     </div>
-    
-    <p>{{ JSON.stringify(props.message) }}</p>
+
     <div id="user_part">
       <div class="info">
         <p>Morale</p>
         {{ gameStateStore.playersMorale }}
-        <p>Credits</p>
+        <p>Money</p>
         {{ gameStateStore.money }}
         <button @click="emit('ready')">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">
-          <div v-for="(card, index) in gameStateStore.actionCards"
+          <div v-for="card in gameStateStore.actionCards"
             @click="displayActionCardsModal(card)"
             @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-            :key="index" class="action_card_hand"
+            :key="card.id" class="action_card_hand"
             :style="{ backgroundColor: card.img, marginRight: dynamicMargin('action'), marginLeft: dynamicMargin('action') }">
-            <p>{{ card.number }}</p>
+            <p>{{ card.name }}</p>
           </div>
         </div>
         <div id="hand_reaction">
-          <div v-for="(card, index) in gameStateStore.reactionCards"
+          <div v-for="card in gameStateStore.reactionCards"
             @click="displayReactionCardsModal(card)"
             @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-            :key="index" class="reaction_card_hand"
+            :key="card.id" class="reaction_card_hand"
             :style="{ backgroundColor: card.img, marginRight: dynamicMargin('reaction'), marginLeft: dynamicMargin('reaction') }">
-            <p>{{ card.number }}</p>
+            <p>{{ card.name }}</p>
           </div>
         </div>
       </div>
       <div class="card_dis">
       </div>
       <div v-if="showCardModal">
-        <div class="modal-content" :style="{ backgroundColor: modalCardData.img}">
-          <p>{{ modalCardData.number }}</p>
-          <p>Description:</p>
-          <p>{{ modalCardData.cost }}</p>
+        <div class="modal-content" :style="{ backgroundColor: modalCardData.img }">
+          <p>{{ modalCardData.name }}</p>
+          <br>
+          <p>{{ modalCardData.description }}</p>
         </div>
       </div>
       
@@ -212,7 +214,7 @@ function hideReactionCardsModal(){
           <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" :style="{ backgroundColor: card.img}">
             <p>{{ card.number }}</p>
             <p>Description:</p>
-          <p>{{ card.cost }}</p>
+            <p>{{ card.price }}</p>
           </div>
         </div>
       </div>
@@ -223,7 +225,7 @@ function hideReactionCardsModal(){
           <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img}">
             <p>{{ card.number }}</p>
             <p>Description:</p>
-          <p>{{ card.cost }}</p>
+          <p>{{ card.price }}</p>
           </div>
         </div>
       </div>
