@@ -18,7 +18,7 @@ const gameStateStore = useGameStateStore()
 // Clash phase 
 
 const firstPlayer = ref(null)
-const opponentMove = ref(null)
+const opponentMove = ref('')
 
 watch(
   socketStore.messageQueue,
@@ -156,21 +156,21 @@ function handleClashStartMessage(message) {
   nextMessage()
 }
 
-function handleActionMove(card) {
-  console.log('Handling action move: ' + card);
+function handleActionMove(cardId) {
+  console.log('Handling action move: ' + JSON.stringify(cardId));
 
   socketStore.send({
-    type: 'action_move',
-    action_card: card
+    type: 'clash_action_move',
+    id: cardId
   })
 }
 
-function handleReactionMove(cards) {
-  console.log('Handling reaction move: ' + cards);
+function handleReactionMove(reactionCardsIds) {
+  console.log('Handling reaction move: ' + JSON.stringify(reactionCardsIds));
 
   socketStore.send({
-    type: 'reaction_move',
-    reaction_cards: cards
+    type: 'clash_reaction_move',
+    reaction_cards: reactionCardsIds
   })
 }
 
