@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useGameStateStore } from "@/stores/gameState";
-// import { unpackReactionCards } from "@/lib/CardsHandling";
+import { unpackReactionCards } from "@/lib/CardsHandling";
 
 const props = defineProps([
   'message'
@@ -59,7 +59,7 @@ function moveToReactionHand(card){
     saveToLocalStorage();
 
     const cardsBought = {
-      action_cards: null,
+      action_cards: [],
       reaction_cards: [ {
         id: card.id,
         amount: 1
@@ -109,8 +109,7 @@ onMounted(() => {
 
   // Read reaction cards provided by the server
   if (props.message['reaction_cards']) {
-    shopReactionCardNumbers.value = props.message['reaction_cards']
-    // shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
+    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
 
   saveToLocalStorage();
@@ -211,7 +210,7 @@ function hideReactionCardsModal(){
       <div v-if="showActionCards" class="actionAllCard" @click="hideActionCardsModal()">
         <h1 class="h1_all_cards">Action cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" :style="{ backgroundColor: card.img}">
+          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" :style="{ backgroundColor: card.img }">
             <p>{{ card.number }}</p>
             <p>Description:</p>
             <p>{{ card.price }}</p>
@@ -222,7 +221,7 @@ function hideReactionCardsModal(){
       <div v-if="showReactionCards" class="reactionAllCard" @click="hideReactionCardsModal()">        
         <h1 class="h1_all_cards">Reaction cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img}">
+          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img }">
             <p>{{ card.number }}</p>
             <p>Description:</p>
           <p>{{ card.price }}</p>

@@ -7,7 +7,6 @@ export class Queue {
   }
 
   push(item) {
-    console.log('Im called!');
     this.items[this.tail] = item
     this.tail++
     return JSON.stringify(item) + ' inserted'
