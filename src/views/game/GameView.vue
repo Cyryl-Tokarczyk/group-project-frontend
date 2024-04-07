@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onBeforeMount, onMounted, watch } from 'vue';
 import { useSocketStore } from '@/stores/socket';
 import { useGameStateStore } from '@/stores/gameState';
 import HubComponent from './components/HubComponent.vue';
@@ -18,7 +18,7 @@ const gameStateStore = useGameStateStore()
 // Clash phase 
 
 const firstPlayer = ref(null)
-const opponentMove = ref(null)
+const opponentMove = ref('')
 
 watch(
   socketStore.messageQueue,
@@ -31,25 +31,28 @@ watch(
   }
 )
 
+function clearLocalStorage() {
+  localStorage.removeItem('shopActionCardNumbers');
+  localStorage.removeItem('handActionCardNumbers');
+  localStorage.removeItem('shopReactionCardNumbers');
+  localStorage.removeItem('handReactionCardNumbers');
+  localStorage.removeItem('playerCredits');
+  localStorage.removeItem('playerMorale');
+}
+
 /* Flow of reacting:
 First message is popped on mount
 After handling a message another message is popped from the queue
 If there are no messages on the queue it subscribes to the onAction event on socketStore and waits for an onMessageHandler call
 */
 
-onMounted(() => {
+onBeforeMount(() => {
   // Pop the first message
+  nextMessage()
+})
 
-  // The first message is being processed, while this component mounts, but it ends mounting before the message is processed.
-  // In result, it tries to pop the queue, which is empty, so it subscribes to the onMessageHandler method,
-  // which in turn is called before the mounting, so it doesn't intercept the function call.
-
-  // !!!!! THIS IS AN AD HOC SOLUTION, CHANGE IT ASAP !!!!!
-
-  setTimeout( () => {
-    console.log('Delay is over');
-    nextMessage()
-   }, 1000)
+onMounted(() => {
+  clearLocalStorage();
 })
 
 function nextMessage() {
@@ -61,10 +64,13 @@ function nextMessage() {
   handleMessage(socketStore.messageQueue.pop())
 }
 
-// TODO: Make an enum out of message types
+// TODO: Maybe make an enum out of message types (it's not neccessary now)
 
 function handleMessage(message){
   switch (message.type) {
+    case 'game_start':
+      handleGameStartMessage(message)
+      break;
     case 'card_package':
       handleCardPackageMessage(message)
       break;
@@ -94,6 +100,15 @@ function handleMessage(message){
   }
 }
 
+function handleGameStartMessage(message) {
+  console.log('Handling game start message: ' + JSON.stringify(message))
+
+  gameStateStore.money = message['initial_money_amount']
+  gameStateStore.setPlayerMorale(message['initial_morale'])
+
+  nextMessage()
+}
+
 function handleCardPackageMessage(message) {
   console.log('Handling card package message: ' + JSON.stringify(message));
 
@@ -104,7 +119,7 @@ function handleCardPackageMessage(message) {
 }
 
 function handlePurchaseMove(choice) {
-  console.log('Sending a response choice: ' + choice);
+  console.log('Sending a response choice: ' + JSON.stringify(choice));
 
   // Send a response
   socketStore.send({
@@ -136,26 +151,26 @@ function handleClashStartMessage(message) {
   hubPhase.value = false
   clashPhase.value = true
 
-  firstPlayer.value = message['next_move_player']
+  firstPlayer.value = message['next_move']
 
   nextMessage()
 }
 
-function handleActionMove(card) {
-  console.log('Handling action move: ' + card);
+function handleActionMove(cardId) {
+  console.log('Handling action move: ' + JSON.stringify(cardId));
 
   socketStore.send({
-    type: 'action_move',
-    action_card: card
+    type: 'clash_action_move',
+    id: cardId
   })
 }
 
-function handleReactionMove(cards) {
-  console.log('Handling reaction move: ' + cards);
+function handleReactionMove(reactionCardsIds) {
+  console.log('Handling reaction move: ' + JSON.stringify(reactionCardsIds));
 
   socketStore.send({
-    type: 'reaction_move',
-    reaction_cards: cards
+    type: 'clash_reaction_move',
+    reaction_cards: reactionCardsIds
   })
 }
 

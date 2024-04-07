@@ -2,15 +2,17 @@
 import LoginPrompt from './components/LoginPrompt.vue'
 import SettingsPrompt from './components/SettingsPrompt.vue'
 import PlayPrompt from './components/PlayPrompt.vue'
+import DevelopPrompt from './components/DevelopPrompt.vue'
 import { useTokensStore } from '@/stores/tokens';
 import { ref } from 'vue';
 
 const login = ref(null)
+const dev = ref(null)
 const settings = ref(null)
 const notebook = ref(null)
 const game = ref(null)
 const tokensStore = useTokensStore()
-const refs = [login,settings,game]
+const refs = [login,settings,game,dev]
 
 function hoverButton(tab){
   if (tab) {
@@ -54,6 +56,7 @@ function chooseTab(tab){
           <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="!tokensStore.isLoggedIn">Login</button>
           <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="tokensStore.isLoggedIn">User</button>
           <button @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
+          <button @mouseover="hoverButton(dev)" @mouseleave="resetTransform(dev)" @click="chooseTab(dev)">Develop</button>
           <button @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)"   v-if="tokensStore.isLoggedIn">Game</button>
         </div>
       </div>
@@ -63,6 +66,9 @@ function chooseTab(tab){
       </div>
       <div id="setings" ref="settings"  class="tab">
         <SettingsPrompt/>
+      </div>
+      <div id="dev" ref="dev"  class="tab">
+        <DevelopPrompt/>
       </div>
       <div id="game" ref="game"  class="tab">
         <PlayPrompt/>

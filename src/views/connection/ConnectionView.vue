@@ -1,12 +1,5 @@
 <script setup>
 import ServerAsker from './components/ServerAsker.vue'
-import { onMounted } from 'vue';
-
-var pointer =  "url(src/assets/imgs/wall.jpg)";
-
-onMounted(() => {
-  document.body.style.backgroundImage = pointer
-});
 
 </script>
 
@@ -32,8 +25,8 @@ onMounted(() => {
 }
 
 #emblem{
-  width: 10vw;
-  height: 50px;
+  width: 15vw;
+  height: 6vw;
   font-size: 2vw;
   background-image: url("@/assets/imgs/paper.jpg");
   background-size: cover;
@@ -41,7 +34,8 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: -80vh;
+  position: absolute;
+  top: 20px;
   border: 5px ridge rgb(149, 152, 0);
   box-shadow: 0px 0px 10px;
 }

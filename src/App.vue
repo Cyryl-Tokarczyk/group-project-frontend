@@ -19,6 +19,7 @@
 </template>
 
 <style>
+
 #app {
   height: 100vh;
   display: flex;
@@ -30,7 +31,6 @@ html{
   height: 100%;
   box-shadow: 10px 10px 25px inset #0000008f;
 }
-
 
 @font-face {
   font-family: "DK";
