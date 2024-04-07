@@ -204,14 +204,14 @@ function undo(){
         <p>Morale {{ gameStateStore.playersMorale }}</p>
         <button @click="displayOtherCards()">{{ (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action' }} cards</button>
       </div>
-      <div id="clash_hand" ref="hand">
-        <div v-for="card in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
-          :key="card.id" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, card)"
-          @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)"
-          :style="{ backgroundColor: card.color, '--order': card.id + 1, '--quantity': (toRaw(clashState) == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
-          <p>{{ card.name }}</p>
-        </div>
-      </div> 
+        <div id="clash_hand" ref="hand">
+          <div v-for="card in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
+            :key="card.id" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, card)"
+            @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)"
+            :style="{ backgroundColor: card.color, '--order': card.id + 1, '--quantity': (toRaw(clashState) == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
+            <p>{{ card.name }}</p>
+          </div>
+        </div> 
       <div class="stats">
         <button @click="ready()" ref="readyButton">READY</button> 
         <button @click="undo()">undo</button> 
@@ -260,7 +260,6 @@ p{
 
 .dynamic_position{
   position: absolute;
-  top: 0.4vw;
   left: calc((var(--width)/var(--quantity) * var(--order)*1vw) - var(--card-width)/2 * 1vw);
 }
 

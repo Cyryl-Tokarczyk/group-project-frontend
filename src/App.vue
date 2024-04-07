@@ -16,9 +16,15 @@
 
 <template>
   <router-view />
+  <router-link :to="{ name: 'home' }" class="home_link">Home</router-link>
 </template>
 
 <style>
+.home_link{
+  font-size: 100px;
+  position: absolute;
+  z-index: -100;
+}
 
 #app {
   height: 100vh;
