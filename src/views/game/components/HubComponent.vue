@@ -22,16 +22,6 @@ function saveToLocalStorage(){
   localStorage.setItem('shopReactionCardNumbers', JSON.stringify(shopReactionCardNumbers.value));
 }
 
-function dynamicMargin(type) {
-  var CardNumber = 0;
-  if (type == 'action') {
-    CardNumber = gameStateStore.actionCards.length;
-  } else {
-    CardNumber = gameStateStore.reactionCards.length;
-  }
-  return `calc(40% / ${CardNumber} - 2.5vw)`;
-}
-
 function moveToActionHand(card){
 
   if (gameStateStore.money >= card.price) {
@@ -69,16 +59,6 @@ function moveToReactionHand(card){
   } else {
     alert("You don't have enough credits!");
   }
-}
-
-function resetShop(){
-  shopActionCardNumbers.value = [];
-  gameStateStore.actionCards = [];
-  shopReactionCardNumbers.value = [];
-  gameStateStore.reactionCards = [];
-  gameStateStore.money = 1000;
-  gameStateStore.setPlayersMorale(100)
-  saveToLocalStorage();
 }
 
 onMounted(() => {
@@ -151,20 +131,30 @@ function hideReactionCardsModal(){
 
 <template>
   <div id="event">
-    <button class="db" @click="resetShop()">HUB</button>
+    <button class="db">HUB</button>
     <div id="shop">
       <div id="action_shop">
-        <div v-for="card in shopActionCardNumbers" :key="card.id" class="choice_type type1" :style="{ backgroundColor: card.img }" @click="moveToActionHand(card)">
-          <p>{{ card.name }}</p>
-          <p>{{ card.description }}</p>
-          <p>Price: {{ card.price }}</p>
-        </div>
+        <div id="action_shop_layout">
+          <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1 dynamic_position" 
+          :style="{ backgroundColor: 'rgb(235,53,25)', '--order': index + 1, '--quantity': shopActionCardNumbers.length + 1}"
+          @click="moveToActionHand(card)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
+            <h2>{{ card.name }}</h2>
+            <h3>Price: {{ card.price }}</h3>
+            <h3>Description</h3>
+            <p>{{ card.description }}</p>
+          </div>
+        </div>  
       </div>
       <div id="reaction_shop">
-        <div v-for="card in shopReactionCardNumbers" :key="card.id" class="choice_type type2" :style="{ backgroundColor: card.img }" @click="moveToReactionHand(card)">
-          <p>{{ card.name }}</p>
-          <p>{{ card.description }}</p>
-          <p>Price: {{ card.price }}</p>
+        <div id="reaction_shop_layout">
+          <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2 dynamic_position" 
+          :style="{ backgroundColor: 'rgb(35,35,225)', '--order': index + 1, '--quantity': shopReactionCardNumbers.length + 1}" 
+          @click="moveToReactionHand(card)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
+            <h2>{{ card.name }}</h2>
+            <h3>Price: {{ card.price }}</h3>
+            <h3>Description</h3>
+            <p>{{ card.description }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -179,38 +169,44 @@ function hideReactionCardsModal(){
       </div>
       <div id="hand">
         <div id="hand_action">
-          <div v-for="card in gameStateStore.actionCards"
-            @click="displayActionCardsModal(card)"
-            @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-            :key="card.id" class="action_card_hand"
-            :style="{ backgroundColor: card.img, marginRight: dynamicMargin('action'), marginLeft: dynamicMargin('action') }">
-            <p>{{ card.name }}</p>
+          <div id="hand_action_layout">
+            <div v-for="(card, index) in gameStateStore.actionCards"
+              @click="displayActionCardsModal(card)"
+              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
+              :key="index" class="action_card_hand dynamic_position"
+              :style="{ backgroundColor: 'rgb(235,53,25)', '--order': index + 1, '--quantity': gameStateStore.actionCards.length + 1}">
+              <p>{{ card.name }}</p>
+            </div>
           </div>
         </div>
         <div id="hand_reaction">
-          <div v-for="card in gameStateStore.reactionCards"
-            @click="displayReactionCardsModal(card)"
-            @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-            :key="card.id" class="reaction_card_hand"
-            :style="{ backgroundColor: card.img, marginRight: dynamicMargin('reaction'), marginLeft: dynamicMargin('reaction') }">
-            <p>{{ card.name }}</p>
+          <div id="hand_reaction_layout">
+            <div v-for="(card, index) in gameStateStore.reactionCards"
+              @click="displayReactionCardsModal(card)"
+              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
+              :key="index" class="reaction_card_hand dynamic_position"
+              :style="{ backgroundColor: 'rgb(35,35,225)', '--order': index + 1, '--quantity': gameStateStore.reactionCards.length + 1}">
+              <p>{{ card.name }}</p>
+            </div>
           </div>
         </div>
       </div>
       <div class="card_dis">
       </div>
       <div v-if="showCardModal">
-        <div class="modal-content" :style="{ backgroundColor: modalCardData.img }">
-          <p>{{ modalCardData.name }}</p>
-          <br>
-          <p>{{ modalCardData.description }}</p>
+        <div class="modal_content" :style="{ backgroundColor: ((gameStateStore.actionCards.includes(modalCardData) || shopActionCardNumbers.includes(modalCardData)) ? 'rgb(235,53,25)' : 'rgb(35,35,225)') }">
+          <h2>{{ modalCardData.name }}</h2>
+            <h3>Price: {{ modalCardData.price }}</h3>
+            <h3>Description</h3>
+            <p>{{ modalCardData.description }}</p>
         </div>
       </div>
       
       <div v-if="showActionCards" class="actionAllCard" @click="hideActionCardsModal()">
         <h1 class="h1_all_cards">Action cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" :style="{ backgroundColor: card.img }">
+          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" 
+          :style="{ backgroundColor: 'rgb(235,53,25)'}">
             <p>{{ card.number }}</p>
             <p>Description:</p>
             <p>{{ card.price }}</p>
@@ -221,7 +217,7 @@ function hideReactionCardsModal(){
       <div v-if="showReactionCards" class="reactionAllCard" @click="hideReactionCardsModal()">        
         <h1 class="h1_all_cards">Reaction cards</h1>
         <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: card.img }">
+          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: 'rgb(35,53,225)' }">
             <p>{{ card.number }}</p>
             <p>Description:</p>
           <p>{{ card.price }}</p>
@@ -293,18 +289,34 @@ box-shadow: 0px 0px 10px inset;
   font-size: 3vw;
 }
 
-.modal-content {
+.modal_content {
   position: absolute;
   top: 50%;
   left: 85%;
   transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 5px;
+  padding: 0px;
+  border-radius: 8px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
   z-index: 999;
   height: 14vw;
   width: 9vw;
+  font-size: 1vw;
+}
+
+.modal_content h2{
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.modal_content h3{
+  margin-bottom: 0;
+  margin-top: 0.5vw;
+}
+
+.modal_content p{
+  text-align: justify;
+  font-size: 1vw;
 }
 
 .db {
@@ -382,6 +394,7 @@ box-shadow: 0px 0px 10px inset;
 }
 
 #hand_action, #hand_reaction{
+  --width: 38;
   position: absolute;
   display: flex;
   flex-direction: row-reverse;
@@ -399,21 +412,41 @@ box-shadow: 0px 0px 10px inset;
   height: 7vw;
   width: 5vw;
   min-width: 5vw;
-  border-radius: 5px;
+  border-radius: 0.3vw;
   box-shadow: rgb(87, 87, 87) 0px 0px 15px;
-  font-size: 3vw;
+  font-size: 1vw;
   transition: 0.25s;
   cursor: pointer;
+  --card-width: 5;
+  z-index: 1;
+}
+
+.action_card_hand p,.reaction_card_hand p{
+  font-size: 1vw;
 }
 
 #action_shop, #reaction_shop{
   border: 2px solid black;
   width:45%;
   height: 19vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   border-radius: 10px;
+  --width: 38;
+}
+
+#hand_action_layout, #hand_reaction_layout{
+  width:90%;
+  margin-left: 1vw;
+  position: relative;
+  --width: 30;
+}
+
+#reaction_shop_layout, #action_shop_layout{
+  width:90%;
+  margin-top: 1.5vw;
+  margin-left: 5vw;
+  position: relative;
+  --width: 30;
 }
 
 #reaction_shop{
@@ -427,9 +460,24 @@ box-shadow: 0px 0px 10px inset;
   box-shadow: rgb(87, 87, 87) 0px 0px 15px;
   font-size: 3vw;
   transition: 0.5s;
-  margin: 0px;
-  margin-right: 1vw;
-  margin-left: 1vw;
+  --card-width: 10;
+  font-size: 1vw;
+  z-index: 1;
+}
+
+.choice_type h2{
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.choice_type h3{
+  margin-bottom: 0;
+  margin-top: 0.5vw;
+}
+
+.choice_type p{
+  text-align: justify;
+  font-size: 1vw;
 }
 
 .type1:hover{
