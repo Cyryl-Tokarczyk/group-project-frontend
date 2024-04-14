@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, onMounted, watch } from 'vue';
+import { ref, onBeforeMount, watch } from 'vue';
 import { useSocketStore } from '@/stores/socket';
 import { useGameStateStore } from '@/stores/gameState';
 import HubComponent from './components/HubComponent.vue';
@@ -31,15 +31,6 @@ watch(
   }
 )
 
-function clearLocalStorage() {
-  localStorage.removeItem('shopActionCardNumbers');
-  localStorage.removeItem('handActionCardNumbers');
-  localStorage.removeItem('shopReactionCardNumbers');
-  localStorage.removeItem('handReactionCardNumbers');
-  localStorage.removeItem('playerCredits');
-  localStorage.removeItem('playerMorale');
-}
-
 /* Flow of reacting:
 First message is popped on mount
 After handling a message another message is popped from the queue
@@ -51,9 +42,6 @@ onBeforeMount(() => {
   nextMessage()
 })
 
-onMounted(() => {
-  clearLocalStorage();
-})
 
 function nextMessage() {
   if (socketStore.messageQueue.isEmpty()) {
