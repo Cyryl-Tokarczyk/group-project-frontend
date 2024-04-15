@@ -160,7 +160,7 @@ function handleActionMove(cardId) {
   console.log('Handling action move: ' + JSON.stringify(cardId));
 
   socketStore.send({
-    type: 'clash_action_move',
+    type: 'action_move',
     id: cardId
   })
 }
@@ -169,7 +169,7 @@ function handleReactionMove(reactionCardsIds) {
   console.log('Handling reaction move: ' + JSON.stringify(reactionCardsIds));
 
   socketStore.send({
-    type: 'clash_reaction_move',
+    type: 'reaction_move',
     reaction_cards: reactionCardsIds
   })
 }

@@ -37,6 +37,7 @@ watch(
     }
     if (props.opponentMove['reaction_cards']) {
       opponentCards.value = unpackReactionCards(props.opponentMove['reaction_cards'])
+      console.log(JSON.stringify(opponentCards.value));
     }
 
     clashState.value = nextState(toRaw(clashState.value))
@@ -186,7 +187,8 @@ function undo(){
       <div v-for="card in opponentCards"
         :key="card.id" class="table_cards  dynamic_position"
         :style="{ backgroundColor: card.color, '--order': card.id + 1, '--quantity': opponentCards.length + 1}">
-        <p>{{ card.id }}</p>
+        <p>{{ card.name }}</p>
+        <p>{{ card.description }}</p>
       </div>
     </div>
 

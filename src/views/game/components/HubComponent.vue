@@ -220,7 +220,7 @@ function hideReactionCardsModal(){
           <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: 'rgb(35,53,225)' }">
             <p>{{ card.number }}</p>
             <p>Description:</p>
-          <p>{{ card.price }}</p>
+            <p>{{ card.price }}</p>
           </div>
         </div>
       </div>
