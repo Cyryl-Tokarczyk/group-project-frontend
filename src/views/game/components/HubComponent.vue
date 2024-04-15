@@ -17,10 +17,12 @@ const gameStateStore = useGameStateStore()
 const shopActionCardNumbers = ref([]);
 const shopReactionCardNumbers = ref([]);
 
-function moveToActionHand(card){
+function moveToActionHand(card, index){
 
   if (gameStateStore.money >= card.price) {
-    shopActionCardNumbers.value.splice(card, 1); // Remove the card from shop
+    console.log("Card chosen: " + JSON.stringify(card));
+    shopActionCardNumbers.value.splice(index, 1); // Remove the card from shop
+    console.log("Action cards " + JSON.stringify(shopActionCardNumbers.value))
     gameStateStore.actionCards.push(card);
     gameStateStore.money -= card.price;
 
@@ -34,10 +36,10 @@ function moveToActionHand(card){
   }
 }
 
-function moveToReactionHand(card){
+function moveToReactionHand(card, index){
 
   if (gameStateStore.money >= card.price) {
-    shopReactionCardNumbers.value.splice(card, 1);
+    shopReactionCardNumbers.value.splice(index, 1);
     gameStateStore.reactionCards.push(card);
     gameStateStore.money -= card.price;
 
@@ -58,6 +60,7 @@ onMounted(() => {
 
   if (props.message['action_cards']) {
     shopActionCardNumbers.value = props.message['action_cards']
+    console.log("Action cards " + JSON.stringify(shopActionCardNumbers.value))
   }
 
   // Read reaction cards provided by the server
@@ -108,7 +111,7 @@ function hideReactionCardsModal(){
         <div id="action_shop_layout">
           <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1 dynamic_position" 
           :style="{ backgroundColor: 'rgb(235,53,25)', '--order': index + 1, '--quantity': shopActionCardNumbers.length + 1}"
-          @click="moveToActionHand(card)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
+          @click="moveToActionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
             <h2>{{ card.name }}</h2>
             <h3>Price: {{ card.price }}</h3>
             <h3>Description</h3>
@@ -120,7 +123,7 @@ function hideReactionCardsModal(){
         <div id="reaction_shop_layout">
           <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2 dynamic_position" 
           :style="{ backgroundColor: 'rgb(35,35,225)', '--order': index + 1, '--quantity': shopReactionCardNumbers.length + 1}" 
-          @click="moveToReactionHand(card)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
+          @click="moveToReactionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
             <h2>{{ card.name }}</h2>
             <h3>Price: {{ card.price }}</h3>
             <h3>Description</h3>
