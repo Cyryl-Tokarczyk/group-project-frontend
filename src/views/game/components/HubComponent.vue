@@ -17,18 +17,12 @@ const gameStateStore = useGameStateStore()
 const shopActionCardNumbers = ref([]);
 const shopReactionCardNumbers = ref([]);
 
-function saveToLocalStorage(){
-  localStorage.setItem('shopActionCardNumbers', JSON.stringify(shopActionCardNumbers.value));
-  localStorage.setItem('shopReactionCardNumbers', JSON.stringify(shopReactionCardNumbers.value));
-}
-
 function moveToActionHand(card){
 
   if (gameStateStore.money >= card.price) {
     shopActionCardNumbers.value.splice(card, 1); // Remove the card from shop
     gameStateStore.actionCards.push(card);
     gameStateStore.money -= card.price;
-    saveToLocalStorage();
 
     const cardsBought = {
       action_cards: [ card.id ],
@@ -46,7 +40,6 @@ function moveToReactionHand(card){
     shopReactionCardNumbers.value.splice(card, 1);
     gameStateStore.reactionCards.push(card);
     gameStateStore.money -= card.price;
-    saveToLocalStorage();
 
     const cardsBought = {
       action_cards: [],
@@ -63,26 +56,6 @@ function moveToReactionHand(card){
 
 onMounted(() => {
 
-  // Load data from local storage
-  // const storedShopActionCardNumbers = JSON.parse(localStorage.getItem('shopActionCardNumbers'));
-  // const storedHandActionCardNumbers = JSON.parse(localStorage.getItem('handActionCardNumbers'));
-  // const storedShopReactionCardNumbers = JSON.parse(localStorage.getItem('shopReactionCardNumbers'));
-  // const storedHandReactionCardNumbers = JSON.parse(localStorage.getItem('handReactionCardNumbers'));
-  // const storedPlayerCredits = JSON.parse(localStorage.getItem('playerCredits'));
-  // const storedPlayerMorale = JSON.parse(localStorage.getItem('playerMorale'));
-
-  // if (storedShopActionCardNumbers && storedHandActionCardNumbers && storedShopReactionCardNumbers && storedHandReactionCardNumbers) {
-  //   shopActionCardNumbers.value = storedShopActionCardNumbers;
-  //   gameStateStore.actionCards = storedHandActionCardNumbers;
-  //   shopReactionCardNumbers.value = storedShopReactionCardNumbers;
-  //   gameStateStore.reactionCards = storedHandReactionCardNumbers;
-  //   gameStateStore.money = storedPlayerCredits;
-  //   gameStateStore.setPlayersMorale(storedPlayerMorale);
-  // } else {
-  //   gameStateStore.money = storedPlayerCredits;
-  // }
-
-  // Read action cards provided by the server
   if (props.message['action_cards']) {
     shopActionCardNumbers.value = props.message['action_cards']
   }
@@ -91,8 +64,6 @@ onMounted(() => {
   if (props.message['reaction_cards']) {
     shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
-
-  saveToLocalStorage();
 })
 
 const showCardModal = ref(false);

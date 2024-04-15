@@ -184,18 +184,18 @@ function undo(){
 
   <div id="clash">
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
-      <div v-for="card in opponentCards"
+      <div v-for="(card, index) in opponentCards"
         :key="card.id" class="table_cards  dynamic_position"
-        :style="{ backgroundColor: card.color, '--order': card.id + 1, '--quantity': opponentCards.length + 1}">
+        :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': opponentCards.length + 1}">
         <p>{{ card.name }}</p>
         <p>{{ card.description }}</p>
       </div>
     </div>
 
     <div id="thrown_cards" ref="table" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? 'action' : '')">
-      <div v-for="card in chosenCards"
+      <div v-for="(card, index) in chosenCards"
         :key="card.id" class="table_cards dynamic_position"
-        :style="{ backgroundColor: card.color, '--order': index + 1, '--quantity': chosenCards.length + 1}">
+        :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': chosenCards.length + 1}">
         <p>{{ card.name }}</p>
       </div>
     </div>
@@ -207,11 +207,11 @@ function undo(){
         <button @click="displayOtherCards()">{{ (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action' }} cards</button>
       </div>
         <div id="clash_hand" ref="hand">
-          <div v-for="card in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
+          <div v-for="(card, index) in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
             :key="card.id" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, card)"
             @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)"
-            :style="{ backgroundColor: card.color, '--order': card.id + 1, '--quantity': (toRaw(clashState) == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
-            <p>{{ card.name }}</p>
+            :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': (toRaw(clashState) == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
+            {{ card.name }}
           </div>
         </div> 
       <div class="stats">
@@ -220,7 +220,7 @@ function undo(){
       </div>
     </div>
 
-    <div v-if="showModal" ref="modal" class="modal_cont" :style="{ backgroundColor: modalCardData.color}">
+    <div v-if="showModal" ref="modal" class="modal_cont" :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction ? 'rgb(235,53,25)' : 'rgb(35,35,225)')}">
       {{ modalCardData.name }}
       <p></p>
       {{ modalCardData.description }}
@@ -229,7 +229,7 @@ function undo(){
     <div v-if="showOtherCards" class="reactionAllCard" @click="hideOtherCards()">        
       <h1 class="h1_all_cards">{{ (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action' }} cards</h1>
       <div class="all_cards">
-        <div v-for="card in (toRaw(clashState) == ClashState.OpponentAction  ? gameStateStore.actionCards : gameStateStore.reactionCards)" :key="card.id" class="reaction_card_all" :style="{ backgroundColor: card.color}">
+        <div v-for="card in (toRaw(clashState) == ClashState.OpponentAction  ? gameStateStore.actionCards : gameStateStore.reactionCards)" :key="card.id" class="reaction_card_all" :style="{ backgroundColor: (toRaw(clashState) != ClashState.MyAction ? 'rgb(235,53,25)' : 'rgb(35,35,225)')}">
           {{ card.name }}
           <p>Descritpion:</p>
           {{ card.description }}
@@ -287,6 +287,7 @@ p{
   height: 8.8vw;
   --card-width: 6.4;
   z-index: 1;
+  font-size: 1vw;
 }
 
 .modal_cont{
