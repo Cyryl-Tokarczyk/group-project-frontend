@@ -33,11 +33,12 @@ watch(
   () => {
     // Implement clash logic
     if (props.opponentMove['action_card']) {
-      opponentCards.value = [ props.opponentMove['action_card'] ]
+      opponentCards.value = [ props.opponentMove['action_card'] ]      
+      console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
     }
     if (props.opponentMove['reaction_cards']) {
       opponentCards.value = unpackReactionCards(props.opponentMove['reaction_cards'])
-      console.log(JSON.stringify(opponentCards.value));
+      console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
     }
 
     clashState.value = nextState(toRaw(clashState.value))
@@ -50,6 +51,12 @@ onMounted(() => {
   table.value.addEventListener("mouseover", handleMouseEnter)
   table.value.addEventListener("mouseleave", handleMouseLeave)
 })
+
+function resetClashState() { // Call when clash result
+  moveMade.value = false
+  readyButton.value.style.color = "white"
+  chosenCards.value = []
+}
 
 function isOneAction(){
   if (toRaw(clashState.value) == ClashState.MyAction){
@@ -186,7 +193,7 @@ function undo(){
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards"
         :key="card.id" class="table_cards  dynamic_position"
-        :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': opponentCards.length + 1}">
+        :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.MyReaction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': opponentCards.length + 1}">
         <p>{{ card.name }}</p>
         <p>{{ card.description }}</p>
       </div>
