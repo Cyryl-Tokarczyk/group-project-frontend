@@ -52,11 +52,11 @@ onMounted(() => {
   table.value.addEventListener("mouseleave", handleMouseLeave)
 })
 
-function resetClashState() { // Call when clash result
-  moveMade.value = false
-  readyButton.value.style.color = "white"
-  chosenCards.value = []
-}
+// function resetClashState() { // Call when clash result
+//   moveMade.value = false
+//   readyButton.value.style.color = "white"
+//   chosenCards.value = []
+// }
 
 function isOneAction(){
   if (toRaw(clashState.value) == ClashState.MyAction){
