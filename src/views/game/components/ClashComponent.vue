@@ -77,7 +77,7 @@ function isOneAction(){
   return false
 }
 
-function startDrag(event, hoverCard){
+function startDrag(event, hoverCard, index){
   isCardHold.value = true
   const card = event.target
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
@@ -117,9 +117,9 @@ function startDrag(event, hoverCard){
     card.style.top = cardTop
     if(isTableHovered.value && !isOneAction() && !moveMade.value){
       if(toRaw(clashState.value) == ClashState.MyAction){
-        gameStateStore.actionCards.splice(hoverCard, 1)
+        gameStateStore.actionCards.splice(index, 1)
       } else {
-        gameStateStore.reactionCards.splice(hoverCard, 1)
+        gameStateStore.reactionCards.splice(index, 1)
       }
       chosenCards.value.push(hoverCard)
       card.style.transition = '0s'
@@ -225,7 +225,7 @@ function undo(){
       </div>
         <div id="clash_hand" ref="hand">
           <div v-for="(card, index) in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
-            :key="card.id" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, card)"
+            :key="card.id" class="hand_cards dragable dynamic_position" ref="draggableCards" @mousedown="startDrag($event, card, index)"
             @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)"
             :style="{ backgroundColor: (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction ? 'rgb(235,53,25)' : 'rgb(35,35,225)'), '--order': index + 1, '--quantity': (toRaw(clashState) == ClashState.MyAction ? gameStateStore.actionCards : gameStateStore.reactionCards).length + 1}">
             {{ card.name }}
