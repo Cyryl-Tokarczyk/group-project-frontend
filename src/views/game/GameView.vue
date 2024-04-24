@@ -18,7 +18,7 @@ const gameStateStore = useGameStateStore()
 // Clash phase 
 
 const firstPlayer = ref(null)
-const opponentMove = ref('')
+const clashMessageProp = ref('')
 
 watch(
   socketStore.messageQueue,
@@ -165,7 +165,7 @@ function handleReactionMove(reactionCardsIds) {
 function handleOpponentMoveMessage(message) {
   console.log('Handling opponent move message: ' + JSON.stringify(message));
 
-  opponentMove.value = message
+  clashMessageProp.value = message
 
   nextMessage()
 }
@@ -173,8 +173,10 @@ function handleOpponentMoveMessage(message) {
 function handleClashResultMessage(message) {
   console.log('Handling clash result message: ' + JSON.stringify(message));
 
-  gameStateStore.morale['student'] = message['new_student_morale']
-  gameStateStore.morale['teacher'] = message['new_teacher_morale']
+  gameStateStore.setPlayerMorale(message['new_player_morale'])
+  gameStateStore.setOpponentMorale(message['new_opponent_morale'])
+
+  clashMessageProp.value = message
 
   nextMessage()
 }
@@ -209,7 +211,7 @@ function handleErrorMessage(message) {
 <template>
   <div id="game">
     <HubComponent v-if="hubPhase" :message="messageProp" @purchase-made="handlePurchaseMove" @ready="handleReadyMove" /> 
-    <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :opponentMove="opponentMove" @action-move="handleActionMove" @reaction-move="handleReactionMove" />
+    <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :message="clashMessageProp" @action-move="handleActionMove" @reaction-move="handleReactionMove" />
     <GameEndComponent v-if="gameEnd" :message="messageProp" />
   </div>
 </template>

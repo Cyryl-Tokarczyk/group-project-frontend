@@ -48,5 +48,18 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
   }
 
-  return { playerType, opponentType, money, morale, playersMorale, actionCards, reactionCards, setPlayerMorale }
+  function setOpponentMorale(value) {
+    if (opponentType.value == 'student') {
+      morale.value['student'] = value
+    }
+    else if (opponentType.value == 'teacher') {
+      morale.value['teacher'] = value
+    }
+    else {
+      // Error if playerType doesn't match 'student' or 'teacher'
+      throw new Error('Wrong/No playerType set')
+    }
+  }
+
+  return { playerType, opponentType, money, morale, playersMorale, actionCards, reactionCards, setPlayerMorale, setOpponentMorale }
 })

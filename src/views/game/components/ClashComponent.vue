@@ -6,7 +6,7 @@ import { unpackReactionCards, packReactionCardsIds } from "@/lib/CardsHandling.j
 
 const props = defineProps([
   'firstPlayer',
-  'opponentMove'
+  'message'
 ])
 
 const emit = defineEmits([
@@ -29,19 +29,29 @@ const readyButton = ref(null)
 const showOtherCards = ref(false)
 
 watch(
-  () => props.opponentMove,
+  () => props.message,
   () => {
     // Implement clash logic
-    if (props.opponentMove['action_card']) {
-      opponentCards.value = [ props.opponentMove['action_card'] ]      
-      console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+    if (props.message['type'] == 'opponent_move') {
+      if (props.message['action_card']) {
+        opponentCards.value = [ props.message['action_card'] ]
+        console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+      }
+      if (props.message['reaction_cards']) {
+        opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
+        console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+      }
+  
+      clashState.value = nextState(toRaw(clashState.value))
     }
-    if (props.opponentMove['reaction_cards']) {
-      opponentCards.value = unpackReactionCards(props.opponentMove['reaction_cards'])
-      console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+    else if (props.message['type'] == 'clash_result') {
+      opponentCards.value = []
+      chosenCards.value = []
+      moveMade.value = false
+      // if (clashState.value == ClashState.) {
+        
+      // }
     }
-
-    clashState.value = nextState(toRaw(clashState.value))
   },
   { deep: true }
 )
