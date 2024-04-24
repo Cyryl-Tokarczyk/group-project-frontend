@@ -17,7 +17,21 @@ const gameStateStore = useGameStateStore()
 const shopActionCardNumbers = ref([]);
 const shopReactionCardNumbers = ref([]);
 
-function moveToActionHand(card, index){
+onMounted(() => {
+  console.log('I am mounted! [HubComponent]')
+
+  if (props.message['action_cards']) {
+    shopActionCardNumbers.value = props.message['action_cards']
+    console.log("Action cards " + JSON.stringify(shopActionCardNumbers.value))
+  }
+
+  // Read reaction cards provided by the server
+  if (props.message['reaction_cards']) {
+    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
+  }
+})
+
+function moveToActionHand(card, index) {
 
   if (gameStateStore.money >= card.price) {
     console.log("Card chosen: " + JSON.stringify(card));
@@ -55,20 +69,6 @@ function moveToReactionHand(card, index){
     alert("You don't have enough credits!");
   }
 }
-
-onMounted(() => {
-  console.log('I am mounted! [HubComponent]')
-
-  if (props.message['action_cards']) {
-    shopActionCardNumbers.value = props.message['action_cards']
-    console.log("Action cards " + JSON.stringify(shopActionCardNumbers.value))
-  }
-
-  // Read reaction cards provided by the server
-  if (props.message['reaction_cards']) {
-    shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
-  }
-})
 
 const showCardModal = ref(false);
 const modalCardData = ref(null);

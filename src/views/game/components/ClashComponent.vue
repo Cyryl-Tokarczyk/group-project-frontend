@@ -68,7 +68,7 @@ onMounted(() => {
 //   chosenCards.value = []
 // }
 
-function isOneAction(){
+function isOneAction() {
   if (toRaw(clashState.value) == ClashState.MyAction){
     if(chosenCards.value.length == 1){
       return true
