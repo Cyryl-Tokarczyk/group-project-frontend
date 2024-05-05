@@ -100,8 +100,9 @@ function logInAsUser() {
       </div>
       <button id="sub_button" type="submit">Signature</button>
     </form>
-    <button @click="logInAsAdmin">Log in as admin</button>
-    <button @click="logInAsUser">Log in as user</button>
+
+    <button class="debug_button" @click="logInAsAdmin">Log in as admin</button>
+    <button class="debug_button" @click="logInAsUser">Log in as user</button>
   </div>
 </template>
 
@@ -160,6 +161,9 @@ form{
   background: rgb(168, 0, 0);
 }
 
+.debug_button{
+  padding: 0;
+}
 
 p{
   font-size: 1.5vw;
@@ -171,10 +175,7 @@ p{
   border: transparent;
   background: transparent;
   transition: 0.5s;
-  margin-top: 35px;
-  position: absolute;
-  top: 8.2vw;
-  left: 8.2vw;
+  margin-top: 1vw;
 }
 
 #sub_button:hover{

@@ -3,6 +3,7 @@
   import { ref, onMounted } from 'vue';
   const tokensStore = useTokensStore();
   const mail = ref(null);
+  const username = ref(null);
 
   function logOut() {
     tokensStore.loggedOut()
@@ -11,15 +12,45 @@
     console.log('Logged out');
   }
 
+  const gameUserURL = '/api/users/75b1c2c4-d35c-4c83-adde-03b5ae01e161/'
   onMounted(() => {
-    mail.value.textContent = localStorage.getItem('userEmail')
+    getUserDetails()
   })
+
+  async function getUserDetails() {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Authorization': 'Bearer ' + tokensStore.tokens['access'] },
+  }
+
+  try {
+    const response = await fetch(gameUserURL, requestOptions);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    console.log(data); // Tu możesz przetwarzać otrzymane dane
+    username.value.textContent = data.username
+    mail.value.textContent = data.email
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+}
 </script>
 
 <template>
   <div id="usercom">
     <h2>User</h2>
-    <span ref="mail"></span>
+    <table id="userDetailsTable">
+      <tr>
+        <td>Username</td>
+        <td id="usernameCell"><span ref="username"></span></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td id="emailCell"><span ref="mail"></span></td>
+      </tr>
+    </table>
     <button id="log_out_button" @click="logOut()">Logout</button>
   </div>
 </template>
@@ -38,4 +69,17 @@
 #log_out_button:hover{
   color:brown;
 }
+
+#userDetailsTable{
+  text-align: left;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  font-size: 1.5vw;
+  border: 0.1vw solid black;
+}
+
+td{
+  border: 0.1vw solid black;
+}
+
 </style>
