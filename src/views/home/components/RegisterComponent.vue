@@ -5,6 +5,7 @@ const emit = defineEmits([
   'logged-in'
 ])
 
+const registration_error = ref('')
 const username = ref('')
 const email = ref('')
 const password = ref('')
@@ -43,7 +44,7 @@ async function logIn() {
 
 async function register() {
   if(password.value != confirmPassword.value){
-    alert("The passwords did not match")
+    registration_error.value.textContent = "The passwords did not match"
     return
   }
 
@@ -65,11 +66,12 @@ async function register() {
       console.log('Successfully registered in:', data);
       logIn()
     } else {
-      console.error('Login failed:', data);
+      console.error('Registration failed:', data);
+      registration_error.value.textContent = Object.values(data.errors)[0]
     }
 
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error during registration:', error);
   }
 }
 
@@ -89,6 +91,7 @@ async function register() {
       <input class="register_input" type="password" id="confirmPassword" name="confirmPassword" v-model="confirmPassword" required>
       <button id="register_submit" type="submit">Register</button>
     </form>
+    <span class="registration_error" ref="registration_error"></span>
   </div>
 </template>
 
@@ -97,6 +100,11 @@ async function register() {
 @font-face {
   font-family: "DK";
   src: url(@/assets/fonts/DKLeftoverCrayon.otf) format('truetype');
+}
+
+.registration_error{
+  color: brown;
+  font-size: 1vw;
 }
 
 .register_input{

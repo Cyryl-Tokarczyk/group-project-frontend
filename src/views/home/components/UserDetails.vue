@@ -1,9 +1,13 @@
 <script setup>
   import { useTokensStore } from '@/stores/tokens';
   import { ref, onMounted } from 'vue';
+  import { jwtDecode } from "jwt-decode";
   const tokensStore = useTokensStore();
   const mail = ref(null);
   const username = ref(null);
+  const bio = ref(null);
+  const win = ref(null);
+  const game = ref(null);
 
   function logOut() {
     tokensStore.loggedOut()
@@ -12,7 +16,6 @@
     console.log('Logged out');
   }
 
-  const gameUserURL = '/api/users/75b1c2c4-d35c-4c83-adde-03b5ae01e161/'
   onMounted(() => {
     getUserDetails()
   })
@@ -24,6 +27,11 @@
   }
 
   try {
+    const token = tokensStore.tokens['access']; // Tutaj podaj swój token JWT
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+
+    const gameUserURL = '/api/users/' + decoded.user_id + '/'
     const response = await fetch(gameUserURL, requestOptions);
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -32,6 +40,11 @@
     console.log(data); // Tu możesz przetwarzać otrzymane dane
     username.value.textContent = data.username
     mail.value.textContent = data.email
+    bio.value.textContent = data.bio
+    game.value.textContent = data.games_played
+    win.value.textContent = data.games_won / (data.games_played == 0 ? 1 : data.games_played) * 100 + '%'
+
+
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
   }
@@ -50,7 +63,16 @@
         <td>Email</td>
         <td id="emailCell"><span ref="mail"></span></td>
       </tr>
+      <tr>
+        <td>Games played</td>
+        <td id="gameCell"><span ref="game"></span></td>
+      </tr>
+      <tr>
+        <td>Win %</td>
+        <td id="winCell"><span ref="win"></span></td>
+      </tr>
     </table>
+    <span class="bio_span" ref="bio"></span>
     <button id="log_out_button" @click="logOut()">Logout</button>
   </div>
 </template>
@@ -80,6 +102,11 @@
 
 td{
   border: 0.1vw solid black;
+}
+
+.bio_span{
+  margin-top: 1vw;
+  font-size: 1.5vw;
 }
 
 </style>
