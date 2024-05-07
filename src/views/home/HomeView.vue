@@ -80,10 +80,10 @@ function chooseTab(tab){
 <style>
 #homeView {
   background-image: url(@/assets/imgs/table.jpg);
-  background-size: 400px;
+  background-size: 40vw;
   width: 100vw;
   height: 50vw;
-  box-shadow: 0px 0px 20px;
+  box-shadow: 0 0 2vw;
   position: relative;
 }
 
@@ -93,9 +93,9 @@ function chooseTab(tab){
 
 #cover{
   background-image: url(@/assets/imgs/notebook.jpg);
-  background-size: 2000px;
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 15px;
+  background-size: 200vw;
+  border-bottom-right-radius: 1.5vw;
+  border-top-right-radius: 1.5vw;
   width: 100%;
   height: 100%;
   display: flex;
@@ -106,9 +106,9 @@ function chooseTab(tab){
 #notebook{
   width: 27vw;
   height: 35vw;
-  box-shadow: 2px 2px 6px;
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 15px;
+  box-shadow: 0.2vw 0.2vw 0.6vw;
+  border-bottom-right-radius: 1.5vw;
+  border-top-right-radius: 1.5vw;
   position: absolute;
   top: 15%;
   right: 37.5vw;
@@ -124,9 +124,9 @@ function chooseTab(tab){
   height:  100%;
   background-image: url(@/assets/imgs/paper.jpg);
   background-size: cover;
-  box-shadow: 2px 2px 10px;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
+  box-shadow: 0.2vw 0.2vw 1vw;
+  border-bottom-right-radius: 1vw;
+  border-top-right-radius: 1vw;
   transition: 0.5s;
   position: absolute;
   transition: 0.5s;
@@ -134,7 +134,7 @@ function chooseTab(tab){
 }
 
 button{
-  margin: 20px;
+  margin: 2vw;
   border: transparent;
   background: transparent;
   font-size:1.5vw;
@@ -147,12 +147,12 @@ button{
   height: 100%;
   background: rgba(34, 151, 23, 0.28);
   align-items: center;
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 15px;
+  border-bottom-right-radius: 1.5vw;
+  border-top-right-radius: 1.5vw;
 }
 
 .tabOpen{
-  transform: rotateZ(10deg) translateX(250px) translateY(-30px);
+  transform: rotateZ(10deg) translateX(25vw) translateY(-3vw);
 }
 
 .tabSelect{

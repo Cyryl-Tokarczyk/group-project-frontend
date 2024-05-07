@@ -16,8 +16,8 @@
 <style>
 
 #playPrompt{
-    margin-top: 20px;
-    margin-bottom: 100px;
+    margin-top: 2vw;
+    margin-bottom: 10vw;
 }
 
 .link{

@@ -117,7 +117,7 @@ onMounted(() => {
   display: flex;
   height: 100%;
   width: 100%;
-  perspective: 1000px;
+  perspective: 100vw;
 }
 
 .middle_board {
@@ -192,9 +192,9 @@ onMounted(() => {
 
 span{
   position: absolute;
-  height: 1px;
+  height: 0.1vw;
   background: #e1e1e1;
-  width: 0px;
+  width: 0;
   transition: 0.5s;
   margin-top: 2vw;
 }

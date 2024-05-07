@@ -47,7 +47,6 @@ async function logIn() {
     if (response.ok) {
       emit('logged-in', data);
       console.log('Successfully logged in:', data);
-      localStorage.setItem('userEmail', login.value);
     } else {
       // Logging in failure handling
       loginError.value = true;
@@ -119,7 +118,7 @@ input {
 }
 
 .paper{
-  margin-top: -15px;
+  margin-top: -1.5vw;
   width: 100%;
   height: 100%;
 }
@@ -135,14 +134,14 @@ input{
 
 .form_content{
   display: flex;
-  height: 50px;
+  height: 5vw;
   align-items: center;
   justify-content: left;
 }
 
 form{
   display: block;
-  margin-top: -25px;
+  margin-top: -2.5vw;
 }
 
 .inputs{
@@ -153,7 +152,7 @@ form{
 .underline{
   background: black;
   width: 100%;
-  height: 1px;
+  height: 0.1vw;
   transition: 0.2s;
 }
 
