@@ -246,7 +246,7 @@ button:hover{
 ::-webkit-scrollbar-track {
 background: rgba(99, 78, 39, 0.788);
 border-radius: 2vw;
-box-shadow: 0px 0px 10px inset;
+box-shadow: 0 0 0.1vw inset;
 }
      
 ::-webkit-scrollbar-thumb {
@@ -260,7 +260,7 @@ box-shadow: 0px 0px 10px inset;
   width: 11vw;
   min-width: 5vw;
   border-radius: 1vw;
-  box-shadow: rgb(87, 87, 87) 0px 0px 15px;
+  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
   font-size: 3vw;
 }
 
@@ -269,9 +269,9 @@ box-shadow: 0px 0px 10px inset;
   top: 50%;
   left: 85%;
   transform: translate(-50%, -50%);
-  padding: 0px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border-radius: 0.8vw;
+  box-shadow: 0 0 0.2vw rgba(0, 0, 0, 0.2);
   text-align: center;
   z-index: 999;
   height: 14vw;
@@ -315,20 +315,20 @@ box-shadow: 0px 0px 10px inset;
   flex-direction: column;
   align-items: center;
   background: rgba(126, 126, 126, 0.322);
-  border-radius: 15px;
+  border-radius: 1.5vw;
 }
 
 
 #hand{
-  border: 1px solid black;
+  border: 0.1vw solid black;
   width: 40%;
   height: 20vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 5%;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 0.1vw;
+  margin-right: 0.1vw;
 }
 
 #user_part{
@@ -343,10 +343,10 @@ box-shadow: 0px 0px 10px inset;
 
 #event, #clash{
   background-image: url(@/assets/imgs/table.jpg);
-  background-size: 400px;
+  background-size: 40vw;
   width: 100vw;
   height: 50vw;
-  box-shadow: 0px 0px 20px;
+  box-shadow: 0 0 2vw;
   position: relative;
   display: flex;
   align-items: center;
@@ -388,7 +388,7 @@ box-shadow: 0px 0px 10px inset;
   width: 5vw;
   min-width: 5vw;
   border-radius: 0.3vw;
-  box-shadow: rgb(87, 87, 87) 0px 0px 15px;
+  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
   font-size: 1vw;
   transition: 0.25s;
   cursor: pointer;
@@ -401,11 +401,11 @@ box-shadow: 0px 0px 10px inset;
 }
 
 #action_shop, #reaction_shop{
-  border: 2px solid black;
+  border: 0.2vw solid black;
   width:45%;
   height: 19vw;
   position: relative;
-  border-radius: 10px;
+  border-radius: 1vw;
   --width: 38;
 }
 
@@ -432,7 +432,7 @@ box-shadow: 0px 0px 10px inset;
   height: 15vw;
   width: 10vw;
   border-radius: 5%;
-  box-shadow: rgb(87, 87, 87) 0px 0px 15px;
+  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
   font-size: 3vw;
   transition: 0.5s;
   --card-width: 10;
@@ -457,12 +457,12 @@ box-shadow: 0px 0px 10px inset;
 
 .type1:hover{
   animation: zoomInOut1 0.7s;
-  box-shadow: rgb(0, 0, 0) 0px 0px 20px;
+  box-shadow: rgb(0, 0, 0) 0 0 2vw;
 }
 
 .type2:hover{
   animation: zoomInOut2 0.7s;
-  box-shadow: rgb(0, 0, 0) 0px 0px 20px;
+  box-shadow: rgb(0, 0, 0) 0 0 2vw;
 }
 
 @keyframes zoomInOut1 {

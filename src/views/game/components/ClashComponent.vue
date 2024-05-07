@@ -274,7 +274,7 @@ p{
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 25px inset;
+  box-shadow: 0 0 2.5vw inset;
 }
 
 .dynamic_position{
@@ -283,10 +283,10 @@ p{
 }
 
 .table_cards, .hand_cards, .modal_cont{
-  border: 1.5px solid rgb(0, 0, 0);
+  border: 0.15vw solid rgb(0, 0, 0);
   border-radius: 0.5vw;
   box-sizing: border-box;
-  box-shadow: 0px 0px 8px;
+  box-shadow: 0 0 0.8vw;
   align-items: center;
 }
 
@@ -338,7 +338,7 @@ p{
   flex-direction: column;
   border-radius: 0.5vw;
   background-image: url(@/assets/imgs/paper.jpg);
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0 0 0.5vw;
 }
 
 .action{

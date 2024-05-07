@@ -1,8 +1,10 @@
 <script setup>
   import { useTokensStore } from '@/stores/tokens';
+  import { useUserDetailsStore } from '@/stores/userDetails';
   import { ref, onMounted } from 'vue';
   import { jwtDecode } from "jwt-decode";
   const tokensStore = useTokensStore();
+  const userDetailsStore = useUserDetailsStore();
   const mail = ref(null);
   const username = ref(null);
   const bio = ref(null);
@@ -11,8 +13,6 @@
 
   function logOut() {
     tokensStore.loggedOut()
-    localStorage.removeItem('userEmail');
-
     console.log('Logged out');
   }
 
@@ -30,7 +30,7 @@
     const token = tokensStore.tokens['access']; // Tutaj podaj swój token JWT
     const decoded = jwtDecode(token);
     console.log(decoded);
-
+    userDetailsStore.user_id = decoded.user_id
     const gameUserURL = '/api/users/' + decoded.user_id + '/'
     const response = await fetch(gameUserURL, requestOptions);
     if (!response.ok) {
@@ -39,8 +39,11 @@
     const data = await response.json();
     console.log(data); // Tu możesz przetwarzać otrzymane dane
     username.value.textContent = data.username
+    userDetailsStore.username = data.username
     mail.value.textContent = data.email
+    userDetailsStore.email = data.email
     bio.value.textContent = data.bio
+    userDetailsStore.bio = data.bio
     game.value.textContent = data.games_played
     win.value.textContent = data.games_won / (data.games_played == 0 ? 1 : data.games_played) * 100 + '%'
 
@@ -82,6 +85,7 @@
 #usercom{
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 #log_out_button{
@@ -98,6 +102,7 @@
   margin-right: 2vw;
   font-size: 1.5vw;
   border: 0.1vw solid black;
+  width: 90%;
 }
 
 td{
@@ -106,7 +111,11 @@ td{
 
 .bio_span{
   margin-top: 1vw;
-  font-size: 1.5vw;
+  font-size: 1vw;
+  text-align: justify;
+  width: 84%;
+  padding: 2%;
+  border: 0.3vw groove rgba(0, 0, 0, 0.424);
 }
 
 </style>

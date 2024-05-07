@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useTokensStore } from '@/stores/tokens';
 import LoginComponent from './LoginComponent.vue'
 import RegisterComponent from './RegisterComponent.vue'
-import UserDetails from './UserDetails.vue'
+import UserComponent from './UserComponent.vue'
 
 const tokensStore = useTokensStore()
  
@@ -27,13 +27,13 @@ function register() {
   <button v-if="!tokensStore.isLoggedIn" @click="register" class="reglog">Register</button>
   <LoginComponent v-if="!tokensStore.isLoggedIn && loginOption == true" @logged-in="tokensStore.loggedIn" />
   <RegisterComponent v-else-if="!tokensStore.isLoggedIn && registerOption == true" @logged-in="tokensStore.loggedIn" />
-  <UserDetails v-else/>
+  <UserComponent v-else/>
 </template>
 
 <style>
 
 #user_logged{
-  margin-top: 20px;
+  margin-top: 2vw;
 }
 
 #log_out_button{

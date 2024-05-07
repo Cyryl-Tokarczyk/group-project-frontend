@@ -13,11 +13,11 @@ import ServerAsker from './components/ServerAsker.vue'
 <style>
 #connectionView {
   background-image: url(@/assets/imgs/wall.jpg);
-  background-size: 400px;
+  background-size: 40vw;
   width: 200vw;
   height: 200vh;
   margin-top: -50vh;
-  box-shadow: 0px 0px 20px;
+  box-shadow: 0vw 0vw 2vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,9 +35,9 @@ import ServerAsker from './components/ServerAsker.vue'
   justify-content: center;
   text-align: center;
   position: absolute;
-  top: 20px;
-  border: 5px ridge rgb(149, 152, 0);
-  box-shadow: 0px 0px 10px;
+  top: 4vh;
+  border: 0.5vw ridge rgb(149, 152, 0);
+  box-shadow: 0 0 1vw;
 }
 
 </style>

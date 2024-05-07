@@ -21,7 +21,7 @@
 
 <style>
 .home_link{
-  font-size: 100px;
+  font-size: 10vw;
   position: absolute;
   z-index: -100;
 }
@@ -35,7 +35,7 @@
 
 html{
   height: 100%;
-  box-shadow: 10px 10px 25px inset #0000008f;
+  box-shadow: 1vw 1vw 2.5vw inset #0000008f;
 }
 
 @font-face {
@@ -47,7 +47,7 @@ body {
   margin: 0;
   padding: 0;
   background-image: url(assets/imgs/floor.jpg);
-  background-size: 600px;
+  background-size: 60vw;
   font-family:"DK", Courier, monospace;
   display: flex;
   align-items: center;
@@ -60,7 +60,7 @@ body {
 
 button {
   font-family:'DK', Courier, monospace; 
-  font-size: 45px;
+  font-size: 4.5vw;
   text-transform: uppercase;
 }
 
