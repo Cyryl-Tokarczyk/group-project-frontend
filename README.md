@@ -15,3 +15,4 @@ npm run serve
 vue-router
 pinia
 enumify
+jwt-decode
