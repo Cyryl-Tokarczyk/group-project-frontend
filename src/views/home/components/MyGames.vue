@@ -58,7 +58,7 @@
       </thead>
       <tbody>
         <tr v-for="(game, index) in games" :key="index" :class="getRowClass(game)">
-          <td>{{ index + 1 }}</td>
+          <td>{{ index }}</td>
           <td>{{ game.lenght_in_sec }} s<section></section></td>
           <td>{{ game.start_date }}<br>{{ game.start_time }}</td>
           <td>{{ game.student_player.username }}</td>
