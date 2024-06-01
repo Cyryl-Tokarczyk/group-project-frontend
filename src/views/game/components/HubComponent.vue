@@ -240,12 +240,12 @@ button:hover{
 }
 
 ::-webkit-scrollbar {
-  width: 1vw;
+  width: 0.6vw;
 }
      
 ::-webkit-scrollbar-track {
-background: rgba(99, 78, 39, 0.788);
-border-radius: 2vw;
+background: rgba(77, 64, 39, 0.551);
+border-radius: 0.2vw;
 box-shadow: 0 0 0.1vw inset;
 }
      

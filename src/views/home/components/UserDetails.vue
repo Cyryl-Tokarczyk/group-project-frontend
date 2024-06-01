@@ -45,7 +45,7 @@
     bio.value.textContent = data.bio
     userDetailsStore.bio = data.bio
     game.value.textContent = data.games_played
-    win.value.textContent = data.games_won / (data.games_played == 0 ? 1 : data.games_played) * 100 + '%'
+    win.value.textContent = Math.ceil(data.games_won / (data.games_played == 0 ? 1 : data.games_played) * 100) + '%'
 
 
   } catch (error) {
