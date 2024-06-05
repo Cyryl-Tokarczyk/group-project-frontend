@@ -16,6 +16,7 @@ const gameStateStore = useGameStateStore()
 
 const shopActionCardNumbers = ref([]);
 const shopReactionCardNumbers = ref([]);
+const ready_button = ref(null);
 
 onMounted(() => {
   console.log('I am mounted! [HubComponent]')
@@ -102,6 +103,11 @@ function hideReactionCardsModal(){
   showReactionCards.value = false;
 }
 
+function ready_clicked(){
+  ready_button.value.classList.add('red_color');
+  emit('ready');
+}
+
 </script>
 
 <template>
@@ -140,7 +146,7 @@ function hideReactionCardsModal(){
         {{ gameStateStore.playersMorale }}
         <p>Money</p>
         {{ gameStateStore.money }}
-        <button @click="emit('ready')">READY</button>
+        <button @click="ready_clicked" ref="ready_button">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">
@@ -341,7 +347,7 @@ box-shadow: 0 0 0.1vw inset;
   margin-top: 25vw;
 }
 
-#event, #clash{
+#event, #clash, #teacher_end, #student_end{
   background-image: url(@/assets/imgs/table.jpg);
   background-size: 40vw;
   width: 100vw;
@@ -438,6 +444,10 @@ box-shadow: 0 0 0.1vw inset;
   --card-width: 10;
   font-size: 1vw;
   z-index: 1;
+}
+
+.red_color{
+  color: brown;
 }
 
 .choice_type h2{

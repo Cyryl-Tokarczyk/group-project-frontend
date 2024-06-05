@@ -4,7 +4,8 @@ import { useSocketStore } from '@/stores/socket';
 import { useGameStateStore } from '@/stores/gameState';
 import HubComponent from './components/HubComponent.vue';
 import ClashComponent from './components/ClashComponent.vue';
-import GameEndComponent from "./components/GameEndComponent.vue";
+import StudentEndComponent from "./components/StudentEndComponent.vue";
+import TeacherEndComponent from "./components/TeacherEndComponent.vue";
 
 var waitingForAnotherMessage = false
 const hubPhase = ref(false)
@@ -177,7 +178,6 @@ function handleClashResultMessage(message) {
   gameStateStore.setOpponentMorale(message['new_opponent_morale'])
 
   clashMessageProp.value = message
-
   nextMessage()
 }
 
@@ -212,7 +212,8 @@ function handleErrorMessage(message) {
   <div id="game">
     <HubComponent v-if="hubPhase" :message="messageProp" @purchase-made="handlePurchaseMove" @ready="handleReadyMove" /> 
     <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :message="clashMessageProp" @action-move="handleActionMove" @reaction-move="handleReactionMove" />
-    <GameEndComponent v-if="gameEnd" :message="messageProp" />
+    <StudentEndComponent v-if="gameEnd && gameStateStore.playerType == 'student'" :message="messageProp" />
+    <TeacherEndComponent v-if="gameEnd && gameStateStore.playerType == 'teacher'" :message="messageProp" />
   </div>
 </template>
 
