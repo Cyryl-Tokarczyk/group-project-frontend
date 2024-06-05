@@ -33,6 +33,7 @@ watch(
   () => {
     // Implement clash logic
     if (props.message['type'] == 'opponent_move') {
+      var x = false;
       if (props.message['action_card']) {
         opponentCards.value = [ props.message['action_card'] ]
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
@@ -40,16 +41,24 @@ watch(
       if (props.message['reaction_cards']) {
         opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+        x = true
       }
-      // if (toRaw(clashState.value) == ClashState.MyReaction) {
-        
-      // }
-      clashState.value = nextState(toRaw(clashState.value))
+
+      if(x){
+        setTimeout(() => {updateClashState()},5000)
+      }else{
+      updateClashState()
+      }
     }
     else if (props.message['type'] == 'clash_result') {
-      opponentCards.value = []
-      chosenCards.value = []
-      moveMade.value = false
+      setTimeout(() => {
+        opponentCards.value = []
+        chosenCards.value = []
+        moveMade.value = false
+      },5000)
+      // if (clashState.value == ClashState.) {
+        
+      // }
     }
   },
   { deep: true }
@@ -174,17 +183,28 @@ function hideOtherCards(){
   showOtherCards.value = false
 }
 
+function updateClashState(){
+  clashState.value = nextState(toRaw(clashState.value))
+  if(toRaw(clashState.value) == ClashState.MyAction || toRaw(clashState.value) == ClashState.MyReaction){
+    readyButton.value.style.color = "black"
+  }
+}
+
 function ready(){
   moveMade.value = true
-  if (toRaw(clashState.value) == ClashState.MyAction) {
-    console.log(chosenCards.value[0].id);
-    emit('action-move', chosenCards.value[0].id)
-  }
-  if (toRaw(clashState.value) == ClashState.MyReaction) {
-    emit('reaction-move', packReactionCardsIds(chosenCards.value))
-  }
   readyButton.value.style.color = "red"
-  clashState.value = nextState(toRaw(clashState.value))
+  if (toRaw(clashState.value) == ClashState.MyAction) {
+      console.log(chosenCards.value[0].id);
+      emit('action-move', chosenCards.value[0].id)
+      updateClashState()
+  }
+  else if (toRaw(clashState.value) == ClashState.MyReaction) {
+    emit('reaction-move', packReactionCardsIds(chosenCards.value))
+    setTimeout(() => {updateClashState()},5000)
+  }
+  else{
+    updateClashState()
+  }
 }
 
 function undo(){
@@ -231,8 +251,8 @@ function undo(){
           </div>
         </div> 
       <div class="stats">
-        <button @click="ready()" ref="readyButton">READY</button> 
-        <button @click="undo()">undo</button> 
+        <button class="button_right" @click="ready()" ref="readyButton">READY</button> 
+        <button class="button_right" @click="undo()">undo</button> 
       </div>
     </div>
 
@@ -333,6 +353,7 @@ p{
 
 .stats{
   width: 20vw;
+  height: 8vw;
   display: flex;
   flex-direction: column;
   border-radius: 0.5vw;
@@ -343,6 +364,10 @@ p{
 .action{
   max-width: 12vw;
   --width: 12;
+}
+
+.button_right{
+  margin: 1vw;
 }
 
 </style>

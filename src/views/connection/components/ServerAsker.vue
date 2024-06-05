@@ -209,7 +209,6 @@ span{
 
 
 button:hover span{
-
   width: 10vw;
 }
 </style>

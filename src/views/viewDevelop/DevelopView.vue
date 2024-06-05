@@ -1,14 +1,11 @@
 <script setup>
-import { ref } from "vue";
-import ClashComponent from './components/ClashComponent.vue'
+//import TeacherEndComponent from './components/.'
 
-const firstPlayer = ref('student')
-const opponentMove = ref('cos')
 </script>
 
 <template>
   <div id="develop">
-    <ClashComponent :firstPlayer="firstPlayer" :opponentMove="opponentMove"></ClashComponent>
+    <TeacherEndComponent></TeacherEndComponent>
   </div>
 </template>
 
