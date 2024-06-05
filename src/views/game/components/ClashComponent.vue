@@ -186,7 +186,9 @@ function hideOtherCards(){
 function updateClashState(){
   clashState.value = nextState(toRaw(clashState.value))
   if(toRaw(clashState.value) == ClashState.MyAction || toRaw(clashState.value) == ClashState.MyReaction){
+    if (readyButton.value){
     readyButton.value.style.color = "black"
+    }
   }
 }
 
