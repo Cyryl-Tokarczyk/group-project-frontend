@@ -41,16 +41,15 @@ watch(
         opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
       }
-  
+      // if (toRaw(clashState.value) == ClashState.MyReaction) {
+        
+      // }
       clashState.value = nextState(toRaw(clashState.value))
     }
     else if (props.message['type'] == 'clash_result') {
       opponentCards.value = []
       chosenCards.value = []
       moveMade.value = false
-      // if (clashState.value == ClashState.) {
-        
-      // }
     }
   },
   { deep: true }

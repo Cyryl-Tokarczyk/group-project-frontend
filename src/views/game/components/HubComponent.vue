@@ -14,6 +14,8 @@ const emit = defineEmits([
 
 const gameStateStore = useGameStateStore()
 
+const readyButton = ref(null)
+
 const shopActionCardNumbers = ref([]);
 const shopReactionCardNumbers = ref([]);
 
@@ -30,6 +32,12 @@ onMounted(() => {
     shopReactionCardNumbers.value = unpackReactionCards(props.message['reaction_cards'])
   }
 })
+
+function readyClicked() {
+  readyButton.value.style.color = "red"
+
+  emit('ready')
+}
 
 function moveToActionHand(card, index) {
 
@@ -140,7 +148,7 @@ function hideReactionCardsModal(){
         {{ gameStateStore.playersMorale }}
         <p>Money</p>
         {{ gameStateStore.money }}
-        <button @click="emit('ready')">READY</button>
+        <button @click="readyClicked()" ref="readyButton">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">

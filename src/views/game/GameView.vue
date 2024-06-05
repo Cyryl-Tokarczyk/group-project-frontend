@@ -84,6 +84,7 @@ function handleMessage(message){
       handleErrorMessage(message) // TODO
       break;
     default:
+      nextMessage()
       break;
   }
 }

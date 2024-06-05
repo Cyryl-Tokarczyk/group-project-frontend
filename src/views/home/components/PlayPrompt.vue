@@ -3,8 +3,8 @@
 
 <template>
     <div class="paper">
-        <div id="playPrompt">
-            Develop
+        <div id="gamePrompt">
+            Game
         </div>
         <div>
             <router-link :to="{ name: 'connection' }" class="link">Play</router-link>
@@ -15,7 +15,7 @@
 
 <style>
 
-#playPrompt{
+#gamePrompt{
     margin-top: 2vw;
     margin-bottom: 10vw;
 }
