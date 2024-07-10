@@ -20,7 +20,6 @@ const ready_button = ref(null);
 
 onMounted(() => {
   console.log('I am mounted! [HubComponent]')
-
   if (props.message['action_cards']) {
     shopActionCardNumbers.value = props.message['action_cards']
     console.log("Action cards " + JSON.stringify(shopActionCardNumbers.value))
