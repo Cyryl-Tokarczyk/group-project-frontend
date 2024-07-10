@@ -40,6 +40,8 @@ If there are no messages on the queue it subscribes to the onAction event on soc
 
 onBeforeMount(() => {
   // Pop the first message
+  gameStateStore.actionCards = []
+  gameStateStore.reactionCards = []
   nextMessage()
 })
 
@@ -179,15 +181,16 @@ function handleClashResultMessage(message) {
   gameStateStore.setOpponentMorale(message['new_opponent_morale'])
 
   clashMessageProp.value = message
+
   nextMessage()
 }
 
 function handleClashEndMessage(message) {
   console.log('Handling clash end message: ' + JSON.stringify(message));
-
-  clashPhase.value = false
-
-  nextMessage()
+  setTimeout(()=>{
+    clashPhase.value = false
+    nextMessage()
+  },5000)
 }
 
 function handleGameEndMessage(message) {

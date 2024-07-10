@@ -47,7 +47,7 @@ watch(
       if(x){
         setTimeout(() => {updateClashState()},5000)
       }else{
-      updateClashState()
+        updateClashState()
       }
     }
     else if (props.message['type'] == 'clash_result') {
@@ -55,7 +55,7 @@ watch(
         opponentCards.value = []
         chosenCards.value = []
         moveMade.value = false
-      },5000)
+      },4500)
       // if (clashState.value == ClashState.) {
         
       // }
@@ -185,16 +185,18 @@ function hideOtherCards(){
 
 function updateClashState(){
   clashState.value = nextState(toRaw(clashState.value))
-  if(toRaw(clashState.value) == ClashState.MyAction || toRaw(clashState.value) == ClashState.MyReaction){
-    if (readyButton.value){
+  if (readyButton.value){
     readyButton.value.style.color = "black"
-    }
   }
 }
 
 function ready(){
+  if(toRaw(clashState.value) == ClashState.OpponentReaction || toRaw(clashState.value) == ClashState.OpponentAction){
+    readyButton.value.style.color = "black"
+    return
+  }
   moveMade.value = true
-  readyButton.value.style.color = "red"
+  readyButton.value.style.color = "brown"
   if (toRaw(clashState.value) == ClashState.MyAction) {
       console.log(chosenCards.value[0].id);
       emit('action-move', chosenCards.value[0].id)
