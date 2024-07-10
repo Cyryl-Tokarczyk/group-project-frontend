@@ -59,6 +59,10 @@ function start_tab(tab, tab_button){
     align-items: center;
 }
 
+#user_buttons button{
+    font-family: "Venily", Courier, monospace;
+}
+
 .tab_button{
     font-size: 1vw;
     margin: 0.4vw;

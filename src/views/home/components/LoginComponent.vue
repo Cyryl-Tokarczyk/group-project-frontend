@@ -83,14 +83,14 @@ function logInAsUser() {
     <h3>Log in</h3>
     <form @submit.prevent="logIn" novalidate>
       <div class="form_content">
-        <p>Name:</p>
         <div class="inputs">
-          <input v-model="login" required/>
+          <p>Name:</p>
+          <input class="login_input" v-model="login" required/>
           <div class="underline" ref="loginLine"></div>
         </div>
-        <p>Password:</p>
         <div class="inputs">
-          <input v-model="password" type="password" required/>
+          <p>Password:</p>
+          <input class="login_input" v-model="password" type="password" required/>
           <div class="underline" ref="passwordLine"></div>
         </div>
       </div>
@@ -112,24 +112,20 @@ function logInAsUser() {
   src: url(@/assets/fonts/DKLeftoverCrayon.otf) format('truetype');
 }
 
-input {
-  margin: auto;
-  display: block;
-}
-
 .paper{
   margin-top: -1.5vw;
   width: 100%;
   height: 100%;
 }
 
-input{
+.login_input{
+  display: block;
   background: transparent;
-  font-family:"DK", Courier, monospace;
+  font-family: "Venily", Courier, monospace;
   border: transparent;
   width: 100%;
   outline: none;
-  font-size: 1.5vw;
+  font-size: 1.2vw;
 }
 
 .form_content{
@@ -137,16 +133,16 @@ input{
   height: 5vw;
   align-items: center;
   justify-content: left;
+  flex-direction: column;
 }
 
 form{
   display: block;
-  margin-top: -2.5vw;
+  margin-top: -1vw;
 }
 
 .inputs{
   display: block;
-  padding-right: 0.5vw;
 }
 
 .underline{
@@ -154,6 +150,7 @@ form{
   width: 100%;
   height: 0.1vw;
   transition: 0.2s;
+  margin-bottom: 1.5vw;
 }
 
 .underlineError{
@@ -161,20 +158,19 @@ form{
 }
 
 .debug_button{
-  padding: 0;
+  margin-bottom: 0;
 }
 
 p{
   font-size: 1.5vw;
-  padding-right: 0.5vw;
-  padding-left: 0.5vw;
 }
 
 #sub_button{
   border: transparent;
   background: transparent;
   transition: 0.5s;
-  margin-top: 1vw;
+  font-family: "Venily", Courier, monospace;
+  margin-top: 6vw;
 }
 
 #sub_button:hover{

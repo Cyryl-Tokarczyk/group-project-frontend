@@ -107,25 +107,31 @@ async function register() {
   font-size: 1vw;
 }
 
+#registrationForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+}
+
 .register_input{
   font-size: 1vw;
   border: 0.1vw solid black;
   border-radius: 1vw;
-  width: 60%;
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 80%;
+  margin-top: -2.5vw;
+  margin-bottom: 1vw;
 }
 
 .register_label{
   font-size: 1.5vw;
-  padding: 0;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 #register_submit{
   padding: 0;
-  margin: 0;
+  margin: 1vw;
+  font-size: 2vw;
+  font-family: "Venily", Courier, monospace;
 }
 
 </style>

@@ -120,8 +120,10 @@ function ready_clicked(){
           @click="moveToActionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
             <h2>{{ card.name }}</h2>
             <h3>Price: {{ card.price }}</h3>
-            <h3>Description</h3>
-            <p>{{ card.description }}</p>
+            <div class="description">
+              <h3>Description</h3>
+              <p>{{ card.description }}</p>
+            </div>
           </div>
         </div>  
       </div>
@@ -132,8 +134,10 @@ function ready_clicked(){
           @click="moveToReactionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
             <h2>{{ card.name }}</h2>
             <h3>Price: {{ card.price }}</h3>
-            <h3>Description</h3>
-            <p>{{ card.description }}</p>
+            <div class="description">
+              <h3>Description</h3>
+              <p>{{ card.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -177,8 +181,10 @@ function ready_clicked(){
         <div class="modal_content" :style="{ backgroundColor: ((gameStateStore.actionCards.includes(modalCardData) || shopActionCardNumbers.includes(modalCardData)) ? 'rgb(235,53,25)' : 'rgb(35,35,225)') }">
           <h2>{{ modalCardData.name }}</h2>
             <h3>Price: {{ modalCardData.price }}</h3>
-            <h3>Description</h3>
-            <p>{{ modalCardData.description }}</p>
+            <div class="description">
+              <h3>Description</h3>
+              <p>{{ modalCardData.description }}</p>
+            </div>
         </div>
       </div>
       
@@ -187,9 +193,11 @@ function ready_clicked(){
         <div class="all_cards">
           <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" 
           :style="{ backgroundColor: 'rgb(235,53,25)'}">
-            <p>{{ card.number }}</p>
-            <p>Description:</p>
-            <p>{{ card.price }}</p>
+            <h2>{{ card.name }}</h2>
+            <div class="description">
+              <h3>Description</h3>
+              <p>{{ card.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -198,9 +206,11 @@ function ready_clicked(){
         <h1 class="h1_all_cards">Reaction cards</h1>
         <div class="all_cards">
           <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: 'rgb(35,53,225)' }">
-            <p>{{ card.number }}</p>
-            <p>Description:</p>
-            <p>{{ card.price }}</p>
+            <h2>{{ card.name }}</h2>
+            <div class="description">
+              <h3>Description</h3>
+              <p>{{ card.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -266,7 +276,8 @@ box-shadow: 0 0 0.1vw inset;
   min-width: 5vw;
   border-radius: 1vw;
   box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
-  font-size: 3vw;
+  font-size: 2vw;
+  font-family: "Venily", Courier, monospace;
 }
 
 .modal_content {
@@ -284,19 +295,41 @@ box-shadow: 0 0 0.1vw inset;
   font-size: 1vw;
 }
 
-.modal_content h2{
-  margin-bottom: 0;
-  margin-top: 0;
+.modal_content h2, .all_cards h2{
+  font-size: 1vw;
+  font-family: "Venily", Courier, monospace;
 }
 
-.modal_content h3{
+.modal_content h3, .all_cards h3{
   margin-bottom: 0;
   margin-top: 0.5vw;
+  font-size: 0.8vw;
+  font-family: "Venily", Courier, monospace;
 }
 
-.modal_content p{
+.modal_content p, .all_cards p{
   text-align: justify;
+  font-size: 0.7vw;
+  font-family: "Venily", Courier, monospace;
+}
+
+.choice_type h2{
+  margin: 0.5vw;
   font-size: 1vw;
+  font-family: "Venily", Courier, monospace;
+}
+
+.choice_type h3{
+  margin-bottom: 0;
+  margin-top: 0.5vw;
+  font-size: 0.8vw;
+  font-family: "Venily", Courier, monospace;
+}
+
+.choice_type p{
+  text-align: justify;
+  font-size: 0.7vw;
+  font-family: "Venily", Courier, monospace;
 }
 
 .db {
@@ -394,11 +427,12 @@ box-shadow: 0 0 0.1vw inset;
   min-width: 5vw;
   border-radius: 0.3vw;
   box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
-  font-size: 1vw;
+  font-size: 0.5vw;
   transition: 0.25s;
   cursor: pointer;
   --card-width: 5;
   z-index: 1;
+  font-family: "Venily", Courier, monospace;
 }
 
 .action_card_hand p,.reaction_card_hand p{
@@ -443,25 +477,14 @@ box-shadow: 0 0 0.1vw inset;
   --card-width: 10;
   font-size: 1vw;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
 }
 
 .red_color{
   color: brown;
-}
-
-.choice_type h2{
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.choice_type h3{
-  margin-bottom: 0;
-  margin-top: 0.5vw;
-}
-
-.choice_type p{
-  text-align: justify;
-  font-size: 1vw;
 }
 
 .type1:hover{
@@ -472,6 +495,15 @@ box-shadow: 0 0 0.1vw inset;
 .type2:hover{
   animation: zoomInOut2 0.7s;
   box-shadow: rgb(0, 0, 0) 0 0 2vw;
+}
+
+.description{
+  margin-top: 2.5vw;
+  width: 90%
+}
+
+.reaction_card_all .action_card_all{
+  width: 80%;
 }
 
 @keyframes zoomInOut1 {

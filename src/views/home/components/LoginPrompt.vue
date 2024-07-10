@@ -45,6 +45,9 @@ function register() {
 }
 
 .reglog{
+  margin-top: 0;
   margin-bottom: 0;
+  font-family: "Venily", Courier, monospace;
 }
+
 </style>

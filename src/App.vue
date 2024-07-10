@@ -38,9 +38,40 @@ html{
   box-shadow: 1vw 1vw 2.5vw inset #0000008f;
 }
 
+
 @font-face {
   font-family: "DK";
   src: url(assets/fonts/DKLeftoverCrayon.otf) format('truetype');
+}
+
+@font-face {
+  font-family: "Cartoon";
+  src: url(assets/fonts/Cartoon.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Stone";
+  src: url(assets/fonts/Stone.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Sketch";
+  src: url(assets/fonts/Sketch.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "SketchSerif";
+  src: url(assets/fonts/SketchSerif.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Match";
+  src: url(assets/fonts/Match.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Venily";
+  src: url(assets/fonts/Venily.otf) format('truetype');
 }
 
 body {
@@ -48,7 +79,6 @@ body {
   padding: 0;
   background-image: url(assets/imgs/floor.jpg);
   background-size: 60vw;
-  font-family:"DK", Courier, monospace;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,15 +88,13 @@ body {
   overflow: hidden;
 }
 
-button {
-  font-family:'DK', Courier, monospace; 
-  font-size: 4.5vw;
-  text-transform: uppercase;
-}
-
 a{
   text-decoration: none;
   color: black;
+}
+
+button{
+  font-family: "Venily", Courier, monospace;
 }
 
 </style>

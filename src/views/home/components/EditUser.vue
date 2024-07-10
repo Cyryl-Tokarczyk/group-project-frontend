@@ -105,6 +105,13 @@
   src: url(@/assets/fonts/DKLeftoverCrayon.otf) format('truetype');
 }
 
+#edit_form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+}
+
 .save_error{
   color: brown;
   font-size: 1vw;
@@ -119,9 +126,10 @@
   font-size: 1vw;
   border: 0.1vw solid black;
   border-radius: 1vw;
-  width: 60%;
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 80%;
+  font-family: "Venily", Courier, monospace;
+  margin-top: -2.5vw;
+  margin-bottom: 1vw;
 }
 
 .save_label{
@@ -133,7 +141,9 @@
 
 #save_submit{
   padding: 0;
-  margin: 0;
+  margin: 1vw;
+  font-size: 2vw;
+  font-family: "Venily", Courier, monospace;
 }
 
 </style>

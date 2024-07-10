@@ -53,11 +53,11 @@ function chooseTab(tab){
       <div id="cover">
         <h1 id="notbook_title">Classroom Chronicles</h1>
         <div id="line">
-          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="!tokensStore.isLoggedIn">Login</button>
-          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)"   v-if="tokensStore.isLoggedIn">User</button>
+          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="!tokensStore.isLoggedIn">Login</button>
+          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="tokensStore.isLoggedIn">User</button>
           <button @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
           <button @mouseover="hoverButton(dev)" @mouseleave="resetTransform(dev)" @click="chooseTab(dev)">Develop</button>
-          <button @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)"   v-if="tokensStore.isLoggedIn">Game</button>
+          <button @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)" v-if="tokensStore.isLoggedIn">Game</button>
         </div>
       </div>
 
@@ -93,6 +93,8 @@ function chooseTab(tab){
 
 #cover{
   background-image: url(@/assets/imgs/notebook.jpg);
+  font-family:"Match", Courier, monospace;
+  font-size: 1.4vw;
   background-size: 200vw;
   border-bottom-right-radius: 1.5vw;
   border-top-right-radius: 1.5vw;
@@ -120,6 +122,7 @@ function chooseTab(tab){
 }
 
 .tab{
+  font-family:"Venily", Courier, monospace;
   width: 100%;
   height:  100%;
   background-image: url(@/assets/imgs/paper.jpg);
@@ -149,6 +152,10 @@ button{
   align-items: center;
   border-bottom-right-radius: 1.5vw;
   border-top-right-radius: 1.5vw;
+}
+
+#line button{
+  font-family:"Venily", Courier, monospace;
 }
 
 .tabOpen{
