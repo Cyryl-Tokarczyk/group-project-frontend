@@ -131,6 +131,7 @@ onMounted(() => {
   background-size:cover;
   border: 0.3vw ridge rgb(176, 176, 176);
   box-sizing: border-box;
+  font-family: "DK", Courier, monospace;
 }
 
 
@@ -163,6 +164,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: "DK", Courier, monospace;
 }
 
 
@@ -180,6 +182,7 @@ onMounted(() => {
   align-items: center;
   z-index: 1;
   box-sizing: border-box;  
+  font-family: "DK", Courier, monospace;
 }
 
 .left_board{
