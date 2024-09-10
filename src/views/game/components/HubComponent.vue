@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useGameStateStore } from "@/stores/gameState";
 import { unpackReactionCards } from "@/lib/CardsHandling";
+import CardComponent from './CardComponent.vue'
+import CardsComponent from './CardsComponent.vue'
 
 const props = defineProps([
   'message'
@@ -115,29 +117,17 @@ function ready_clicked(){
     <div id="shop">
       <div id="action_shop">
         <div id="action_shop_layout">
-          <div v-for="(card, index) in shopActionCardNumbers" :key="index" class="choice_type type1 dynamic_position" 
-          :style="{ backgroundColor: 'rgb(235,53,25)', '--order': index + 1, '--quantity': shopActionCardNumbers.length + 1}"
+          <div v-for="(card, index) in shopActionCardNumbers" :key="index"
           @click="moveToActionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
-            <h2>{{ card.name }}</h2>
-            <h3>Price: {{ card.price }}</h3>
-            <div class="description">
-              <h3>Description</h3>
-              <p>{{ card.description }}</p>
-            </div>
+            <CardComponent :card="card" :index="index" :length="shopActionCardNumbers.length" :size="0.7" :full="1" :dynamic_position="true" :price="true"/>
           </div>
         </div>  
       </div>
       <div id="reaction_shop">
         <div id="reaction_shop_layout">
-          <div v-for="(card, index) in shopReactionCardNumbers" :key="index" class="choice_type type2 dynamic_position" 
-          :style="{ backgroundColor: 'rgb(35,35,225)', '--order': index + 1, '--quantity': shopReactionCardNumbers.length + 1}" 
+          <div v-for="(card, index) in shopReactionCardNumbers" :key="index"
           @click="moveToReactionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
-            <h2>{{ card.name }}</h2>
-            <h3>Price: {{ card.price }}</h3>
-            <div class="description">
-              <h3>Description</h3>
-              <p>{{ card.description }}</p>
-            </div>
+          <CardComponent :card="card" :index="index" :length="shopReactionCardNumbers.length" :size="0.7" :full="true" :dynamic_position="true" :price="true"/>
           </div>
         </div>
       </div>
@@ -145,7 +135,10 @@ function ready_clicked(){
 
     <div id="user_part">
       <div class="info">
-        <p>Morale</p>
+        <div class="morale">
+          <img src="@/assets/imgs/morale.png" :alt="'morale image'" class="morale_image">
+          <p>Morale</p>
+        </div>
         {{ gameStateStore.playersMorale }}
         <p>Money</p>
         {{ gameStateStore.money }}
@@ -156,10 +149,8 @@ function ready_clicked(){
           <div id="hand_action_layout">
             <div v-for="(card, index) in gameStateStore.actionCards"
               @click="displayActionCardsModal(card)"
-              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-              :key="index" class="action_card_hand dynamic_position"
-              :style="{ backgroundColor: 'rgb(235,53,25)', '--order': index + 1, '--quantity': gameStateStore.actionCards.length + 1}">
-              <p>{{ card.name }}</p>
+              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
+              <CardComponent :card="card" :index="index" :length="gameStateStore.actionCards.length" :size="0.4" :dynamic_position="true"/>
             </div>
           </div>
         </div>
@@ -167,169 +158,48 @@ function ready_clicked(){
           <div id="hand_reaction_layout">
             <div v-for="(card, index) in gameStateStore.reactionCards"
               @click="displayReactionCardsModal(card)"
-              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal"
-              :key="index" class="reaction_card_hand dynamic_position"
-              :style="{ backgroundColor: 'rgb(35,35,225)', '--order': index + 1, '--quantity': gameStateStore.reactionCards.length + 1}">
-              <p>{{ card.name }}</p>
+              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
+              <CardComponent :card="card" :index="index" :length="gameStateStore.reactionCards.length" :size="0.4" :dynamic_position="true"/>
             </div>
           </div>
         </div>
       </div>
       <div class="card_dis">
-      </div>
-      <div v-if="showCardModal">
-        <div class="modal_content" :style="{ backgroundColor: ((gameStateStore.actionCards.includes(modalCardData) || shopActionCardNumbers.includes(modalCardData)) ? 'rgb(235,53,25)' : 'rgb(35,35,225)') }">
-          <h2>{{ modalCardData.name }}</h2>
-            <h3>Price: {{ modalCardData.price }}</h3>
-            <div class="description">
-              <h3>Description</h3>
-              <p>{{ modalCardData.description }}</p>
-            </div>
+        <div v-if="showCardModal">
+          <div class="modal_content">
+            <CardComponent :card="modalCardData" :length="1" :size="0.82" :full="true" :price="true"/>
+          </div>
         </div>
       </div>
       
-      <div v-if="showActionCards" class="actionAllCard" @click="hideActionCardsModal()">
-        <h1 class="h1_all_cards">Action cards</h1>
-        <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.actionCards" :key="index" class="action_card_all" 
-          :style="{ backgroundColor: 'rgb(235,53,25)'}">
-            <h2>{{ card.name }}</h2>
-            <div class="description">
-              <h3>Description</h3>
-              <p>{{ card.description }}</p>
-            </div>
-          </div>
-        </div>
+      <div v-if="showActionCards" @click="hideActionCardsModal()">
+        <CardsComponent :cards_tab="gameStateStore.actionCards" :text="'Action cards'"/>
       </div>
 
-      <div v-if="showReactionCards" class="reactionAllCard" @click="hideReactionCardsModal()">        
-        <h1 class="h1_all_cards">Reaction cards</h1>
-        <div class="all_cards">
-          <div v-for="(card, index) in gameStateStore.reactionCards" :key="index" class="reaction_card_all" :style="{ backgroundColor: 'rgb(35,53,225)' }">
-            <h2>{{ card.name }}</h2>
-            <div class="description">
-              <h3>Description</h3>
-              <p>{{ card.description }}</p>
-            </div>
-          </div>
-        </div>
+      <div v-if="showReactionCards" @click="hideReactionCardsModal()">        
+        <CardsComponent :cards_tab="gameStateStore.reactionCards" :text="'Reaction cards'"/>
       </div>
     </div>
   </div>
 </template>
 
 <style>
+.morale{
+  display: flex;
+  gap: 1vw;
+}
+
+.morale_image{
+  width: 2vw;
+  height: auto;
+}
+
+.modal_content{
+  margin-top: 0.5vw;
+}
+
 button:hover{
   color: rgb(138, 35, 35);
-}
-
-.h1_all_cards{
-  color: #ffffff;
-  font-size: 6vw;
-  margin-bottom: -1vw;
-}
-
-.actionAllCard, .reactionAllCard{
-  position: fixed;
-  top: -15vh;
-  left: -10vw;
-  width: 120vw;
-  height: 120vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.all_cards{
-  display: grid;
-  grid-auto-flow: column;
-  scroll-behavior: auto;
-  width: 90vw;
-  height: 19vw;
-  gap: 1vw;
-  overflow-y: auto;
-  overscroll-behavior-inline: contain;
-}
-
-::-webkit-scrollbar {
-  width: 0.6vw;
-}
-     
-::-webkit-scrollbar-track {
-background: rgba(77, 64, 39, 0.551);
-border-radius: 0.2vw;
-box-shadow: 0 0 0.1vw inset;
-}
-     
-::-webkit-scrollbar-thumb {
-  background: rgba(182, 168, 129, 0.747);
-  border-radius: 2vw; 
-}
-
-.action_card_all, .reaction_card_all{
-  scroll-snap-align: start;
-  height: 16vw;
-  width: 11vw;
-  min-width: 5vw;
-  border-radius: 1vw;
-  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
-  font-size: 2vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.modal_content {
-  position: absolute;
-  top: 50%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  padding: 0;
-  border-radius: 0.8vw;
-  box-shadow: 0 0 0.2vw rgba(0, 0, 0, 0.2);
-  text-align: center;
-  z-index: 999;
-  height: 14vw;
-  width: 9vw;
-  font-size: 1vw;
-}
-
-.modal_content h2, .all_cards h2{
-  font-size: 1vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.modal_content h3, .all_cards h3{
-  margin-bottom: 0;
-  margin-top: 0.5vw;
-  font-size: 0.8vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.modal_content p, .all_cards p{
-  text-align: justify;
-  font-size: 0.7vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.choice_type h2{
-  margin: 0.5vw;
-  font-size: 1vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.choice_type h3{
-  margin-bottom: 0;
-  margin-top: 0.5vw;
-  font-size: 0.8vw;
-  font-family: "Venily", Courier, monospace;
-}
-
-.choice_type p{
-  text-align: justify;
-  font-size: 0.7vw;
-  font-family: "Venily", Courier, monospace;
 }
 
 .db {
@@ -355,7 +225,6 @@ box-shadow: 0 0 0.1vw inset;
   background: rgba(126, 126, 126, 0.322);
   border-radius: 1.5vw;
 }
-
 
 #hand{
   border: 0.1vw solid black;
@@ -414,29 +283,11 @@ box-shadow: 0 0 0.1vw inset;
   justify-content: center;
   align-items: center;
   width: 38%;
-  margin-top: 2vw;
+  margin-top: 0.5vw;
 }
 
 #hand_reaction{
-  margin-top: 11vw;
-}
-
-.action_card_hand, .reaction_card_hand{
-  height: 7vw;
-  width: 5vw;
-  min-width: 5vw;
-  border-radius: 0.3vw;
-  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
-  font-size: 0.5vw;
-  transition: 0.25s;
-  cursor: pointer;
-  --card-width: 5;
-  z-index: 1;
-  font-family: "Venily", Courier, monospace;
-}
-
-.action_card_hand p,.reaction_card_hand p{
-  font-size: 1vw;
+  margin-top: 10.5vw;
 }
 
 #action_shop, #reaction_shop{
@@ -450,8 +301,6 @@ box-shadow: 0 0 0.1vw inset;
 
 #hand_action_layout, #hand_reaction_layout{
   width:90%;
-  margin-left: 1vw;
-  position: relative;
   --width: 30;
 }
 
@@ -467,67 +316,7 @@ box-shadow: 0 0 0.1vw inset;
   margin-left: 10%;
 }
 
-.choice_type{
-  height: 15vw;
-  width: 10vw;
-  border-radius: 5%;
-  box-shadow: rgb(87, 87, 87) 0 0 1.5vw;
-  font-size: 3vw;
-  transition: 0.5s;
-  --card-width: 10;
-  font-size: 1vw;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: left;
-}
-
 .red_color{
   color: brown;
 }
-
-.type1:hover{
-  animation: zoomInOut1 0.7s;
-  box-shadow: rgb(0, 0, 0) 0 0 2vw;
-}
-
-.type2:hover{
-  animation: zoomInOut2 0.7s;
-  box-shadow: rgb(0, 0, 0) 0 0 2vw;
-}
-
-.description{
-  margin-top: 2.5vw;
-  width: 90%
-}
-
-.reaction_card_all .action_card_all{
-  width: 80%;
-}
-
-@keyframes zoomInOut1 {
-  0% {
-    transform: scale(1); /* Początkowy rozmiar elementu */
-  }
-  50% {
-    transform: scale(1.3) rotateZ(-10deg); /* Powiększenie do 120% */
-  }
-  100% {
-    transform: scale(1); /* Powrót do początkowego rozmiaru */
-  }
-}
-
-@keyframes zoomInOut2 {
-  0% {
-    transform: scale(1); /* Początkowy rozmiar elementu */
-  }
-  50% {
-    transform: scale(1.2) rotateZ(10deg); /* Powiększenie do 120% */
-  }
-  100% {
-    transform: scale(1); /* Powrót do początkowego rozmiaru */
-  }
-}
-
 </style>
