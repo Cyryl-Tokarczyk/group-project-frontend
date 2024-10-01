@@ -10,14 +10,15 @@ export const useTokensStore = defineStore('tokens', () => {
     tokens.value = t
     saveToLocalStorage()
 
-    console.log(tokens.value['access']);
-    console.log(tokens.value['refresh']);
+    console.log(`ACCESS TOKEN: ${tokens.value['access']}`);
+    console.log(`REFRESH TOKEN: ${tokens.value['refresh']}`);
   }
 
   function loggedOut() {
     removeFromLocalStorage()
     isLoggedIn.value  = false;
     tokens.value = null;
+    saveToLocalStorage()
   }
 
   function saveToLocalStorage() {    

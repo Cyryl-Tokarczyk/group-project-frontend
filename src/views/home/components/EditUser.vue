@@ -146,4 +146,15 @@
   font-family: "Venily", Courier, monospace;
 }
 
+@media (max-width: 770px) {
+  .save_label, .save_input{
+    font-size: 3vw;
+  }
+
+  #save_submit{
+    font-size: 4vw;
+  }
+  
+}
+
 </style>

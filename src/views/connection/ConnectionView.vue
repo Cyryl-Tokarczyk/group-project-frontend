@@ -5,7 +5,7 @@ import ServerAsker from './components/ServerAsker.vue'
 
 <template>
   <div id="connectionView">
-    <div id="emblem">Classroom Chronicles</div>
+    <router-link :to="{ name: 'home' }" id="emblem">Classroom Chronicles</router-link>
     <ServerAsker/>
   </div>
 </template>

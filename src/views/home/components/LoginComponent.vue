@@ -7,7 +7,7 @@ const emit = defineEmits([
 
 const loginError = ref(false)
 
-const userTokenURL = '/api/users/token/'
+const userTokenURL = 'http://localhost:8000/api/tokens/'
 
 const login = ref('')
 const password = ref('')
@@ -63,14 +63,14 @@ async function logIn() {
 }
 
 function logInAsAdmin() {
-  login.value = 'admin@admin.admin'
-  password.value = 'admin'
+  login.value = 'michalski.44@wp.pl'
+  password.value = '123456PIOTR'
 
   logIn()
 }
 
 function logInAsUser() {
-  login.value = 'user@user.user'
+  login.value = 'piuqey.pl@gmail.com'
   password.value = 'user1234'
 
   logIn()
@@ -181,5 +181,21 @@ p{
   font-size: 0.9vw;
   color: #940000d6;
 }
+
+@media (max-width: 770px) {
+  .login_input, p{
+    font-size: 4vw;
+  }
+
+  .debug_button, #sub_button, h3{
+    font-size: 4.5vw;
+  }
+  #sub_button{
+    margin-top: 23vw;
+    margin-bottom: 23vw;
+  }
+  
+}
+
 
 </style>

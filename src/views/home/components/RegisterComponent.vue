@@ -12,7 +12,7 @@ const password = ref('')
 const confirmPassword = ref('')
 
 const userRegisterURL = '/api/users/'
-const userTokenURL = '/api/users/token/'
+const userTokenURL = '/api/tokens/'
 
 async function logIn() {
   console.log(email.value, password.value);
@@ -132,6 +132,17 @@ async function register() {
   margin: 1vw;
   font-size: 2vw;
   font-family: "Venily", Courier, monospace;
+}
+
+@media (max-width: 770px) {
+  .register_label, .register_input, .registration_error{
+    font-size: 3vw;
+  }
+
+  #register_submit{
+    font-size: 3.5vw;
+  }
+  
 }
 
 </style>

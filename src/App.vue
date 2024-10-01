@@ -10,6 +10,10 @@
     document.body.style.backgroundPosition = `${xAxis}vh ${yAxis}vh`;
   }
 
+  window.addEventListener('load', function() {
+    localStorage.clear();
+  });
+
   // Load tokens from local storage
   document.addEventListener('DOMContentLoaded', tokensStore.loadFromLocalStorage);
 </script>

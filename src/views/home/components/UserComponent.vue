@@ -80,4 +80,13 @@ function start_tab(tab, tab_button){
     padding: 0;
 }
 
+@media (max-width: 770px) {
+
+  .tab_button{
+    font-size: 2.5vw;
+    margin-right: 2vw;
+  }
+
+}
+
 </style>

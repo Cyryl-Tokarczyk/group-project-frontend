@@ -17,13 +17,13 @@
     }
 
     try {
-      const gameUserURL = '/api/users/api/archives/?username=' + userDetailsStore.username
+      const gameUserURL = '/api/archives/?username=' + userDetailsStore.username
       const response = await fetch(gameUserURL, requestOptions);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      games.value = data
+      games.value = data.results
       console.log(data); // Tu możesz przetwarzać otrzymane dane
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
@@ -50,7 +50,6 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Length</th>
           <th>Date</th>
           <th>Student</th>
           <th>Teacher</th>
@@ -58,9 +57,8 @@
       </thead>
       <tbody>
         <tr v-for="(game, index) in games" :key="index" :class="getRowClass(game)">
-          <td>{{ index }}</td>
-          <td>{{ game.lenght_in_sec }} s<section></section></td>
-          <td>{{ game.start_date }}<br>{{ game.start_time }}</td>
+          <td>{{ index + 1}}</td>
+          <td>{{ game.start_date }}</td>
           <td>{{ game.student_player.username }}</td>
           <td>{{ game.teacher_player.username }}</td>
         </tr>
@@ -70,52 +68,62 @@
 </template>
 
 <style>
-  #my_games_header{
-    margin: 0.7vw;
+#my_games_header{
+  margin: 0.7vw;
+}
+
+.container {
+  width: 90%;
+  height: 90%;
+  overflow-x: auto;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse:initial;
+  font-size: 0.7vw;
+  margin-bottom: 1vw;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  height: 1vw;
+  background: #828282;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  font-size: 1vw;
+}
+
+.table th, .table td {
+  border: 0.1vw solid #000000;
+  text-align: center;
+  font-size: 1vw;
+}
+
+.scrollable-body {
+  display: block;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.winner-row {
+  background-color: #30ff6022;
+}
+
+.loser-row {
+  background-color: #ff2a3c3e;
+}
+
+@media (max-width: 770px) {
+
+  .table thead th, .table td{
+    font-size: 2vw;
   }
 
-  .container {
-    width: 90%;
-    height: 90%;
-    overflow-x: auto;
-    display: flex;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-  }
+}
 
-  .table {
-    width: 100%;
-    border-collapse:initial;
-    font-size: 0.7vw;
-    margin-bottom: 1vw;
-  }
-
-  .table thead th {
-    position: sticky;
-    top: 0;
-    background: #828282;
-    color: rgb(0, 0, 0);
-    z-index: 1;
-  }
-
-  .table th, .table td {
-    border: 0.1vw solid #000000;
-    text-align: center;
-  }
-
-  .scrollable-body {
-    display: block;
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-
-  .winner-row {
-    background-color: #30ff6022;
-  }
-
-  .loser-row {
-    background-color: #ff2a3c3e;
-  }
-  
 </style>

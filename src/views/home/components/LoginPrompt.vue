@@ -50,4 +50,10 @@ function register() {
   font-family: "Venily", Courier, monospace;
 }
 
+@media (max-width: 770px) {
+  .reglog{
+    font-size: 4vw;
+  }
+}
+
 </style>

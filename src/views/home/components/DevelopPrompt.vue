@@ -3,9 +3,9 @@
 
 <template>
     <div class="paper">
-        <div id="devPrompt">
+        <h3>
             Develop
-        </div>
+        </h3>
         <div>
             <router-link :to="{ name: 'dev' }" class="link">Develop</router-link>
         </div>

@@ -14,7 +14,7 @@ const left_board = ref(null)
 const right_board = ref(null)
 const opponent =  ref('')
 
-const gameTokenURL = '/api/game/game_token/'
+const gameTokenURL = 'http://localhost:8000/game/game_token/'
 
 const gameToken = ref('')
 
@@ -39,6 +39,7 @@ async function choosePlayerType(type) {
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
+    mode: 'no-cors',
     headers: { 'Authorization': 'Bearer ' + tokensStore.tokens['access'] },
   }
 
