@@ -12,7 +12,7 @@ const settings = ref(null)
 const notebook = ref(null)
 const game = ref(null)
 const tokensStore = useTokensStore()
-const refs = [login,settings,game,dev]
+const refs = [login, settings, game, dev]
 
 function hoverButton(tab){
   if (tab) {
@@ -34,12 +34,19 @@ function chooseTab(tab){
   } else{
     if (tab) {
       tab.classList.remove('tabOpen');
+      tab.classList.remove('tabNotSelect');
       tab.classList.add('tabSelect');
       notebook.value.classList.add('x');
     }
     refs.forEach(element => {
       if (tab != element.value){
-        element.value.classList.remove('tabSelect');
+        if (element.value.classList.contains('tabSelect')) {
+          element.value.classList.remove('tabSelect');
+          element.value.classList.add('tabNotSelect');
+          element.value.addEventListener('animationend', () => {
+            element.value.classList.remove('tabNotSelect');
+          }, { once: true });
+        }
       }
     });
   }
@@ -53,11 +60,11 @@ function chooseTab(tab){
       <div id="cover">
         <h1 id="notbook_title">Classroom Chronicles</h1>
         <div id="line">
-          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="!tokensStore.isLoggedIn">Login</button>
-          <button @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="tokensStore.isLoggedIn">User</button>
-          <button @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
-          <button @mouseover="hoverButton(dev)" @mouseleave="resetTransform(dev)" @click="chooseTab(dev)">Develop</button>
-          <button @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)" v-if="tokensStore.isLoggedIn">Game</button>
+          <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="!tokensStore.isLoggedIn">Login</button>
+          <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="tokensStore.isLoggedIn">User</button>
+          <button class="notebook_button" @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
+          <button class="notebook_button" @mouseover="hoverButton(dev)" @mouseleave="resetTransform(dev)" @click="chooseTab(dev)">Develop</button>
+          <button class="notebook_button" @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)" v-if="tokensStore.isLoggedIn">Game</button>
         </div>
       </div>
 
@@ -165,6 +172,92 @@ button{
 .tabSelect{
   transform: translateX(37.5vw);
   z-index: -2;
+}
+
+@media (max-width: 770px) {
+  #homeView {
+    height: 80vh;
+  }
+
+  #notebook{
+    width: 45vh;
+    height: auto;
+    aspect-ratio: 45 / 65;
+    max-width: 70vw; 
+    top: 17.5vh;
+    left: 10vw;
+  }
+
+  #cover{
+    font-size: 4.5vw;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: flex-end; 
+  }
+
+  #line{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 10%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #cover h1{
+    margin: 0;
+    padding: 7vw;
+  }
+
+  .notebook_button{
+    font-size: 4.5vw;
+    margin: auto;
+    padding: 0;
+  }
+
+  .tabOpen{
+    transform: translateY(-12vw);
+  }
+  
+  .tabSelect{
+    animation: bounceRight 0.75s ease-in-out forwards;
+  }
+
+  .tabNotSelect {
+    animation: bounceLeft 0.75s ease-in-out forwards;
+  }
+
+  .x{
+    transform: translateY(-15vw);
+  }
+
+  @keyframes bounceRight {
+    0% {
+      transform: translateX(0);
+    }
+    30% {
+      transform: translateX(50vw)rotateZ(5deg)
+    }
+    50%{
+      z-index: 2;
+    }
+    100% {
+      transform: translateY(15vw);
+      z-index: 2;
+    }
+  }
+
+  @keyframes bounceLeft {
+    0% {
+      transform: translateX(0);
+      z-index: 2;
+    }
+    30% {
+      transform: translateX(-50vw)rotateZ(-5deg);
+      z-index: 2;
+    }
+  }
+
 }
 
 </style>

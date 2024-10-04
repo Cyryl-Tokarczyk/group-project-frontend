@@ -56,7 +56,7 @@
 
 <template>
   <div id="usercom">
-    <h2>User</h2>
+    <h3>User</h3>
     <table id="userDetailsTable">
       <tr>
         <td>Username</td>
@@ -75,7 +75,7 @@
         <td id="winCell"><span ref="win"></span></td>
       </tr>
     </table>
-    <span class="bio_span" ref="bio"></span>
+    <span class="bio_span" v-if="bio">{{ bio }}</span>
     <button id="log_out_button" @click="logOut()">Logout</button>
   </div>
 </template>
@@ -116,6 +116,18 @@ td{
   width: 84%;
   padding: 2%;
   border: 0.3vw groove rgba(0, 0, 0, 0.424);
+}
+
+@media (max-width: 770px) {
+
+  td, .bio_span{
+    font-size: 3vw;
+  }
+
+  #log_out_button{
+    font-size: 4vw;
+  }
+
 }
 
 </style>

@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <p>Settings</p>
+    <h3>Settings</h3>
 </template>
 
 <style>

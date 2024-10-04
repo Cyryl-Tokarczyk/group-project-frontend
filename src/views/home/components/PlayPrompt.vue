@@ -3,30 +3,35 @@
 
 <template>
     <div class="paper">
-        <div id="gamePrompt">
+        <h3>
             Game
-        </div>
-        <div>
-            <router-link :to="{ name: 'connection' }" class="link">Play</router-link>
+        </h3>
+        <div class="play_link">
+            <router-link :to="{ name: 'connection' }" class="link_hover">Play</router-link>
         </div>
     </div>
 
 </template>
 
 <style>
-
-#gamePrompt{
-    margin-top: 2vw;
-    margin-bottom: 10vw;
-}
-
-.link{
-    transition: 0.3s;
+.play_link{
     font-size: 3.5vw;
+    margin-top: 10vw;
 }
 
-.link:hover{
+.link_hover:hover{
     color: rgb(142, 0, 0);
+    transition: 0.3s;
 }
+
+@media (max-width: 770px) {
+
+  .play_link{
+    font-size: 15vw;
+    margin-top: 30vw;
+  }
+
+}
+
 
 </style>
