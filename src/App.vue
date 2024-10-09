@@ -1,14 +1,29 @@
 <script setup>
   import { useTokensStore } from '@/stores/tokens';
+  import { useSettingsStore } from '@/stores/settings';
+  import { watch } from 'vue';
   const tokensStore = useTokensStore()
+  const settingsStore = useSettingsStore();
 
   document.addEventListener("mousemove", parallax);
+
   function parallax(e){
     const xAxis = (window.innerWidth / 2 - e.pageX)/400;
     const yAxis = (window.innerHeight / 2 - e.pageY)/800;
     document.body.style.transform = `translateX(${xAxis}vw) translateY(${yAxis}vw)`;
     document.body.style.backgroundPosition = `${xAxis}vh ${yAxis}vh`;
   }
+
+  watch(() => settingsStore.parallax, (newValue) => {
+    console.log("Parallax turned off 2")
+    if (newValue) {
+      document.addEventListener('mousemove', parallax);  // Aktywujemy parallax
+    } else {
+      document.removeEventListener('mousemove', parallax);  // Dezaktywujemy parallax
+      document.body.style.transform = '';  // Resetujemy transformację
+      document.body.style.backgroundPosition = '';  // Resetujemy pozycję tła
+    }
+  });
 
   window.addEventListener('load', function() {
     localStorage.clear();
@@ -27,7 +42,7 @@
 .home_link{
   font-size: 10vw;
   position: absolute;
-  z-index: -100;
+  z-index: -10;
 }
 
 #app {

@@ -4,7 +4,7 @@ import SettingsPrompt from './components/SettingsPrompt.vue'
 import PlayPrompt from './components/PlayPrompt.vue'
 import DevelopPrompt from './components/DevelopPrompt.vue'
 import { useTokensStore } from '@/stores/tokens';
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 
 const login = ref(null)
 const dev = ref(null)
@@ -13,6 +13,13 @@ const notebook = ref(null)
 const game = ref(null)
 const tokensStore = useTokensStore()
 const refs = [login, settings, game, dev]
+
+
+const emit = defineEmits(['updateParallax']);
+
+function updateParallax(newValue) {
+  emit('updateParallax', newValue);  // Emitujemy zmiany do App.vue
+}
 
 function hoverButton(tab){
   if (tab) {
@@ -72,7 +79,7 @@ function chooseTab(tab){
         <LoginPrompt/>
       </div>
       <div id="setings" ref="settings"  class="tab">
-        <SettingsPrompt/>
+        <SettingsPrompt :parallaxActive="parallaxActive" @updateParallax="updateParallax"/>
       </div>
       <div id="dev" ref="dev"  class="tab">
         <DevelopPrompt/>
@@ -92,6 +99,9 @@ function chooseTab(tab){
   height: 50vw;
   box-shadow: 0 0 2vw;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .x{
@@ -119,7 +129,6 @@ function chooseTab(tab){
   border-bottom-right-radius: 1.5vw;
   border-top-right-radius: 1.5vw;
   position: absolute;
-  top: 15%;
   right: 37.5vw;
   transition: 0.5s;
 }
@@ -174,22 +183,24 @@ button{
   z-index: -2;
 }
 
+h2{
+  font-size: 2vw;
+}
+
 @media (max-width: 770px) {
   #homeView {
-    height: 80vh;
+    height: 90vh;
   }
 
   #notebook{
-    width: 45vh;
-    height: auto;
-    aspect-ratio: 45 / 65;
-    max-width: 70vw; 
-    top: 17.5vh;
-    left: 10vw;
+    width: 70vmin;
+    height: 95vmin;
+    max-width: 70vw;
+    right: auto;
   }
 
   #cover{
-    font-size: 4.5vw;
+    font-size: 4.5vmin;
     flex-direction: column-reverse;
     align-items: center;
     justify-content: flex-end; 
@@ -206,17 +217,17 @@ button{
 
   #cover h1{
     margin: 0;
-    padding: 7vw;
+    padding: 4vmin;
   }
 
   .notebook_button{
-    font-size: 4.5vw;
+    font-size: 4.5vmin;
     margin: auto;
     padding: 0;
   }
 
   .tabOpen{
-    transform: translateY(-12vw);
+    transform: translateY(-10vmin);
   }
   
   .tabSelect{
@@ -228,21 +239,26 @@ button{
   }
 
   .x{
-    transform: translateY(-15vw);
+    transform: translateY(-10vmin);
+  }
+
+  h2{
+    font-size: 4vw;
   }
 
   @keyframes bounceRight {
     0% {
       transform: translateX(0);
+      transform: translateY(-10vmin);
     }
     30% {
-      transform: translateX(50vw)rotateZ(5deg)
+      transform: translateX(70vmin)rotateZ(5deg)
     }
     50%{
       z-index: 2;
     }
     100% {
-      transform: translateY(15vw);
+      transform: translateY(9.5vmin);
       z-index: 2;
     }
   }
@@ -250,11 +266,15 @@ button{
   @keyframes bounceLeft {
     0% {
       transform: translateX(0);
+      transform: translateY(9.5vmin);
       z-index: 2;
     }
     30% {
-      transform: translateX(-50vw)rotateZ(-5deg);
+      transform: translateX(-70vmin)rotateZ(-5deg);
       z-index: 2;
+    }
+    50% {
+      z-index: -2;
     }
   }
 

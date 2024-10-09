@@ -52,7 +52,7 @@ function register() {
 
 @media (max-width: 770px) {
   .reglog{
-    font-size: 4vw;
+    font-size: 2vmin;
   }
 }
 

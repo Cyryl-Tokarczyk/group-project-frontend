@@ -80,7 +80,7 @@ function logInAsUser() {
 
 <template>
   <div class="paper">
-    <h3>Log in</h3>
+    <h2>Log in</h2>
     <form @submit.prevent="logIn" novalidate>
       <div class="form_content">
         <div class="inputs">
@@ -143,6 +143,7 @@ form{
 
 .inputs{
   display: block;
+  margin-top: 1vw;
 }
 
 .underline{
@@ -166,11 +167,10 @@ p{
 }
 
 #sub_button{
-  border: transparent;
   background: transparent;
   transition: 0.5s;
   font-family: "Venily", Courier, monospace;
-  margin-top: 6vw;
+  margin-top: 10vw;
 }
 
 #sub_button:hover{
@@ -184,15 +184,16 @@ p{
 
 @media (max-width: 770px) {
   .login_input, p{
-    font-size: 4vw;
+    font-size: 2.5vmin;
   }
 
   .debug_button, #sub_button, h3{
-    font-size: 4.5vw;
+    font-size: 2.5vmin;
   }
+
   #sub_button{
-    margin-top: 23vw;
-    margin-bottom: 23vw;
+    margin-top: 13vmin;
+    margin-bottom: 13vmin;
   }
   
 }
