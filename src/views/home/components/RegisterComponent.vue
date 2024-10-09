@@ -79,7 +79,7 @@ async function register() {
 
 <template>
   <div class="paper">
-    <h3>Register</h3>
+    <h2>Register</h2>
     <form id="registrationForm" @submit.prevent="register">
       <label class="register_label" for="username">Username:</label><br>
       <input class="register_input" type="text" id="username" name="username" v-model="username" required>
@@ -136,11 +136,11 @@ async function register() {
 
 @media (max-width: 770px) {
   .register_label, .register_input, .registration_error{
-    font-size: 3vw;
+    font-size: 2vmin;
   }
 
   #register_submit{
-    font-size: 3.5vw;
+    font-size: 2vmin;
   }
   
 }

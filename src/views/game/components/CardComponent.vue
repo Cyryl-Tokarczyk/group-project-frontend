@@ -107,7 +107,7 @@ const valueImages = {
         </div>
       </div>
       <div class="card_img">
-        <img :src='"http://localhost:8000/media/card_images/example.png"' :alt="' image'" class="card_image">
+        <img :src='props.card["image"]' :alt="' image'" class="card_image">
       </div>
       <div class="card_stats">
         <div class="values" v-if="Object.keys(values).length"  :style="{'--value_quantity': Object.keys(values).length}">

@@ -3,14 +3,11 @@
 
 <template>
     <div class="paper">
-        <h3>
-            Game
-        </h3>
+        <h2>Game</h2>
         <div class="play_link">
             <router-link :to="{ name: 'connection' }" class="link_hover">Play</router-link>
         </div>
     </div>
-
 </template>
 
 <style>

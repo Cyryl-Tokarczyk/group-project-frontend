@@ -14,9 +14,8 @@ import ServerAsker from './components/ServerAsker.vue'
 #connectionView {
   background-image: url(@/assets/imgs/wall.jpg);
   background-size: 40vw;
-  width: 200vw;
-  height: 200vh;
-  margin-top: -50vh;
+  width: 150vw;
+  height: 150vh;
   box-shadow: 0vw 0vw 2vw;
   display: flex;
   align-items: center;
@@ -25,9 +24,9 @@ import ServerAsker from './components/ServerAsker.vue'
 }
 
 #emblem{
-  width: 15vw;
-  height: 6vw;
-  font-size: 2vw;
+  width: 25vmin;
+  height: 12vmin;
+  font-size: 3.5vmin;
   background-image: url("@/assets/imgs/paper.jpg");
   background-size: cover;
   display: flex;
@@ -35,9 +34,10 @@ import ServerAsker from './components/ServerAsker.vue'
   justify-content: center;
   text-align: center;
   position: absolute;
-  top: 4vh;
-  border: 0.5vw ridge rgb(149, 152, 0);
-  box-shadow: 0 0 1vw;
+  top: 5vmin;
+  border: 0.5vmin ridge rgb(149, 152, 0);
+  box-shadow: 0 0 1vmin;
+  z-index: 1;
 }
 
 </style>

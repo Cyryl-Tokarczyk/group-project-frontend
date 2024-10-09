@@ -2,23 +2,13 @@
 </script>
 
 <template>
-    <div class="paper">
-        <h3>
-            Develop
-        </h3>
-        <div>
-            <router-link :to="{ name: 'dev' }" class="link">Develop</router-link>
-        </div>
+    <h2>Develop</h2>
+    <div>
+        <router-link :to="{ name: 'dev' }" class="link">Develop</router-link>
     </div>
-
 </template>
 
 <style>
-
-#devPrompt{
-    margin-top: 2vw;
-    margin-bottom: 10vw;
-}
 
 .link{
     transition: 0.3s;

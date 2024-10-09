@@ -32,7 +32,7 @@ async function choosePlayerType(type) {
     console.log(!playerTypeChosen.value);
     console.log(gameToken.value);
 
-    socketStore.connect('ws://localhost:8080/api/ws/game/' + type + '/?token=' + gameToken.value)
+    socketStore.connect('ws://localhost:8080/ws/game/' + type + '/?token=' + gameToken.value)
   }, 1000);
 }
 
@@ -89,12 +89,12 @@ onMounted(() => {
 <style scoped>
 
 .server-asker{
-  margin-top: 5%;
   width: 80vw;
-  height: 25vw;
+  height: 50vmin;
   position: absolute;
-  top: 11vh;
-  right: 10.2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .board_spinner{
@@ -135,8 +135,6 @@ onMounted(() => {
   font-family: "DK", Courier, monospace;
 }
 
-
-
 .back{
   width: 100%;
   height: 100%;
@@ -168,8 +166,6 @@ onMounted(() => {
   font-family: "DK", Courier, monospace;
 }
 
-
-
 .left_board, .right_board{
   transition: transform 0.5s;
   width: 25%;
@@ -188,8 +184,8 @@ onMounted(() => {
 
 .left_board{
   transform-origin: right;
-
 }
+
 .right_board{
   transform-origin: left;
 }
@@ -211,8 +207,52 @@ span{
   transform: rotateY(-180deg);
 }
 
-
 button:hover span{
   width: 10vw;
 }
+
+@media (max-width: 770px) {
+  .board{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .server-asker{
+    width: 80vmin;
+    height: 80vmin;
+  }
+
+  .left_board_animation{
+    transform: rotateX(-180deg);
+  }
+
+  .right_board_animation{
+    transform: rotateX(180deg);
+  }
+
+  .middle_board {
+    height: 100%;
+    width: 100%;
+  }
+
+  .left_board{
+    transform-origin: bottom;
+  }
+
+  .right_board{
+    transform-origin: top;
+  }
+
+  .right_board, .left_board{
+    width: 100%;
+    height: 50%;
+  }
+
+  .left, .right {
+    font-size: 5vmin;
+  }
+  
+}
+
 </style>

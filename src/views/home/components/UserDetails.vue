@@ -7,7 +7,7 @@
   const userDetailsStore = useUserDetailsStore();
   const mail = ref(null);
   const username = ref(null);
-  const bio = ref(null);
+  const showBio = ref(false);
   const win = ref(null);
   const game = ref(null);
 
@@ -42,11 +42,12 @@
     userDetailsStore.username = data.username
     mail.value.textContent = data.email
     userDetailsStore.email = data.email
-    bio.value.textContent = data.bio
-    userDetailsStore.bio = data.bio
     game.value.textContent = data.games_played
     win.value.textContent = Math.ceil(data.games_won / (data.games_played == 0 ? 1 : data.games_played) * 100) + '%'
-
+    userDetailsStore.bio = data.bio
+    if(data.bio != ""){
+      showBio.value = true;
+    }
 
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
@@ -75,7 +76,7 @@
         <td id="winCell"><span ref="win"></span></td>
       </tr>
     </table>
-    <span class="bio_span" v-if="bio">{{ bio }}</span>
+    <span class="bio_span" v-if="showBio">{{ userDetailsStore.bio }}</span>
     <button id="log_out_button" @click="logOut()">Logout</button>
   </div>
 </template>
