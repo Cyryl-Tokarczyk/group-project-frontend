@@ -3,8 +3,15 @@ import CardComponent from './CardComponent.vue'
 
 const props = defineProps([
   'cards_tab',
-  'text'
+  'text', 
+  'card_choose'
 ])
+
+const emit = defineEmits(['card-clicked']);
+
+const handleClick = (card, index) => {
+  emit('card-clicked', card, index);
+};
 </script>
 
 <template>
@@ -12,7 +19,7 @@ const props = defineProps([
     <h1><span v-text="props.text"></span></h1>
     <div class="all_cards">
       <div v-for="(card, index) in props.cards_tab" :key="index">
-        <CardComponent :card="card" :index="index" :size="1" :full="true"/>
+        <CardComponent @click="handleClick(card, index)" :card="card" :index="index" :size="1" :full="true"/>
       </div>
     </div>
   </div>

@@ -21,9 +21,9 @@ const playerTypeColor = {
 };
 
 const typeColor = {
-  Brute: 'rgb(148, 86, 86)',
-  Intelligence: 'rgb(86, 108, 148)',
-  Action: 'rgb(206, 211, 158)',
+  Brute: 'rgb(212, 86, 86)',
+  Intelligence: 'rgb(86, 108, 198)',
+  Action: 'rgb(150, 240, 158)',
 };
 
 // Define props

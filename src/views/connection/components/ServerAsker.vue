@@ -32,14 +32,13 @@ async function choosePlayerType(type) {
     console.log(!playerTypeChosen.value);
     console.log(gameToken.value);
 
-    socketStore.connect('ws://localhost:8080/ws/game/' + type + '/?token=' + gameToken.value)
+    socketStore.connect('ws://localhost:8000/ws/game/' + type + '/?token=' + gameToken.value)
   }, 1000);
 }
 
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
-    mode: 'no-cors',
     headers: { 'Authorization': 'Bearer ' + tokensStore.tokens['access'] },
   }
 
