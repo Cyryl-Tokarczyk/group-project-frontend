@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "enumify": "^2.0.0",
+    "group-project-frontend": "file:",
     "jwt-decode": "^4.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.3.8",
