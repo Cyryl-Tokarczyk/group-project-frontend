@@ -39,8 +39,11 @@ async function choosePlayerType(type) {
 async function getGameToken() {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + tokensStore.tokens['access'] },
+    headers: { Authorization: 'Bearer ' + tokensStore.tokens['access'] },
   }
+
+  console.log(requestOptions);
+  
 
   await fetch(gameTokenURL, requestOptions)
     .then(r => {
