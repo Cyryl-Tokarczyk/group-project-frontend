@@ -122,9 +122,8 @@ function logInAsUser() {
   display: block;
   background: transparent;
   font-family: "Venily", Courier, monospace;
-  border: transparent;
-  width: 100%;
-  outline: none;
+  border: 0.05vw solid rgb(107, 107, 107);
+  border-radius: 0.3vw;
   font-size: 1.2vw;
 }
 
@@ -151,7 +150,6 @@ form{
   width: 100%;
   height: 0.1vw;
   transition: 0.2s;
-  margin-bottom: 1.5vw;
 }
 
 .underlineError{
@@ -170,7 +168,7 @@ p{
   background: transparent;
   transition: 0.5s;
   font-family: "Venily", Courier, monospace;
-  margin-top: 10vw;
+  margin-top: 7vw;
 }
 
 #sub_button:hover{

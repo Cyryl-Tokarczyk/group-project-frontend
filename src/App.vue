@@ -1,10 +1,11 @@
 <script setup>
   import { useTokensStore } from '@/stores/tokens';
   import { useSettingsStore } from '@/stores/settings';
-  import { watch } from 'vue';
+  import { onMounted, watch } from 'vue';
   const tokensStore = useTokensStore()
   const settingsStore = useSettingsStore();
 
+  const isMobile = window.matchMedia("(pointer: coarse)").matches;
   document.addEventListener("mousemove", parallax);
 
   function parallax(e){
@@ -15,13 +16,12 @@
   }
 
   watch(() => settingsStore.parallax, (newValue) => {
-    console.log("Parallax turned off 2")
-    if (newValue) {
-      document.addEventListener('mousemove', parallax);  // Aktywujemy parallax
+    if (newValue && !isMobile) {
+      document.addEventListener('mousemove', parallax);
     } else {
-      document.removeEventListener('mousemove', parallax);  // Dezaktywujemy parallax
-      document.body.style.transform = '';  // Resetujemy transformację
-      document.body.style.backgroundPosition = '';  // Resetujemy pozycję tła
+      document.removeEventListener('mousemove', parallax);
+      document.body.style.transform = '';
+      document.body.style.backgroundPosition = '';
     }
   });
 
@@ -29,6 +29,12 @@
     localStorage.clear();
   });
 
+  onMounted(() => {
+    if (isMobile) {
+        console.log("Parallax is disabled on mobile devices.");
+        document.removeEventListener('mousemove', parallax);
+      }
+  })
   // Load tokens from local storage
   document.addEventListener('DOMContentLoaded', tokensStore.loadFromLocalStorage);
 </script>
@@ -42,7 +48,7 @@
 .home_link{
   font-size: 10vw;
   position: absolute;
-  z-index: -10;
+  z-index: -2;
 }
 
 #app {

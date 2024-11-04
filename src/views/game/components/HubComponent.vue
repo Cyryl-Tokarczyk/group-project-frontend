@@ -53,7 +53,14 @@ onMounted(() => {
 //   window.removeEventListener('resize', updateWindowWidth);
 // });
 
-function moveToActionHand(card, index) {
+const showShopActionCards = ref(false)
+const showShopReactionCards = ref(false)
+
+function moveToActionHand(card, index, slimViewBuy) {
+  if(slimView.value && !slimViewBuy){
+    showShopActionCards.value = true
+    return
+  }
 
   if (gameStateStore.money >= card.price) {
     console.log("Card chosen: " + JSON.stringify(card));
@@ -72,7 +79,11 @@ function moveToActionHand(card, index) {
   }
 }
 
-function moveToReactionHand(card, index){
+function moveToReactionHand(card, index, slimViewBuy){
+  if(slimView.value && !slimViewBuy){
+    showShopReactionCards.value = true
+    return
+  }
 
   if (gameStateStore.money >= card.price) {
     shopReactionCardNumbers.value.splice(index, 1);
@@ -112,6 +123,10 @@ function displayActionCardsModal(){
 
 function hideActionCardsModal(){
   showActionCards.value = false;
+  if(cardBought.value == false){
+    showShopActionCards.value = false;
+  }
+  cardBought.value = false
 }
 
 const showReactionCards = ref(false);
@@ -122,6 +137,10 @@ function displayReactionCardsModal(){
 
 function hideReactionCardsModal(){
   showReactionCards.value = false;
+  if(cardBought.value == false){
+    showShopReactionCards.value = false;
+  }
+  cardBought.value = false
 }
 
 function ready_clicked(){
@@ -129,9 +148,19 @@ function ready_clicked(){
   emit('ready');
 }
 
-const handleCardClick = (card, index) => {
+const handleActionShopCardClick = (card, index) => {
+  moveToActionHand(card, index, true)
+  cardBought.value = true
   console.log('Kliknięto kartę:', card, 'o indeksie:', index);
 };
+
+const handleReactionShopCardClick = (card, index) => {
+  moveToReactionHand(card, index, true)
+  cardBought.value = true
+  console.log('Kliknięto kartę:', card, 'o indeksie:', index);
+};
+
+const cardBought = ref(false)
 
 </script>
 
@@ -142,7 +171,7 @@ const handleCardClick = (card, index) => {
       <div id="action_shop">
         <div id="action_shop_layout">
           <div v-for="(card, index) in shopActionCardNumbers" :key="index"
-          @click="moveToActionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
+          @click="moveToActionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
             <CardComponent :card="card" :index="index" :length="shopActionCardNumbers.length" :size="computedSize" :full="1" :dynamic_position="true" :price="true"/>
           </div>
         </div>  
@@ -150,7 +179,7 @@ const handleCardClick = (card, index) => {
       <div id="reaction_shop">
         <div id="reaction_shop_layout">
           <div v-for="(card, index) in shopReactionCardNumbers" :key="index"
-          @click="moveToReactionHand(card, index)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
+          @click="moveToReactionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
           <CardComponent :card="card" :index="index" :length="shopReactionCardNumbers.length" :size="computedSize" :full="true" :dynamic_position="true" :price="true"/>
           </div>
         </div>
@@ -167,7 +196,7 @@ const handleCardClick = (card, index) => {
           <img src="@/assets/imgs/coin.png" :alt="'morale image'" class="morale_image">
           {{ gameStateStore.money }}
         </div>
-        <button @click="ready_clicked" ref="ready_button">READY</button>
+        <button @click="ready_clicked" ref="ready_button" class="ready_button">READY</button>
       </div>
       <div id="hand">
         <div id="hand_action">
@@ -175,7 +204,7 @@ const handleCardClick = (card, index) => {
             <div v-for="(card, index) in gameStateStore.actionCards"
               @click="displayActionCardsModal(card)"
               @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
-              <CardComponent :card="card" :index="index" :length="gameStateStore.actionCards.length" :size="0.8" :dynamic_position="true"/>
+              <CardComponent :card="card" :index="index" :length="gameStateStore.actionCards.length" :size="computedSize/2" :dynamic_position="true"/>
             </div>
           </div>
         </div>
@@ -184,7 +213,7 @@ const handleCardClick = (card, index) => {
             <div v-for="(card, index) in gameStateStore.reactionCards"
               @click="displayReactionCardsModal(card)"
               @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
-              <CardComponent :card="card" :index="index" :length="gameStateStore.reactionCards.length" :size="0.8" :dynamic_position="true"/>
+              <CardComponent :card="card" :index="index" :length="gameStateStore.reactionCards.length" :size="computedSize/2" :dynamic_position="true"/>
             </div>
           </div>
         </div>
@@ -198,11 +227,19 @@ const handleCardClick = (card, index) => {
       </div>
       
       <div v-if="showActionCards" @click="hideActionCardsModal()">
-        <CardsComponent :cards_tab="gameStateStore.actionCards" :text="'Action cards'" @card-clicked="handleCardClick"/>
+        <CardsComponent :cards_tab="gameStateStore.actionCards" :text="'Action cards'"/>
       </div>
 
       <div v-if="showReactionCards" @click="hideReactionCardsModal()">        
-        <CardsComponent :cards_tab="gameStateStore.reactionCards" :text="'Reaction cards'" @card-clicked="handleCardClick"/>
+        <CardsComponent :cards_tab="gameStateStore.reactionCards" :text="'Reaction cards'"/>
+      </div>
+
+      <div v-if="showShopActionCards" @click="hideActionCardsModal()">
+        <CardsComponent :cards_tab="shopActionCardNumbers" :text="'Action cards'" @card-clicked="handleActionShopCardClick"/>
+      </div>
+
+      <div v-if="showShopReactionCards" @click="hideReactionCardsModal()">        
+        <CardsComponent :cards_tab="shopReactionCardNumbers" :text="'Reaction cards'" @card-clicked="handleReactionShopCardClick"/>
       </div>
     </div>
   </div>
@@ -212,11 +249,23 @@ const handleCardClick = (card, index) => {
 .morale{
   display: flex;
   gap: 1vw;
+  font-size: 2.5vw;
+}
+
+.ready_button{
+  font-size: 2.5vw;
+  margin-bottom: -1vw;
 }
 
 .morale_image{
-  width: 2vw;
+  width: 3vw;
   height: auto;
+}
+
+.money{
+  display: flex;
+  gap: 1vw;
+  font-size: 2.5vw;
 }
 
 .modal_content{
@@ -239,6 +288,8 @@ button:hover{
   flex-direction: column;
   align-items: center;
   background-image: url(@/assets/imgs/paper.jpg);
+  justify-content: center;
+  align-items: center;
 }
 
 .card_dis{
@@ -309,6 +360,7 @@ button:hover{
   align-items: center;
   width: 38%;
   margin-top: 0.5vw;
+  margin-left: 2vw;
 }
 
 #hand_reaction{
@@ -326,7 +378,7 @@ button:hover{
 
 #hand_action_layout, #hand_reaction_layout{
   width:90%;
-  --width: 30;
+  --width: 32;
 }
 
 #reaction_shop_layout, #action_shop_layout{
@@ -346,12 +398,14 @@ button:hover{
 }
 
 #event h1{
-  font-size: 10vmin;
+  font-size: 3vw;
+  margin-top: -42vw;
 }
 
 @media (max-width: 770px) {
   #event h1{
     font-size: 10vmin;
+    margin-top: 0;
   }
 
   #event{
@@ -418,21 +472,50 @@ button:hover{
     height: 40vmin;
     margin-top: 5vmin;
     margin-bottom: 5vmin;
+    display: flex;
+    flex-direction: column;
   }
 
-    #hand_action, #hand_reaction{
+  #hand_action, #hand_reaction{
     --width: 75;
-    position: absolute;
     display: flex;
+    position: relative;
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
-    width: 38%;
-    height: 50%;
-    margin-top: 0.5vw;
+    width: 100%;
+    height: 100%;
+    margin-top: 0vw;
+    margin-left: 10vmin;
   }
 
+  #hand_action_layout, #hand_reaction_layout{
+    margin-top: -18vmin;
+    width:90%;
+    --width: 70;
+  } 
 
+  .morale{
+    display: flex;
+    gap: 1vw;
+    font-size: 5vmin;
+  }
+
+  .ready_button{
+    font-size: 5vmin;
+    margin-bottom: -1vw;
+  }
+
+  .morale_image{
+    width: 5vmin;
+    height: auto;
+  }
+
+  .money{
+    display: flex;
+    gap: 1vw;
+    font-size: 5vmin;
+  }
 }
 
 </style>

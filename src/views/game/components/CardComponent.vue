@@ -42,6 +42,8 @@ const card_background = ref();
 onMounted(() => {
   if (props.dynamic_position) {
     card_ref.value.classList.add('dynamic_position');
+  } else{
+    card_ref.value.classList.add('no_dynamic_position');
   }
 
   if(typeColor[props.card['type']]){
@@ -127,7 +129,7 @@ const valueImages = {
         <h2>{{ props.card["name"] }}</h2>
       </div>
       <div class="card_img_simple">
-        <img :src='"http://localhost:8000/media/card_images/example.png"' :alt="' image'" class="card_image">
+        <img :src='props.card["image"]' :alt="' image'" class="card_image">
       </div>
       <img  v-if="typeImages[props.card['type']]" :src="typeImages[props.card['type']]" alt="Type Image" class="type-image_simple"> 
       <div class="card_stats_simple">
@@ -247,6 +249,11 @@ const valueImages = {
   border-radius: calc(0.2 * var(--size) * 1vw);
   padding: calc(0.8 * var(--size) * 1vw);
   margin-top: calc(0.2 * var(--size) * 1vw);
+}
+
+.no_dynamic_position {
+  position: absolute; 
+  left: calc(50% - 16 * var(--size) * 0.5vw);
 }
 
 .dynamic_position {
