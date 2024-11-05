@@ -24,4 +24,6 @@ jwt-decode
 
 ## To fix
 
-Unable to pick an action card after a reaction card has been chosen in the prevoius turn
+Unable to pick an action card after a reaction card has been chosen in the previous turn
+Strange color changes with the ready button
+Storing cards from the shop in local storage (?)
