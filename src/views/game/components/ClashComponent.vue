@@ -35,7 +35,7 @@ watch(
   () => {
     // Implement clash logic
     if (props.message['type'] == 'opponent_move') {
-      var x = false;
+      var wasReactionMove = false;
       if (props.message['action_card']) {
         opponentCards.value = [ props.message['action_card'] ]
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
@@ -43,11 +43,14 @@ watch(
       if (props.message['reaction_cards']) {
         opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
-        x = true
+        wasReactionMove = true
       }
 
-      if(x){
-        setTimeout(() => {updateClashState()},5000)
+      if(wasReactionMove){
+        setTimeout(() => {
+          resetCards()
+          updateClashState()
+        },5000)
       }else{
         updateClashState()
       }
@@ -186,6 +189,11 @@ function hideOtherCards(){
   showOtherCards.value = false
 }
 
+function resetCards() {
+  opponentCards.value = []
+  chosenCards.value = []
+}
+
 function updateClashState(){
   clashState.value = nextState(toRaw(clashState.value))
   if (readyButton.value){
@@ -207,7 +215,10 @@ function ready(){
   }
   else if (toRaw(clashState.value) == ClashState.MyReaction) {
     emit('reaction-move', packReactionCardsIds(chosenCards.value))
-    setTimeout(() => {updateClashState()},5000)
+    setTimeout(() => {
+      updateClashState()
+      resetCards()
+    },5000)
   }
   else{
     updateClashState()
