@@ -20,4 +20,8 @@ npm run serve
 vue-router \
 pinia \
 enumify \
-jwt-decode 
+jwt-decode
+
+## To fix
+
+Unable to pick an action card after a reaction card has been chosen in the prevoius turn
