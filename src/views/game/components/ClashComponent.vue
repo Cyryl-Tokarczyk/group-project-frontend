@@ -90,23 +90,22 @@ function isOneAction() {
 function startDrag(event, hoverCard, index){
   isCardHold.value = true
   const card = event.target
-  card.style.position = "absolute"
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
   document.onmousemove = elementDrag
   document.onmouseup = stopDrag
   document.body.style.userSelect = 'none'
-  const ot = card.offsetTop
-  const ol = card.offsetLeft
+  const ot = 0
+  const ol = 0
   card.style.zIndex  = `100`
   card.style.transition = '0s'
   const cardTop = card.style.top
   const cardLeft = card.style.left
   pos3 = event.pageY
   pos4 = event.pageX
-  card.style.top = ot + "px"
+  card.style.top = ot  + "px"
   card.style.left = ol + "px"
   card.style.pointerEvents = 'none'
-  card.style.transform = 'scale(1.2) translateY(-2vw)'
+  card.style.transform = 'scale(1.2)'
 
   function elementDrag(e){
     pos1 = pos3 - e.pageY
@@ -117,7 +116,7 @@ function startDrag(event, hoverCard, index){
 
   function stopDrag(){
     card.style.pointerEvents = 'auto'
-    card.style.position = "initial"
+    card.style.position = "relative"
     card.style.transform = ''
     card.style.transition = '0.2s'
     document.body.style.userSelect = ''
@@ -229,13 +228,13 @@ function undo(){
   <div id="clash">
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards" :key="card.id">
-        <CardComponent :card="card" :index="index" :length="opponentCards.length" :size="0.4" :full="true" :dynamic_position="true" :price="true"/>
+        <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
       </div>
     </div>
 
     <div id="thrown_cards" ref="table" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? 'action' : '')">
       <div v-for="(card, index) in chosenCards" :key="card.id">
-        <CardComponent class="thrown_card" :card="card" :index="index" :length="chosenCards.length" :size="0.4" :full="true" :dynamic_position="true" :price="true"/>
+        <CardComponent class="thrown_card" :card="card" :index="index" :length="chosenCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
       </div>
     </div>
 
@@ -243,7 +242,7 @@ function undo(){
       <div class="stats">
         <div class="morale">
           <img src="@/assets/imgs/morale.png" :alt="'morale image'" class="morale_image">
-          <p>Morale {{ gameStateStore.playersMorale }}</p>
+          <p>{{ gameStateStore.playersMorale }}</p>
         </div>
         <button @click="displayOtherCards()">{{ (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action' }} cards</button>
       </div>
@@ -253,7 +252,7 @@ function undo(){
             @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)">
             <CardComponent :card="card" :index="index" :style="{pointerEvents: 'none'}"
              :length="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards).length"
-             :size="0.5" :dynamic_position="true" />
+             :size="0.5" :dynamic_position="false" />
           </div>
         </div> 
       <div class="stats">
@@ -295,14 +294,15 @@ p{
   justify-content: center;
   box-shadow: 0 0 2.5vw inset;
 }
-.thrown_card{
-  margin-top: -10vw;
+.thrown_card, .oponnent_thrown_card{
+  margin-top: -7vw;
 }
 
 .hand_card{
   width: 100%;
   height: 135%;
   margin-top: 3vw;
+  position: relative;
 }
 
 .table_cards, .hand_cards, .modal_cont{

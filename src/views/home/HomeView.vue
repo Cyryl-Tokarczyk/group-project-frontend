@@ -222,8 +222,6 @@ h2{
 
   .notebook_button{
     font-size: 4.5vmin;
-    margin: auto;
-    padding: 0;
   }
 
   .tabOpen{

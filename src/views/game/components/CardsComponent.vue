@@ -1,18 +1,43 @@
 <script setup>
+import { ref, onMounted, computed } from 'vue';
 import CardComponent from './CardComponent.vue'
 
 const props = defineProps([
   'cards_tab',
-  'text'
+  'text', 
+  'card_choose'
 ])
+
+
+const windowWidth = ref(window.innerWidth);
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+const computedSize = computed(() => {
+  return windowWidth.value < 770 ? 3 : 1;
+});
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowWidth);
+})
+
+const emit = defineEmits(['card-clicked']);
+
+const handleClick = (card, index) => {
+  
+  console.log('Klieknieto karte' + index)
+
+  emit('card-clicked', card, index);
+};
 </script>
 
 <template>
   <div class="all_cards_div">
-    <h1><span v-text="props.text"></span></h1>
+    <h1>{{props.text}}</h1>
     <div class="all_cards">
       <div v-for="(card, index) in props.cards_tab" :key="index">
-        <CardComponent :card="card" :index="index" :size="1" :full="true"/>
+        <CardComponent @click="handleClick(card, index)" :card="card" :index="index" :size="computedSize" :full="true"/>
       </div>
     </div>
   </div>
@@ -33,10 +58,9 @@ const props = defineProps([
   z-index: 999;
 }
 
-.all_cards h1{
+.all_cards_div h1{
   color: #ffffff;
   font-size: 6vw;
-  margin-bottom: -1vw;
 }
 
 .all_cards{
@@ -64,4 +88,21 @@ box-shadow: 0 0 0.1vw inset;
   background: rgba(182, 168, 129, 0.747);
   border-radius: 2vw; 
 }
+
+@media (max-width: 770px) {
+  .all_cards{
+  display: grid;
+  grid-auto-flow: column;
+  scroll-behavior: auto;
+  width: 90vw;
+  height: 80vmin;
+  gap: 1vw;
+  overflow-y: auto;
+  overscroll-behavior-inline: contain;
+}
+
+
+}
+
+
 </style>
