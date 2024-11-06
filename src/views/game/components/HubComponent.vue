@@ -169,19 +169,15 @@ const cardBought = ref(false)
     <h1>HUB</h1>
     <div id="shop">
       <div id="action_shop">
-        <div id="action_shop_layout">
-          <div v-for="(card, index) in shopActionCardNumbers" :key="index"
-          @click="moveToActionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
-            <CardComponent :card="card" :index="index" :length="shopActionCardNumbers.length" :size="computedSize" :full="1" :dynamic_position="true" :price="true"/>
-          </div>
-        </div>  
+        <div v-for="(card, index) in shopActionCardNumbers" :key="index" id="action_shop_layout"
+        @click="moveToActionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal">
+          <CardComponent :card="card" :index="index" :length="shopActionCardNumbers.length" :size="computedSize" :full="1" :dynamic_position="false" :price="true"/>
+        </div>
       </div>
       <div id="reaction_shop">
-        <div id="reaction_shop_layout">
-          <div v-for="(card, index) in shopReactionCardNumbers" :key="index"
-          @click="moveToReactionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
-          <CardComponent :card="card" :index="index" :length="shopReactionCardNumbers.length" :size="computedSize" :full="true" :dynamic_position="true" :price="true"/>
-          </div>
+        <div v-for="(card, index) in shopReactionCardNumbers" :key="index" id="reaction_shop_layout"
+        @click="moveToReactionHand(card, index, false)" @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" >
+        <CardComponent :card="card" :index="index" :length="shopReactionCardNumbers.length" :size="computedSize" :full="true" :dynamic_position="false" :price="true"/>
         </div>
       </div>
     </div>
@@ -200,21 +196,17 @@ const cardBought = ref(false)
       </div>
       <div id="hand">
         <div id="hand_action">
-          <div id="hand_action_layout">
-            <div v-for="(card, index) in gameStateStore.actionCards"
-              @click="displayActionCardsModal(card)"
-              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
-              <CardComponent :card="card" :index="index" :length="gameStateStore.actionCards.length" :size="computedSize/2" :dynamic_position="true"/>
-            </div>
+          <div v-for="(card, index) in gameStateStore.actionCards" id="hand_action_layout"
+            @click="displayActionCardsModal(card)"
+            @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
+            <CardComponent :card="card" :index="index" :length="gameStateStore.actionCards.length" :size="computedSize/2" :dynamic_position="false"/>
           </div>
         </div>
         <div id="hand_reaction">
-          <div id="hand_reaction_layout">
-            <div v-for="(card, index) in gameStateStore.reactionCards"
-              @click="displayReactionCardsModal(card)"
-              @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
-              <CardComponent :card="card" :index="index" :length="gameStateStore.reactionCards.length" :size="computedSize/2" :dynamic_position="true"/>
-            </div>
+          <div v-for="(card, index) in gameStateStore.reactionCards" id="hand_reaction_layout"
+            @click="displayReactionCardsModal(card)"
+            @mouseover="displayCardModal(card)" @mouseleave="hideCardModal" :key="index">
+            <CardComponent :card="card" :index="index" :length="gameStateStore.reactionCards.length" :size="computedSize/2" :dynamic_position="false"/>
           </div>
         </div>
       </div>
@@ -270,6 +262,7 @@ const cardBought = ref(false)
 
 .modal_content{
   margin-top: 0.5vw;
+  position: absolute;
 }
 
 button:hover{
@@ -309,6 +302,7 @@ button:hover{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 5%;
   margin-left: 0.1vw;
   margin-right: 0.1vw;
@@ -349,48 +343,45 @@ button:hover{
   display: flex;
   width: 90%;
   margin-top: -20vw;
+  gap: 10vw;
 }
 
 #hand_action, #hand_reaction{
-  --width: 38;
-  position: absolute;
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
-  width: 38%;
-  margin-top: 0.5vw;
+  width: 100%;
+  height: 50%;
+  margin-top: 1vw;
   margin-left: 2vw;
-}
-
-#hand_reaction{
-  margin-top: 10.5vw;
+  align-items: center;
+  justify-content: center;
 }
 
 #action_shop, #reaction_shop{
   border: 0.2vw solid black;
   width:45%;
   height: 19vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  border-radius: 1vw;
-  --width: 38;
+  padding-left: 7vmin;
+  padding-right: 7vmin;
 }
 
 #hand_action_layout, #hand_reaction_layout{
-  width:90%;
-  --width: 32;
+  width: 100%;
+  height: 100%;
+  max-width: 6vw;
+  position: relative;
 }
 
 #reaction_shop_layout, #action_shop_layout{
-  width:90%;
-  margin-top: 1.5vw;
-  margin-left: 5vw;
+  width: 100%;
+  height: 100%;
+  max-width: 12.5vw;
   position: relative;
-  --width: 30;
-}
-
-#reaction_shop{
-  margin-left: 10%;
+  margin-top: 2vw;
 }
 
 .red_color{
@@ -438,6 +429,9 @@ button:hover{
     flex-direction: column;
     position: relative;
     margin: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 1vmin;
   }
 
   #user_part{
@@ -452,47 +446,34 @@ button:hover{
   }
 
   #action_shop, #reaction_shop{
-    width: 90vmin;
+    width: 70vmin;
     height: 35vmin;
-    position: relative;
     border-radius: 1vw;
+    padding-left: 10vmin;
+    padding-right: 10vmin;
   }
 
   #reaction_shop{
     margin-left: 0;
   }
 
-  #reaction_shop_layout, #action_shop_layout{
-    --width: 75;
-    margin-left: 7.5vmin;
-  }
 
   #hand{
     width: 80vmin;
     height: 40vmin;
     margin-top: 5vmin;
-    margin-bottom: 5vmin;
-    display: flex;
-    flex-direction: column;
+    padding-left: 5vmin;
+    padding-right: 5vmin;
   }
 
   #hand_action, #hand_reaction{
-    --width: 75;
-    display: flex;
-    position: relative;
-    flex-direction: row-reverse;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100%;
-    margin-top: 0vw;
-    margin-left: 10vmin;
   }
 
   #hand_action_layout, #hand_reaction_layout{
-    margin-top: -18vmin;
-    width:90%;
-    --width: 70;
+    width:100%;
+    max-width: 12vmin;
   } 
 
   .morale{

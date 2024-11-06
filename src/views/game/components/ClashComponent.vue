@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRaw, onMounted, watch } from 'vue'
+import { ref, toRaw, onMounted, watch, computed } from 'vue'
 import { ClashState, getAppropriateActionState, nextState } from "@/lib/enums/ClashState.js"
 import { useGameStateStore } from "@/stores/gameState"
 import { unpackReactionCards, packReactionCardsIds } from "@/lib/CardsHandling.js";
@@ -29,6 +29,16 @@ const modalCardData = ref(null)
 const moveMade = ref(false)
 const readyButton = ref(null)
 const showOtherCards = ref(false)
+const windowWidth = ref(window.innerWidth);
+
+
+const computedSize = computed(() => {
+  return windowWidth.value < 770 ? 1 : 0.5;
+});
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
 
 watch(
   () => props.message,
@@ -67,6 +77,7 @@ watch(
 )
 
 onMounted(() => {
+  window.addEventListener('resize', updateWindowWidth);
   clashState.value = getAppropriateActionState(props.firstPlayer, gameStateStore.playerType)
   table.value.addEventListener("mouseover", handleMouseEnter)
   table.value.addEventListener("mouseleave", handleMouseLeave)
@@ -78,6 +89,19 @@ onMounted(() => {
 //   chosenCards.value = []
 // }
 
+const cardThrown = ref(false)
+
+const handleHandCardClick = (card, index) => {
+  if(toRaw(clashState.value) == ClashState.MyAction){
+    gameStateStore.actionCards.splice(index, 1)
+  } else {
+    gameStateStore.reactionCards.splice(index, 1)
+  }
+  chosenCards.value.push(card)
+  cardThrown.value = true
+  console.log('Kliknięto kartę:', card, 'o indeksie:', index);
+};
+
 function isOneAction() {
   if (toRaw(clashState.value) == ClashState.MyAction){
     if(chosenCards.value.length == 1){
@@ -87,7 +111,18 @@ function isOneAction() {
   return false
 }
 
-function startDrag(event, hoverCard, index){
+const slimView = computed(() => {
+  return windowWidth.value < 770 ? true : false;
+});
+
+const showSlimHandCards = ref(false)
+
+function startDrag(event, hoverCard, index, slimViewHand){
+  if(slimView.value && !slimViewHand){
+    showSlimHandCards.value = true
+    return
+  }
+
   isCardHold.value = true
   const card = event.target
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
@@ -183,6 +218,10 @@ function displayOtherCards(){
 }
 
 function hideOtherCards(){
+  if (cardThrown.value == false){
+    showSlimHandCards.value = false;
+  }
+  cardThrown.value = false
   showOtherCards.value = false
 }
 
@@ -228,13 +267,13 @@ function undo(){
   <div id="clash">
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards" :key="card.id">
-        <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
+        <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="computedSize*1.2" :full="true" :dynamic_position="false" :price="true"/>
       </div>
     </div>
 
     <div id="thrown_cards" ref="table" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? 'action' : '')">
       <div v-for="(card, index) in chosenCards" :key="card.id">
-        <CardComponent class="thrown_card" :card="card" :index="index" :length="chosenCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
+        <CardComponent class="thrown_card" :card="card" :index="index" :length="chosenCards.length" :size="computedSize*1.2" :full="true" :dynamic_position="false" :price="true"/>
       </div>
     </div>
 
@@ -248,26 +287,31 @@ function undo(){
       </div>
         <div id="clash_hand" ref="hand">
           <div v-for="(card, index) in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
-            :key="card.id" class="dragable hand_card" @mousedown="startDrag($event, card, index)"
+            :key="card.id" class="dragable hand_card" @mousedown="startDrag($event, card, index, false)"
             @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)">
             <CardComponent :card="card" :index="index" :style="{pointerEvents: 'none'}"
              :length="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards).length"
-             :size="0.5" :dynamic_position="false" />
+             :size="computedSize" :dynamic_position="false" />
           </div>
         </div> 
       <div class="stats">
         <button class="button_right" @click="ready()" ref="readyButton">READY</button> 
-        <button class="button_right" @click="undo()">undo</button> 
+        <button class="button_right" @click="undo()">UNDO</button> 
       </div>
     </div>
 
     <div v-if="showModal" ref="modal" class="modal_cont">
-      <CardComponent :card="modalCardData" :size="0.5" :full="true" :price="true"/>
+      <CardComponent :card="modalCardData" :size="computedSize" :full="true" :price="true"/>
     </div>
 
     <div v-if="showOtherCards" class="reactionAllCard" @click="hideOtherCards()">        
       <CardsComponent :cards_tab="(toRaw(clashState) == ClashState.OpponentAction  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
       :text="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action') + 'cards'"/>
+    </div>
+
+    <div v-if="showSlimHandCards" class="handAllCard" @click="hideOtherCards()">        
+      <CardsComponent :cards_tab="(toRaw(clashState) == ClashState.OpponentAction  ? gameStateStore.reactionCards : gameStateStore.actionCards)"
+      :text="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Action' : 'Reaction') + 'cards'" @card-clicked="handleHandCardClick"/>
     </div>
   </div>
 </template>
@@ -300,6 +344,7 @@ p{
 
 .hand_card{
   width: 100%;
+  max-width: 8vw;
   height: 135%;
   margin-top: 3vw;
   position: relative;
@@ -342,6 +387,8 @@ p{
   height: 10vw;
   display: flex;
   align-items: center;
+  gap: 5vw;
+  margin-top: 2vw;
 }
 
 #clash_hand{
@@ -359,6 +406,8 @@ p{
   width: 20vw;
   height: 8vw;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   border-radius: 0.5vw;
   background-image: url(@/assets/imgs/paper.jpg);
@@ -372,6 +421,60 @@ p{
 
 .button_right{
   margin: 1vw;
+}
+
+
+@media (max-width: 770px) {
+
+  #clash{
+    height: 90vh;
+  }
+
+    #profile{
+    width: 90vw;
+    height: 50vmin;
+    gap: 10vmin;
+    margin-top: 2vmin;
+  }
+
+  #clash_hand{
+    width: 50vmin;
+    margin-top: -12.5vmin;
+  }
+
+  .stats{
+    width: 50vmin;
+    height: 20vmin;
+    border-radius: 0.5vmin;
+    box-shadow: 0 0 0.5vmin;
+  }
+
+  .stats button{
+    font-size: 3vmin;
+  }
+
+  .morale p{
+    font-size: 5vmin;
+  }
+
+  #oponnent_cards, #thrown_cards{
+  width: 74vw;
+  height: 30vmin;
+  border: 0.2vw  inset rgba(255, 255, 255, 0.377);
+  border-radius: 1vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2.5vw inset;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.thrown_card, .oponnent_thrown_card{
+  margin-top: -14vw;
+}
+
 }
 
 </style>
