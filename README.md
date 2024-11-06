@@ -21,8 +21,3 @@ vue-router \
 pinia \
 enumify \
 jwt-decode
-
-## To fix
-
-Cards change colors inappropriately 
-Strange color changes with the ready button
