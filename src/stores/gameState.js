@@ -11,7 +11,7 @@ export const useGameStateStore = defineStore('gameState', () => {
       return 'student'
     }
 
-    return 'none'
+    return ''
   })
 
   const money = ref(1000)
@@ -28,7 +28,7 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
 
     // Error if playerType doesn't match 'student' or 'teacher'
-    throw new Error('Wrong/No playerType set')
+    throw new Error('Players morale: Wrong/No playerType set')
   })
   const opponentsMorale = computed(() => {
     if (opponentType.value == 'student') {
@@ -39,7 +39,7 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
 
     // Error if playerType doesn't match 'student' or 'teacher'
-    throw new Error('Wrong/No opponentType set')
+    throw new Error('Opponents morale: Wrong/No opponentType set')
   })
 
 
@@ -55,7 +55,7 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
     else {
       // Error if playerType doesn't match 'student' or 'teacher'
-      throw new Error('Wrong/No playerType set')
+      throw new Error('Set players morale: Wrong/No playerType set')
     }
   }
 
@@ -68,7 +68,7 @@ export const useGameStateStore = defineStore('gameState', () => {
     }
     else {
       // Error if playerType doesn't match 'student' or 'teacher'
-      throw new Error('Wrong/No playerType set')
+      throw new Error('Set opponents morale: Wrong/No playerType set')
     }
   }
 
