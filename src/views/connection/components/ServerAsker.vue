@@ -12,14 +12,12 @@ const gameStateStore = useGameStateStore()
 const playerTypeChosen = ref(false)
 const left_board = ref(null)
 const right_board = ref(null)
-const opponent =  ref('')
 
 const gameTokenURL = 'http://localhost:8000/game/game_token/'
 
 const gameToken = ref('')
 
 async function choosePlayerType(type) {
-  opponent.value = type;
   left_board.value.classList.add('left_board_animation');
   right_board.value.classList.add('right_board_animation');
 
@@ -73,13 +71,13 @@ onMounted(() => {
     <div class="board">
       <div ref="left_board" class="left_board">
         <button class="left" @click="choosePlayerType('teacher')">Teacher<span></span></button>
-        <div class="back" v-if="opponent == 'teacher'">Looking for a student</div>
-        <div class="back" v-if="opponent == 'student'">Looking for a teacher</div>
+        <div class="back" v-if="playerTypeChosen && gameStateStore.opponentType == 'student'">Looking for a student</div>
+        <div class="back" v-if="playerTypeChosen && gameStateStore.opponentType == 'teacher'">Looking for a teacher</div> 
       </div>
       <div class="middle_board"><h2>Choose your class:</h2></div>
       <div ref="right_board" class="right_board">
         <button class="right" @click="choosePlayerType('student')">Student<span></span></button>
-        <div class="back" v-if="opponent != ''">
+        <div class="back" v-if="playerTypeChosen && gameStateStore.opponentType != ''">
           <div class="board_spinner"></div>
         </div>
       </div>  
