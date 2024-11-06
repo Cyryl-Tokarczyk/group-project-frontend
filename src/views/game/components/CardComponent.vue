@@ -46,9 +46,9 @@ onMounted(() => {
     card_ref.value.classList.add('no_dynamic_position');
   }
 
-  if(typeColor[props.card['type']]){
+  if(props.card['type']){
     card_background.value = typeColor[props.card['type']]
-  } else{
+  } else {
     card_background.value = typeColor['Action']
   }
 });
@@ -131,7 +131,7 @@ const valueImages = {
       <div class="card_img_simple">
         <img :src='props.card["image"]' :alt="' image'" class="card_image">
       </div>
-      <img  v-if="typeImages[props.card['type']]" :src="typeImages[props.card['type']]" alt="Type Image" class="type-image_simple"> 
+      <img  v-if="props.card['type']" :src="typeImages[props.card['type']]" alt="Type Image" class="type-image_simple"> 
       <div class="card_stats_simple">
         <div class="values_simple" v-if="Object.keys(values).length" :style="{'--value_quantity': Object.keys(values).length}">
           <div v-for="(value, key) in values" :key="key" class="value-item">
