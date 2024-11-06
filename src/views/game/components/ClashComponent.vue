@@ -64,7 +64,6 @@ onMounted(() => {
 
 function resetClashState() { // Call when clash result
   moveMade.value = false
-  readyButton.value.style.color = "white"
   chosenCards.value = []
   opponentCards.value = []
   updateClashState()
@@ -72,25 +71,36 @@ function resetClashState() { // Call when clash result
 
 function updateClashState(){
   clashState.value = nextState(toRaw(clashState.value))
-  if (readyButton.value){
+  if (readyButton.value && toRaw(clashState.value) == ClashState.MyAction || toRaw(clashState.value) == ClashState.MyReaction) {
     readyButton.value.style.color = "black"
   }
 }
 
-function ready(){
-  if(toRaw(clashState.value) == ClashState.OpponentReaction || toRaw(clashState.value) == ClashState.OpponentAction){
-    readyButton.value.style.color = "black"
+function ready() {
+  if(toRaw(clashState.value) == ClashState.OpponentReaction || toRaw(clashState.value) == ClashState.OpponentAction) {
     return
   }
   moveMade.value = true
   readyButton.value.style.color = "brown"
   if (toRaw(clashState.value) == ClashState.MyAction) {
-      console.log(chosenCards.value[0].id);
-      emit('action-move', chosenCards.value[0].id)
-      updateClashState()
+    console.log(chosenCards.value[0].id);
+    emit('action-move', chosenCards.value[0].id)
+    updateClashState()
   }
   else if (toRaw(clashState.value) == ClashState.MyReaction) {
     emit('reaction-move', packReactionCardsIds(chosenCards.value))
+  }
+}
+
+function readyMouseEnter() {
+  if (readyButton.value.style.color == "black") {
+    readyButton.value.style.color = "rgb(138, 35, 35)"
+  }
+}
+
+function readyMouseLeave() {
+  if (readyButton.value.style.color == "rgb(138, 35, 35)") {
+    readyButton.value.style.color = "black"
   }
 }
 
@@ -217,13 +227,13 @@ function undo(){
     <h2>{{ gameStateStore.playerType }}</h2>
 
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
-      <div v-for="(card, index) in opponentCards" :key="index">
+      <div v-for="(card, index) in opponentCards" :key="card.id">
         <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
       </div>
     </div>
 
     <div id="thrown_cards" ref="table" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? 'action' : '')">
-      <div v-for="(card, index) in chosenCards" :key="index">
+      <div v-for="(card, index) in chosenCards" :key="card.id">
         <CardComponent class="thrown_card" :card="card" :index="index" :length="chosenCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
       </div>
     </div>
@@ -238,7 +248,7 @@ function undo(){
       </div>
         <div id="clash_hand" ref="hand">
           <div v-for="(card, index) in ((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards)"
-            :key="index" class="dragable hand_card" @mousedown="startDrag($event, card, index)"
+            :key="card.id" class="dragable hand_card" @mousedown="startDrag($event, card, index)"
             @mouseenter="hoverCard($event, card)" @mouseleave="cardReset($event)">
             <CardComponent :card="card" :index="index" :style="{pointerEvents: 'none'}"
              :length="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? gameStateStore.actionCards : gameStateStore.reactionCards).length"
@@ -246,7 +256,7 @@ function undo(){
           </div>
         </div> 
       <div class="stats">
-        <button class="button_right" @click="ready()" ref="readyButton">READY</button> 
+        <button class="button_right" @click="ready()" @mouseenter="readyMouseEnter()" @mouseleave="readyMouseLeave()" ref="readyButton">READY</button> 
         <button class="button_right" @click="undo()">undo</button> 
       </div>
     </div>
