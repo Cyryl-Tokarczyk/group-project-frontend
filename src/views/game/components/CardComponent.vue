@@ -256,11 +256,6 @@ const valueImages = {
   left: calc(50% - 16 * var(--size) * 0.5vw);
 }
 
-.dynamic_position {
-  position: absolute;
-  left: calc((var(--width)/var(--quantity) * var(--order)*1vw) - var(--card-width)/2 * 1vw);
-}
-
 .values_value{
   margin-left: calc(-0.5 * var(--size) * 1vw);
 }

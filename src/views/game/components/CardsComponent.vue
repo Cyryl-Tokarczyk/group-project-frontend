@@ -37,7 +37,7 @@ const handleClick = (card, index) => {
     <h1>{{props.text}}</h1>
     <div class="all_cards">
       <div v-for="(card, index) in props.cards_tab" :key="index">
-        <CardComponent @click="handleClick(card, index)" :card="card" :index="index" :size="computedSize" :full="true"/>
+        <CardComponent @click="handleClick(card, index)" :card="card" :index="index" :size="computedSize" :full="true" dynamic_position="true"/>
       </div>
     </div>
   </div>
