@@ -214,6 +214,8 @@ function undo(){
 <template>
 
   <div id="clash">
+    <h2>{{ gameStateStore.playerType }}</h2>
+
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards" :key="index">
         <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
