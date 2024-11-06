@@ -304,8 +304,8 @@ button:hover{
   align-items: center;
   justify-content: center;
   border-radius: 5%;
-  margin-left: 0.1vw;
-  margin-right: 0.1vw;
+  padding-left: 2.5vw;
+  padding-right: 2.5vw;
 }
 
 #user_part{
@@ -350,8 +350,6 @@ button:hover{
   display: flex;
   width: 100%;
   height: 50%;
-  margin-top: 1vw;
-  margin-left: 2vw;
   align-items: center;
   justify-content: center;
 }
@@ -365,8 +363,8 @@ button:hover{
   align-items: center;
   justify-content: center;
   position: relative;
-  padding-left: 7vmin;
-  padding-right: 7vmin;
+  padding-left: 7vw;
+  padding-right: 7vw;
 }
 
 #hand_action_layout, #hand_reaction_layout{
@@ -469,6 +467,7 @@ button:hover{
   #hand_action, #hand_reaction{
     width: 100%;
     height: 100%;
+    margin-top: 1.5vmin;
   }
 
   #hand_action_layout, #hand_reaction_layout{
