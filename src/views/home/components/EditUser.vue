@@ -81,20 +81,20 @@
 
 <template>
   <div class="paper">
-  <h3>Edit Details</h3>
-  <form id="edit_form" @submit.prevent="saveUserData">
-    <label class="save_label" for="username">Username:</label><br>
-    <input class="save_input" type="text" id="username" name="username" v-model="username">
-    <label class="save_label" for="email">Email:</label><br>
-    <input class="save_input" type="email" id="email" name="email" v-model="email">
-    <label class="save_label" for="phone_number">Phone:</label><br>
-    <input class="save_input" type="tel" id="phone_number" name="phone_number" v-model="phone_number" pattern="[0-9]{9}" title="Please enter a valid phone number">
-    <label class="save_label" for="bio">Bio:</label><br>
-    <input class="save_input" type="text" id="bio" name="bio" v-model="bio">
-    <button id="save_submit" type="submit">Save</button>
-  </form>
-  <span class="save_error" ref="save_error"></span>
-  <span class="save_success" ref="save_success"></span>
+    <h2>Edit Details</h2>
+    <form id="edit_form" @submit.prevent="saveUserData">
+      <label class="save_label" for="username">Username:</label><br>
+      <input class="save_input" type="text" id="username" name="username" v-model="username">
+      <label class="save_label" for="email">Email:</label><br>
+      <input class="save_input" type="email" id="email" name="email" v-model="email">
+      <label class="save_label" for="phone_number">Phone:</label><br>
+      <input class="save_input" type="tel" id="phone_number" name="phone_number" v-model="phone_number" pattern="[0-9]{9}" title="Please enter a valid phone number">
+      <label class="save_label" for="bio">Bio:</label><br>
+      <input class="save_input" type="text" id="bio" name="bio" v-model="bio">
+      <button id="save_submit" type="submit">SAVE</button>
+    </form>
+    <span class="save_error" ref="save_error"></span>
+    <span class="save_success" ref="save_success"></span>
   </div>
 </template>
 
@@ -124,12 +124,13 @@
 
 .save_input{
   font-size: 1vw;
-  border: 0.1vw solid black;
-  border-radius: 1vw;
+  background: none;
+  border: 0.2vw solid black;
   width: 80%;
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
   margin-top: -2.5vw;
   margin-bottom: 1vw;
+  pointer-events: all;
 }
 
 .save_label{
@@ -141,18 +142,29 @@
 
 #save_submit{
   padding: 0;
-  margin: 1vw;
-  font-size: 2vw;
-  font-family: "Venily", Courier, monospace;
+  font-size: 1.65vw;
+  margin-top: 1.3vw;
+  font-family: "Itim", Courier, monospace;
+  pointer-events: all;
+  border: 0.2vw solid black;
+  background: rgba(99, 99, 99, 0.459);
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+
+#save_submit:hover{
+  background: rgba(68, 68, 68, 0.459);
+  color: white;
 }
 
 @media (max-width: 770px) {
   .save_label, .save_input{
-    font-size: 3vw;
+    font-size: 3vmin;
   }
 
   #save_submit{
-    font-size: 4vw;
+    font-size: 4vmin;
+    margin-top: 7.5vmin;
   }
   
 }

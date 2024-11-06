@@ -23,36 +23,55 @@ function register() {
 </script>
 
 <template>
-  <button v-if="!tokensStore.isLoggedIn" @click="logIn" class="reglog">Login</button>
-  <button v-if="!tokensStore.isLoggedIn" @click="register" class="reglog">Register</button>
-  <LoginComponent v-if="!tokensStore.isLoggedIn && loginOption == true" @logged-in="tokensStore.loggedIn" />
-  <RegisterComponent v-else-if="!tokensStore.isLoggedIn && registerOption == true" @logged-in="tokensStore.loggedIn" />
-  <UserComponent v-else/>
+  <div id="login_paper">
+    <button v-if="!tokensStore.isLoggedIn" @click="logIn" class="reg">Login</button>
+    <button v-if="!tokensStore.isLoggedIn" @click="register" class="log">Register</button>
+    <LoginComponent v-if="!tokensStore.isLoggedIn && loginOption == true" @logged-in="tokensStore.loggedIn" />
+    <RegisterComponent v-else-if="!tokensStore.isLoggedIn && registerOption == true" @logged-in="tokensStore.loggedIn" />
+    <UserComponent v-else/>
+  </div>
 </template>
 
 <style>
+
+#login_paper{
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
 
 #user_logged{
   margin-top: 2vw;
 }
 
-#log_out_button{
-  transition: 0.2s;
+.reg, .log{
+  position: absolute;
+  margin: 0;
+  margin: 0;
+  font-family: "Itim", Courier, monospace;
+  top: 8%;
+  text-decoration: underline;
 }
 
-#log_out_button:hover{
-  color:brown;
+.reg{
+  left: 13.5%
 }
 
-.reglog{
-  margin-top: 0;
-  margin-bottom: 0;
-  font-family: "Venily", Courier, monospace;
+.log{
+  left: 63%
 }
 
 @media (max-width: 770px) {
-  .reglog{
-    font-size: 2vmin;
+  .reg, .log{
+    font-size: 4vmin;
+  }
+
+  .reg{
+    left: 15%
+  }
+
+  .log{
+    left: 60%
   }
 }
 

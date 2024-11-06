@@ -85,19 +85,17 @@ function logInAsUser() {
       <div class="form_content">
         <div class="inputs">
           <p>Name:</p>
-          <input class="login_input" v-model="login" required/>
-          <div class="underline" ref="loginLine"></div>
+          <input class="login_input" v-model="login" ref="loginLine" required/>
         </div>
         <div class="inputs">
           <p>Password:</p>
-          <input class="login_input" v-model="password" type="password" required/>
-          <div class="underline" ref="passwordLine"></div>
+          <input class="login_input" v-model="password" type="password" ref="passwordLine" required/>
         </div>
       </div>
-      <div>
-        <p id="login_error" v-if="loginError">e-mail or password is incorrect</p>
+      <div id="login_error">
+        <p  v-if="loginError">e-mail or password is incorrect</p>
       </div>
-      <button id="sub_button" type="submit">Signature</button>
+      <button id="sub_button" type="submit">SIGN</button>
     </form>
 
     <button class="debug_button" @click="logInAsAdmin">Log in as admin</button>
@@ -113,31 +111,32 @@ function logInAsUser() {
 }
 
 .paper{
-  margin-top: -1.5vw;
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 15%;
 }
 
 .login_input{
   display: block;
   background: transparent;
-  font-family: "Venily", Courier, monospace;
-  border: 0.05vw solid rgb(107, 107, 107);
-  border-radius: 0.3vw;
+  font-family: "Itim", Courier, monospace;
+  border: 0.15vw solid rgb(0, 0, 0);
   font-size: 1.2vw;
+  pointer-events: all;
 }
 
 .form_content{
   display: flex;
   height: 5vw;
   align-items: center;
-  justify-content: left;
   flex-direction: column;
 }
 
 form{
   display: block;
   margin-top: -1vw;
+  pointer-events: none;
 }
 
 .inputs{
@@ -145,15 +144,8 @@ form{
   margin-top: 1vw;
 }
 
-.underline{
-  background: black;
-  width: 100%;
-  height: 0.1vw;
-  transition: 0.2s;
-}
-
 .underlineError{
-  background: rgb(168, 0, 0);
+  border: 0.15vw solid rgb(255, 0, 0);
 }
 
 .debug_button{
@@ -166,23 +158,39 @@ p{
 
 #sub_button{
   background: transparent;
-  transition: 0.5s;
-  font-family: "Venily", Courier, monospace;
-  margin-top: 7vw;
+  transition: 0.1s;
+  font-family: "Itim", Courier, monospace;
+  margin-top: 13.8vw;
+  border: 0.2vw solid black;
+  background-color: rgba(180, 180, 180, 0.842);
+  padding-left: 1vw;
+  padding-right: 1vw;
+  pointer-events: all;
 }
 
 #sub_button:hover{
-  color: #940000d6;
+  color: #ffffffd6;
+  background-color: rgba(109, 109, 109, 0.842)
 }
 
 #login_error{
+  position: absolute;
+  width: 100%;
+  top:43%;
+}
+
+#login_error p{
   font-size: 0.9vw;
   color: #940000d6;
 }
 
 @media (max-width: 770px) {
   .login_input, p{
-    font-size: 2.5vmin;
+    font-size: 4vmin;
+  }
+
+  .login_input{
+    border: 0.3vmin solid rgb(0, 0, 0);
   }
 
   .debug_button, #sub_button, h3{
@@ -190,8 +198,9 @@ p{
   }
 
   #sub_button{
-    margin-top: 13vmin;
-    margin-bottom: 13vmin;
+    margin-top: 39vmin;
+    font-size: 4vmin;
+    border: 0.3vmin solid rgb(0, 0, 0);
   }
   
 }

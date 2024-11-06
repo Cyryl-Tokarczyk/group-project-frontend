@@ -37,11 +37,9 @@ function start_tab(tab, tab_button){
 </script>
 
 <template>
-  <div id="user_buttons">
-    <button @click="start_tab('details', details_button)" class="tab_button" ref="details_button">Details</button>
-    <button @click="start_tab('games', games_button)" class="tab_button" ref="games_button">My Games</button>
-    <button @click="start_tab('edit', edit_button)" class="tab_button" ref="edit_button">Edit</button>
-  </div>
+  <button @click="start_tab('details', details_button)" class="tab_button details_b" ref="details_button">Details</button>
+  <button @click="start_tab('games', games_button)" class="tab_button my_games_b" ref="games_button">My Games</button>
+  <button @click="start_tab('edit', edit_button)" class="tab_button edit_b" ref="edit_button">Edit</button>
   <UserDetails v-if="details" />
   <EditUser v-if="edit"/>
   <div id="my_games">
@@ -57,16 +55,32 @@ function start_tab(tab, tab_button){
 #user_buttons{
     display: flex;
     align-items: center;
+    position: absolute;
 }
 
 #user_buttons button{
-    font-family: "Venily", Courier, monospace;
+    font-family: "Itim", Courier, monospace;
 }
 
+.details_b{
+  left: 13%;
+}
+
+.my_games_b{
+  left: 37.5%;
+}
+
+.edit_b{
+  left: 70%;
+}
+
+
 .tab_button{
-    font-size: 1vw;
-    margin: 0.4vw;
+    position: absolute;
+    top: 8%;
+    text-decoration: underline;
     padding: 0;
+    margin: 0;
 }
 
 #my_games{
@@ -83,8 +97,15 @@ function start_tab(tab, tab_button){
 @media (max-width: 770px) {
 
   .tab_button{
-    font-size: 2.5vw;
-    margin-right: 2vw;
+    font-size: 3.5vmin;
+  }
+
+  .my_games_b{
+    left: 39%;
+  }
+
+  .edit_b{
+    left: 72%;
   }
 
 }

@@ -11,12 +11,25 @@
 </script>
 
 <template>
+  <div class="paper">    
     <h2>Settings</h2>
-    <label>
-      <input type="checkbox" v-model="parallaxChecked" />
-      Parallax
-    </label>
+    <div class="setting_div">
+      <label>
+        <input class="seting_checkbox" type="checkbox" v-model="parallaxChecked" />
+        Parallax
+      </label>
+    </div>
+  </div>
 </template>
 
 <style>
+.setting_div{
+  font-size: 1.8vw;
+}
+
+@media (max-width: 770px) {
+  .setting_div{
+    font-size: 4vmin;
+  }
+}
 </style>

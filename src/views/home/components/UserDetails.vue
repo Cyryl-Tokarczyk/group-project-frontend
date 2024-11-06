@@ -56,28 +56,30 @@
 </script>
 
 <template>
-  <div id="usercom">
-    <h3>User</h3>
-    <table id="userDetailsTable">
-      <tr>
-        <td>Username</td>
-        <td id="usernameCell"><span ref="username"></span></td>
-      </tr>
-      <tr>
-        <td>Email</td>
-        <td id="emailCell"><span ref="mail"></span></td>
-      </tr>
-      <tr>
-        <td>Games played</td>
-        <td id="gameCell"><span ref="game"></span></td>
-      </tr>
-      <tr>
-        <td>Win %</td>
-        <td id="winCell"><span ref="win"></span></td>
-      </tr>
-    </table>
-    <span class="bio_span" v-if="showBio">{{ userDetailsStore.bio }}</span>
-    <button id="log_out_button" @click="logOut()">Logout</button>
+  <div class="paper">
+    <div id="usercom">
+      <h2>User</h2>
+      <table id="userDetailsTable">
+        <tr>
+          <td>Username</td>
+          <td id="usernameCell"><span ref="username"></span></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td id="emailCell"><span ref="mail"></span></td>
+        </tr>
+        <tr>
+          <td>Games played</td>
+          <td id="gameCell"><span ref="game"></span></td>
+        </tr>
+        <tr>
+          <td>Win %</td>
+          <td id="winCell"><span ref="win"></span></td>
+        </tr>
+      </table>
+      <span class="bio_span" v-if="showBio">{{ userDetailsStore.bio }}</span>
+    </div>
+    <button id="log_out_button" @click="logOut()">LOGOUT</button>
   </div>
 </template>
 
@@ -91,10 +93,16 @@
 
 #log_out_button{
   transition: 0.2s;
+  border: 0.2vw solid black;
+  background: rgba(99, 99, 99, 0.459);
+  position: absolute;
+  top: 61.2%;
+  left: 30%;
 }
 
 #log_out_button:hover{
-  color:brown;
+  background: rgba(68, 68, 68, 0.459);
+  color: white;
 }
 
 #userDetailsTable{
@@ -127,6 +135,7 @@ td{
 
   #log_out_button{
     font-size: 4vw;
+    left: 35%;
   }
 
 }

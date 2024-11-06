@@ -2,17 +2,15 @@
 import LoginPrompt from './components/LoginPrompt.vue'
 import SettingsPrompt from './components/SettingsPrompt.vue'
 import PlayPrompt from './components/PlayPrompt.vue'
-import DevelopPrompt from './components/DevelopPrompt.vue'
 import { useTokensStore } from '@/stores/tokens';
 import { ref, defineEmits } from 'vue';
 
 const login = ref(null)
-const dev = ref(null)
 const settings = ref(null)
 const notebook = ref(null)
 const game = ref(null)
 const tokensStore = useTokensStore()
-const refs = [login, settings, game, dev]
+const refs = [login, settings, game]
 
 
 const emit = defineEmits(['updateParallax']);
@@ -67,11 +65,22 @@ function chooseTab(tab){
       <div id="cover">
         <h1 id="notbook_title">Classroom Chronicles</h1>
         <div id="line">
-          <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="!tokensStore.isLoggedIn">Login</button>
-          <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" v-if="tokensStore.isLoggedIn">User</button>
-          <button class="notebook_button" @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
-          <button class="notebook_button" @mouseover="hoverButton(dev)" @mouseleave="resetTransform(dev)" @click="chooseTab(dev)">Develop</button>
-          <button class="notebook_button" @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)" v-if="tokensStore.isLoggedIn">Game</button>
+          <div class="menu_buttons" v-if="!tokensStore.isLoggedIn">
+            <img src="@/assets/imgs/user.png" :alt="'user'" class="buttons_imgs">
+            <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" >Login</button>
+          </div>
+          <div class="menu_buttons" v-if="tokensStore.isLoggedIn">
+            <img src="@/assets/imgs/user.png" :alt="'user'" class="buttons_imgs">
+            <button class="notebook_button" @mouseover="hoverButton(login)" @mouseleave="resetTransform(login)" @click="chooseTab(login)" >User</button>
+          </div>
+          <div class="menu_buttons">
+            <img src="@/assets/imgs/settings.png" :alt="'user'" class="buttons_imgs">
+            <button class="notebook_button" @mouseover="hoverButton(settings)" @mouseleave="resetTransform(settings)" @click="chooseTab(settings)">Settings</button>
+          </div>
+          <div class="menu_buttons" v-if="tokensStore.isLoggedIn">
+            <img src="@/assets/imgs/play.png" :alt="'user'" class="buttons_imgs">
+            <button class="notebook_button" @mouseover="hoverButton(game)" @mouseleave="resetTransform(game)" @click="chooseTab(game)" >Game</button>
+          </div>
         </div>
       </div>
 
@@ -81,9 +90,6 @@ function chooseTab(tab){
       <div id="setings" ref="settings"  class="tab">
         <SettingsPrompt :parallaxActive="parallaxActive" @updateParallax="updateParallax"/>
       </div>
-      <div id="dev" ref="dev"  class="tab">
-        <DevelopPrompt/>
-      </div>
       <div id="game" ref="game"  class="tab">
         <PlayPrompt/>
       </div>
@@ -92,6 +98,40 @@ function chooseTab(tab){
 </template>
 
 <style>
+.buttons_imgs{
+  position: absolute;
+  width: 1.8vw;
+  height: auto;
+  top: -1vw;
+}
+
+.menu_buttons{
+  width: 100%;
+  height: 2.5vw;
+  background-color: rgba(255, 255, 255, 0.479);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vw;
+  margin-bottom: -0.8vw;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 1vw rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.menu_buttons:hover{
+  background-color: rgba(0, 216, 11, 0.308);
+}
+
+.menu_buttons:hover button{
+  color: rgb(255, 255, 255);
+}
+
+.menu_buttons button{
+  width: 100%;
+  height: 100%;
+}
+
 #homeView {
   background-image: url(@/assets/imgs/table.jpg);
   background-size: 40vw;
@@ -110,11 +150,11 @@ function chooseTab(tab){
 
 #cover{
   background-image: url(@/assets/imgs/notebook.jpg);
-  font-family:"Match", Courier, monospace;
+  font-family:"Itim", Courier, monospace;
   font-size: 1.4vw;
   background-size: 200vw;
-  border-bottom-right-radius: 1.5vw;
-  border-top-right-radius: 1.5vw;
+  border-bottom-right-radius: 1vw;
+  border-top-right-radius: 1vw;
   width: 100%;
   height: 100%;
   display: flex;
@@ -138,7 +178,7 @@ function chooseTab(tab){
 }
 
 .tab{
-  font-family:"Venily", Courier, monospace;
+  font-family:"Itim", Courier, monospace;
   width: 100%;
   height:  100%;
   background-image: url(@/assets/imgs/paper.jpg);
@@ -166,12 +206,12 @@ button{
   height: 100%;
   background: rgba(34, 151, 23, 0.28);
   align-items: center;
-  border-bottom-right-radius: 1.5vw;
-  border-top-right-radius: 1.5vw;
+  border-bottom-right-radius: 1vw;
+  border-top-right-radius: 1vw;
 }
 
 #line button{
-  font-family:"Venily", Courier, monospace;
+  font-family:"Itim", Courier, monospace;
 }
 
 .tabOpen{
@@ -209,10 +249,14 @@ h2{
   #line{
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
     height: 10%;
     align-items: center;
     justify-content: center;
+    gap: 3vmin;
+    padding-left: 5%;
+    padding-right: 5%;
+    border-bottom-right-radius: 0;
   }
 
   #cover h1{
@@ -222,6 +266,8 @@ h2{
 
   .notebook_button{
     font-size: 4.5vmin;
+    margin: 0;
+    margin-top: 3.2vmin;
   }
 
   .tabOpen{
@@ -241,7 +287,18 @@ h2{
   }
 
   h2{
-    font-size: 4vw;
+    font-size: 6vmin;
+  }
+
+  .buttons_imgs{
+    width: 4vmin;
+    position: absolute;
+    top: 5%;
+  }
+
+  .menu_buttons{
+    height: 100%;
+    margin: 0;
   }
 
   @keyframes bounceRight {
