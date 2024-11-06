@@ -35,32 +35,22 @@ watch(
   () => {
     // Implement clash logic
     if (props.message['type'] == 'opponent_move') {
-      var x = false;
-      if (props.message['action_card']) {
+
+      if (props.message['action_card']) { // Means that it was opponents action_move
         opponentCards.value = [ props.message['action_card'] ]
         console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
-      }
-      if (props.message['reaction_cards']) {
-        opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
-        console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
-        x = true
-      }
-
-      if(x){
-        setTimeout(() => {updateClashState()},5000)
-      }else{
         updateClashState()
       }
-    }
-    else if (props.message['type'] == 'clash_result') {
+
+      if (props.message['reaction_cards']) { // Means that it was opponents reaction_move
+        opponentCards.value = unpackReactionCards(props.message['reaction_cards'])
+        console.log('Opponent cards: ' + JSON.stringify(opponentCards.value));
+      }
+
+    } else if (props.message['type'] == 'clash_result') {
       setTimeout(() => {
-        opponentCards.value = []
-        chosenCards.value = []
-        moveMade.value = false
-      },4500)
-      // if (clashState.value == ClashState.) {
-        
-      // }
+        resetClashState()
+      }, 4000)
     }
   },
   { deep: true }
@@ -72,11 +62,47 @@ onMounted(() => {
   table.value.addEventListener("mouseleave", handleMouseLeave)
 })
 
-// function resetClashState() { // Call when clash result
-//   moveMade.value = false
-//   readyButton.value.style.color = "white"
-//   chosenCards.value = []
-// }
+function resetClashState() { // Call when clash result
+  moveMade.value = false
+  chosenCards.value = []
+  opponentCards.value = []
+  updateClashState()
+}
+
+function updateClashState(){
+  clashState.value = nextState(toRaw(clashState.value))
+  if (readyButton.value && toRaw(clashState.value) == ClashState.MyAction || toRaw(clashState.value) == ClashState.MyReaction) {
+    readyButton.value.style.color = "black"
+  }
+}
+
+function ready() {
+  if(toRaw(clashState.value) == ClashState.OpponentReaction || toRaw(clashState.value) == ClashState.OpponentAction) {
+    return
+  }
+  moveMade.value = true
+  readyButton.value.style.color = "brown"
+  if (toRaw(clashState.value) == ClashState.MyAction) {
+    console.log(chosenCards.value[0].id);
+    emit('action-move', chosenCards.value[0].id)
+    updateClashState()
+  }
+  else if (toRaw(clashState.value) == ClashState.MyReaction) {
+    emit('reaction-move', packReactionCardsIds(chosenCards.value))
+  }
+}
+
+function readyMouseEnter() {
+  if (readyButton.value.style.color == "black") {
+    readyButton.value.style.color = "rgb(138, 35, 35)"
+  }
+}
+
+function readyMouseLeave() {
+  if (readyButton.value.style.color == "rgb(138, 35, 35)") {
+    readyButton.value.style.color = "black"
+  }
+}
 
 function isOneAction() {
   if (toRaw(clashState.value) == ClashState.MyAction){
@@ -186,34 +212,6 @@ function hideOtherCards(){
   showOtherCards.value = false
 }
 
-function updateClashState(){
-  clashState.value = nextState(toRaw(clashState.value))
-  if (readyButton.value){
-    readyButton.value.style.color = "black"
-  }
-}
-
-function ready(){
-  if(toRaw(clashState.value) == ClashState.OpponentReaction || toRaw(clashState.value) == ClashState.OpponentAction){
-    readyButton.value.style.color = "black"
-    return
-  }
-  moveMade.value = true
-  readyButton.value.style.color = "brown"
-  if (toRaw(clashState.value) == ClashState.MyAction) {
-      console.log(chosenCards.value[0].id);
-      emit('action-move', chosenCards.value[0].id)
-      updateClashState()
-  }
-  else if (toRaw(clashState.value) == ClashState.MyReaction) {
-    emit('reaction-move', packReactionCardsIds(chosenCards.value))
-    setTimeout(() => {updateClashState()},5000)
-  }
-  else{
-    updateClashState()
-  }
-}
-
 function undo(){
   if (chosenCards.value.length > 0 && !moveMade.value) {
     const lastElement = chosenCards.value.pop();
@@ -226,6 +224,8 @@ function undo(){
 <template>
 
   <div id="clash">
+    <h2>{{ gameStateStore.playerType }}</h2>
+
     <div id="oponnent_cards" :class="((toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction)  ? '' : 'action')">
       <div v-for="(card, index) in opponentCards" :key="card.id">
         <CardComponent class="oponnent_thrown_card" :card="card" :index="index" :length="opponentCards.length" :size="0.6" :full="true" :dynamic_position="true" :price="true"/>
@@ -256,7 +256,7 @@ function undo(){
           </div>
         </div> 
       <div class="stats">
-        <button class="button_right" @click="ready()" ref="readyButton">READY</button> 
+        <button class="button_right" @click="ready()" @mouseenter="readyMouseEnter()" @mouseleave="readyMouseLeave()" ref="readyButton">READY</button> 
         <button class="button_right" @click="undo()">undo</button> 
       </div>
     </div>

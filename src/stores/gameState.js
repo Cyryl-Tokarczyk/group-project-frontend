@@ -11,8 +11,7 @@ export const useGameStateStore = defineStore('gameState', () => {
       return 'student'
     }
 
-    // Error if playerType doesn't match 'student' or 'teacher'
-    throw new Error('Wrong/No playerType set')
+    return 'none'
   })
 
   const money = ref(1000)
