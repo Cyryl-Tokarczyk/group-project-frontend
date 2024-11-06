@@ -5,7 +5,7 @@ import ServerAsker from './components/ServerAsker.vue'
 
 <template>
   <div id="connectionView">
-    <router-link :to="{ name: 'home' }" id="emblem">Classroom Chronicles</router-link>
+    <router-link :to="{ name: 'home' }" id="emblem">Home</router-link>
     <ServerAsker/>
   </div>
 </template>
@@ -24,8 +24,8 @@ import ServerAsker from './components/ServerAsker.vue'
 }
 
 #emblem{
-  width: 25vmin;
-  height: 12vmin;
+  width: 15vmin;
+  height: 8vmin;
   font-size: 3.5vmin;
   background-image: url("@/assets/imgs/paper.jpg");
   background-size: cover;

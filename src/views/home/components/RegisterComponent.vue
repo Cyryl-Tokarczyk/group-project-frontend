@@ -89,9 +89,11 @@ async function register() {
       <input class="register_input" type="password" id="password" name="password" v-model="password" required>
       <label class="register_label" for="confirmPassword">Confirm Password:</label><br>
       <input class="register_input" type="password" id="confirmPassword" name="confirmPassword" v-model="confirmPassword" required>
-      <button id="register_submit" type="submit">Register</button>
+      <button id="register_submit" type="submit">REGISTER</button>
     </form>
-    <span class="registration_error" ref="registration_error"></span>
+    <div class="registration_error">
+      <span ref="registration_error"></span>
+    </div>
   </div>
 </template>
 
@@ -105,6 +107,7 @@ async function register() {
 .registration_error{
   color: brown;
   font-size: 1vw;
+  margin-top: -6.5vw;
 }
 
 #registrationForm{
@@ -116,11 +119,13 @@ async function register() {
 
 .register_input{
   font-size: 1vw;
-  border: 0.1vw solid black;
-  border-radius: 1vw;
+  border: 0.2vw solid black;
   width: 80%;
   margin-top: -2.5vw;
   margin-bottom: 1vw;
+  background: none;
+  height: 1.5vw;
+  pointer-events: all;
 }
 
 .register_label{
@@ -128,10 +133,20 @@ async function register() {
 }
 
 #register_submit{
-  padding: 0;
-  margin: 1vw;
-  font-size: 2vw;
-  font-family: "Venily", Courier, monospace;
+  background: transparent;
+  transition: 0.1s;
+  font-family: "Itim", Courier, monospace;
+  border: 0.2vw solid black;
+  background-color: rgba(180, 180, 180, 0.842);
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-top: 0vw;
+  pointer-events: all;
+}
+
+#register_submit:hover{
+  color: #ffffffd6;
+  background-color: rgba(109, 109, 109, 0.842)
 }
 
 @media (max-width: 770px) {
@@ -139,10 +154,30 @@ async function register() {
     font-size: 2vmin;
   }
 
-  #register_submit{
-    font-size: 2vmin;
+  .registration_error{
+    font-size: 3vmin;
+    margin-top: -6.5vmin;
   }
-  
+
+  .register_input{
+    font-size: 4vmin;
+    border: 0.3vmin solid black;
+    margin-top: -2.5vmin;
+    margin-bottom: 1vmin;
+    height: 4vmin;
+  }
+
+  .register_label{
+    font-size: 4vmin;
+  }
+
+  #register_submit{
+    font-size: 4vmin;
+    border: 0.3vmin solid black;
+    padding-left: 1vmin;
+    padding-right: 1vmin;
+    margin-top: 1.7vmin;
+  }  
 }
 
 </style>

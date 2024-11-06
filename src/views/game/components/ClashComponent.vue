@@ -287,7 +287,7 @@ function undo(){
         <p>{{ gameStateStore.playerType }}</p>
         <div class="morale">
           <img src="@/assets/imgs/morale.png" :alt="'morale image'" class="morale_image">
-          <p>{{ gameStateStore.playersMorale }}</p>
+          <p>{{ gameStateStore.morale[gameStateStore.playerType] }}</p>
         </div>
         <button @click="displayOtherCards()">{{ (toRaw(clashState) == ClashState.MyAction || toRaw(clashState) == ClashState.OpponentReaction) ? 'Reaction' : 'Action' }} cards</button>
       </div>
@@ -422,7 +422,7 @@ p{
   display: flex;
   align-items: center;
   gap: 5vw;
-  margin-top: 2vw;
+  margin-top: 1vw;
 }
 
 #clash_hand{

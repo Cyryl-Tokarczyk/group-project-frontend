@@ -200,7 +200,7 @@ const valueImages = {
   margin-left: auto;
   margin-right: calc(0.2 * var(--size) * 1vw);
   font-size: calc(1.3 * var(--size) * 1vw);
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
 }
 
 .card_img{
@@ -273,7 +273,7 @@ const valueImages = {
 
 .card h2 {
   font-size: calc(1 * var(--size) * 1vw);
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
   position: relative;
   margin-left: calc(-0.5 * var(--size) * 1vw);
 }
@@ -281,7 +281,7 @@ const valueImages = {
 .card p {
   text-align: justify;
   font-size: calc(0.7 * var(--size) * 1vw);
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
 }
 
 .type-image {
@@ -296,7 +296,7 @@ const valueImages = {
   align-items: center;
   justify-content: center;
   gap: calc(5 * var(--size) / var(--value_quantity) * 1vw);
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
 
 }
 
@@ -311,7 +311,7 @@ const valueImages = {
   align-items: center;
   justify-content: center;
   gap: calc(9 * var(--size) / var(--value_quantity) * 1vw);
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
   z-index: 5;
 }
 

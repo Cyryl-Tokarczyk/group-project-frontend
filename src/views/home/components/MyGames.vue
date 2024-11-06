@@ -44,26 +44,28 @@
 </script>
 
 <template>
-  <h3 id="my_games_header">My Games</h3>
-  <div class="container">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date</th>
-          <th>Student</th>
-          <th>Teacher</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(game, index) in games" :key="index" :class="getRowClass(game)">
-          <td>{{ index + 1}}</td>
-          <td>{{ game.start_date }}</td>
-          <td>{{ game.student_player.username }}</td>
-          <td>{{ game.teacher_player.username }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="paper">
+    <h2>My Games</h2>
+    <div class="container">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Student</th>
+            <th>Teacher</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(game, index) in games" :key="index" :class="getRowClass(game)">
+            <td>{{ index + 1}}</td>
+            <td>{{ game.start_date }}</td>
+            <td>{{ game.student_player.username }}</td>
+            <td>{{ game.teacher_player.username }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -73,16 +75,17 @@
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   height: 90%;
   overflow-x: auto;
-  justify-content: center;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .table {
-  width: 100%;
+  width: 90%;
   border-collapse:initial;
   font-size: 0.7vw;
   margin-bottom: 1vw;

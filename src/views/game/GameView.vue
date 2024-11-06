@@ -215,6 +215,7 @@ function handleErrorMessage(message) {
 
 <template>
   <div id="game">
+    <router-link :to="{ name: 'home' }" id="game_home_link">Home</router-link>
     <HubComponent v-if="hubPhase" :message="messageProp" @purchase-made="handlePurchaseMove" @ready="handleReadyMove" /> 
     <ClashComponent v-if="clashPhase" :firstPlayer="firstPlayer" :message="clashMessageProp" @action-move="handleActionMove" @reaction-move="handleReactionMove" />
     <StudentEndComponent v-if="gameEnd && gameStateStore.playerType == 'student'" :message="messageProp" />
@@ -228,6 +229,21 @@ function handleErrorMessage(message) {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+#game_home_link{
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  border: 0.2vw solid black;
+  background: rgba(134, 134, 134, 0.651);
+  z-index: 10;
+}
+
+#game_home_link:hover{
+  color:white;
+  background: rgba(83, 83, 83, 0.651);
 }
 
 </style>

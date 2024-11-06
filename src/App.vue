@@ -41,7 +41,6 @@
 
 <template>
   <router-view />
-  <router-link :to="{ name: 'home' }" class="home_link">Home</router-link>
 </template>
 
 <style>
@@ -49,6 +48,7 @@
   font-size: 10vw;
   position: absolute;
   z-index: -2;
+  pointer-events: all;
 }
 
 #app {
@@ -96,8 +96,13 @@ html{
 }
 
 @font-face {
-  font-family: "Venily";
+  font-family: "Itim";
   src: url(assets/fonts/Venily.otf) format('truetype');
+}
+
+@font-face {
+  font-family: "Itim";
+  src: url(assets/fonts/Itim-Regular.ttf) format('truetype');
 }
 
 body {
@@ -120,7 +125,7 @@ a{
 }
 
 button{
-  font-family: "Venily", Courier, monospace;
+  font-family: "Itim", Courier, monospace;
 }
 
 </style>
