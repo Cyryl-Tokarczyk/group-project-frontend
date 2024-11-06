@@ -179,6 +179,7 @@ function handleClashResultMessage(message) {
 
   gameStateStore.setPlayerMorale(message['new_player_morale'])
   gameStateStore.setOpponentMorale(message['new_opponent_morale'])
+  gameStateStore.money += message['money_gained']
 
   clashMessageProp.value = message
 
