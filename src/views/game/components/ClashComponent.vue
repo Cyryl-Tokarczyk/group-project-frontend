@@ -266,7 +266,7 @@ function undo(){
       <p>{{ gameStateStore.opponentType }}</p>
       <div id="oponnetn_morale">
         <img src="@/assets/imgs/morale.png" :alt="'morale image'" class="morale_image">
-        <p>{{ gameStateStore.morale[gameStateStore.opponentType]}}</p>
+        <p>{{ gameStateStore.opponentsMorale }}</p>
       </div>
     </div>
 
