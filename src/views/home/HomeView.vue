@@ -35,13 +35,13 @@ function chooseTab(tab){
   if (tab.classList.contains('tabSelect')){
     tab.classList.remove('tabSelect');
     tab.classList.remove('tabOpen');
-    notebook.value.classList.remove('x');
+    notebook.value.classList.remove('notebookOpen');
   } else{
     if (tab) {
       tab.classList.remove('tabOpen');
       tab.classList.remove('tabNotSelect');
       tab.classList.add('tabSelect');
-      notebook.value.classList.add('x');
+      notebook.value.classList.add('notebookOpen');
     }
     refs.forEach(element => {
       if (tab != element.value){
@@ -144,10 +144,6 @@ function chooseTab(tab){
   justify-content: center;
 }
 
-.x{
-  transform: translateX(-35vw);
-}
-
 #cover{
   background-image: url(@/assets/imgs/notebook.jpg);
   font-family:"Itim", Courier, monospace;
@@ -214,13 +210,16 @@ button{
   font-family:"Itim", Courier, monospace;
 }
 
+.notebookOpen{
+  transform: translateX(-35vw);
+}
+
 .tabOpen{
   transform: rotateZ(10deg) translateX(25vw) translateY(-3vw);
 }
 
 .tabSelect{
-  transform: translateX(37.5vw);
-  z-index: -2;
+  transform: translateX(35vw);
 }
 
 h2{

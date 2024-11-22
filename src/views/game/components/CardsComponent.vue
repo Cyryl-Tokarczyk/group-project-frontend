@@ -46,7 +46,7 @@ const handleClick = (card, index) => {
 <style>
 .all_cards_div{
   position: fixed;
-  top: -15vh;
+  top: -10vh;
   left: -10vw;
   width: 120vw;
   height: 120vh;
@@ -60,10 +60,15 @@ const handleClick = (card, index) => {
 
 .all_cards_div h1{
   color: #ffffff;
-  font-size: 6vw;
+  background: rgba(0, 0, 0, 0.89);
+  font-size: 8vw;
+  margin-bottom: -25vh;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
 }
 
 .all_cards{
+  position: fixed;
   display: grid;
   grid-auto-flow: column;
   scroll-behavior: auto;

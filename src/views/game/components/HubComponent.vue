@@ -282,7 +282,9 @@ button:hover{
   align-items: center;
   background-image: url(@/assets/imgs/paper.jpg);
   justify-content: center;
+  border-radius: 1vw;
   align-items: center;
+  box-shadow: 0 0 1.5vw;
 }
 
 .card_dis{
@@ -292,18 +294,18 @@ button:hover{
   flex-direction: column;
   align-items: center;
   background: rgba(126, 126, 126, 0.322);
-  border-radius: 1.5vw;
+  border: 0.2vw  outset rgba(255, 255, 255, 0.377);
+  box-shadow: 0 0 1.5vw;
+  border-radius: 1vw;
 }
 
 #hand{
-  border: 0.1vw solid black;
   width: 40%;
   height: 20vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
   padding-left: 2.5vw;
   padding-right: 2.5vw;
 }
@@ -355,7 +357,9 @@ button:hover{
 }
 
 #action_shop, #reaction_shop{
-  border: 0.2vw solid black;
+  border: 0.2vw  inset rgba(255, 255, 255, 0.377);
+  box-shadow: 0 0 2.5vw inset;
+  border-radius: 1vw;
   width:45%;
   height: 19vw;
   display: flex;
