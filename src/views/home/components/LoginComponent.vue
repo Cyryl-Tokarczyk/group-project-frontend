@@ -62,19 +62,19 @@ async function logIn() {
   }
 }
 
-function logInAsAdmin() {
-  login.value = 'michalski.44@wp.pl'
-  password.value = '123456PIOTR'
+// function logInAsAdmin() {
+//   login.value = 'michalski.44@wp.pl'
+//   password.value = '123456PIOTR'
 
-  logIn()
-}
+//   logIn()
+// }
 
-function logInAsUser() {
-  login.value = 'piuqey.pl@gmail.com'
-  password.value = 'user1234'
+// function logInAsUser() {
+//   login.value = 'piuqey.pl@gmail.com'
+//   password.value = 'user1234'
 
-  logIn()
-}
+//   logIn()
+// }
 
 </script>
 
@@ -97,9 +97,6 @@ function logInAsUser() {
       </div>
       <button id="sub_button" type="submit">SIGN</button>
     </form>
-
-    <button class="debug_button" @click="logInAsAdmin">Log in as admin</button>
-    <button class="debug_button" @click="logInAsUser">Log in as user</button>
   </div>
 </template>
 

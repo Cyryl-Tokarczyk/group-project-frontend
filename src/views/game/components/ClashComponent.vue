@@ -151,42 +151,27 @@ function startDrag(event, hoverCard, index, slimViewHand){
 
   isCardHold.value = true
   const card = event.target
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
-  document.onmousemove = elementDrag
-  document.onmouseup = stopDrag
-  document.body.style.userSelect = 'none'
-  const ot = 0
-  const ol = 0
-  card.style.zIndex  = `100`
-  card.style.transition = '0s'
-  const cardTop = card.style.top
-  const cardLeft = card.style.left
-  pos3 = event.pageY
-  pos4 = event.pageX
-  card.style.top = ot  + "px"
-  card.style.left = ol + "px"
+  card.style.zIndex  = `2`
   card.style.pointerEvents = 'none'
   card.style.transform = 'scale(1.2)'
+  var posX = event.pageX
+  var posY = event.pageY
+  document.onmousemove = elementDrag
+  document.onmouseup = stopDrag
 
   function elementDrag(e){
-    pos1 = pos3 - e.pageY
-    pos2 = pos4 - e.pageX
-    card.style.top = ( ot - pos1) + "px"
-    card.style.left = ( ol - pos2 ) + "px"
+    card.style.top = ( 0 - (posY - e.pageY)) + "px"
+    card.style.left = ( 0 - (posX - e.pageX )) + "px"
   }
 
   function stopDrag(){
-    card.style.pointerEvents = 'auto'
-    card.style.position = "relative"
     card.style.transform = ''
-    card.style.transition = '0.2s'
-    document.body.style.userSelect = ''
     card.style.zIndex  = `1`
     document.onmousemove = null
     document.onmouseup = null
     isCardHold.value = false
-    card.style.left = cardLeft
-    card.style.top = cardTop
+    card.style.left = 0
+    card.style.top = 0
     if(isTableHovered.value && !isOneAction() && !moveMade.value){
       if(toRaw(clashState.value) == ClashState.MyAction){
         gameStateStore.actionCards.splice(index, 1)
@@ -194,13 +179,10 @@ function startDrag(event, hoverCard, index, slimViewHand){
         gameStateStore.reactionCards.splice(index, 1)
       }
       chosenCards.value.push(hoverCard)
-      card.style.transition = '0s'
-    } else {
-      card.style.pointerEvents = "none"
-      setTimeout(()=>{
-        card.style.pointerEvents = ""
-      },200)
     }
+    setTimeout(()=>{
+      card.style.pointerEvents = ""
+    }, 200)
   }
 }
 
@@ -216,8 +198,7 @@ function hoverCard(e, hoveredCard) {
   if(isCardHold.value==false && !slimView.value){
     showModal.value = true
     modalCardData.value = hoveredCard
-    const card = e.currentTarget
-    card.onmousemove = modalShow
+    e.currentTarget.onmousemove = modalShow
   }
 }
 
@@ -227,8 +208,7 @@ function modalShow(e) {
     card.style.opacity = '0'
     modal.value.style.opacity = '100%'
     modal.value.style.transform = 'scale(1.2) translateY(-2vw)'
-    card.style.transition = '0s'
-    modal.value.style.left = `calc(${card.offsetLeft}px + 25.35vw)`
+    modal.value.style.left = `calc(${card.offsetLeft}px + 28.5vw)`
   }
 }
 
