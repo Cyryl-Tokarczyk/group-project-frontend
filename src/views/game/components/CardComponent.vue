@@ -134,9 +134,9 @@ const valueImages = {
       <img  v-if="props.card['type']" :src="typeImages[props.card['type']]" alt="Type Image" class="type-image_simple"> 
       <div class="card_stats_simple">
         <div class="values_simple" v-if="Object.keys(values).length" :style="{'--value_quantity': Object.keys(values).length}">
-          <div v-for="(value, key) in values" :key="key" class="value-item">
+          <div v-for="(value, key) in values" :key="key" class="value-item-simple">
             <img :src="valueImages[key]" :alt="key + ' image'" class="value-image_simple">
-            <span class="values_value">{{ value }}</span>
+            <span class="values_value-simple">{{ value }}</span>
           </div>
         </div>
       </div>  
@@ -260,6 +260,13 @@ const valueImages = {
   margin-left: calc(-0.5 * var(--size) * 1vw);
 }
 
+.values_value-simple{
+  position: absolute; /* Pozycjonowanie absolutne */
+  top: 50%; /* Ustawiamy na środku względem góry */
+  left: 50%; /* Ustawiamy na środku względem lewej krawędzi */
+  transform: translate(-50%, -50%);
+}
+
 .card {
   height: calc(23 * var(--size) * 1vw);
   width: calc(16 * var(--size) * 1vw);
@@ -285,7 +292,10 @@ const valueImages = {
 }
 
 .type-image {
-  height: 80%;
+  width: calc(1.2 * var(--size) * 1vw);
+  min-width: calc(1.2 * var(--size) * 1vw);
+  height: calc(1.2 * var(--size) * 1vw);
+  max-height: calc(1.1 * var(--size) * 1vw);
   object-fit: cover;
   margin-left: auto;
   margin-right: calc(0.2 * var(--size) * 1vw);
@@ -310,14 +320,21 @@ const valueImages = {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: calc(9 * var(--size) / var(--value_quantity) * 1vw);
+  gap: calc(1.5 * var(--size) * 1vw);
   font-family: "Itim", Courier, monospace;
   z-index: 5;
+  width: 80%;
 }
 
 .value-item {
   display: flex;
   align-items: center;
+}
+
+.value-item-simple {
+  position: relative;
+  width: calc(1.5 * var(--size) * 1vw);
+  height: 100%;
 }
 
 .value-image {
@@ -335,6 +352,10 @@ const valueImages = {
   left: calc(-0.85 * var(--size) * 1vw);
   object-fit: cover;
   z-index: -1;
+  position: absolute; /* Pozycjonowanie absolutne */
+  top: 50%; /* Ustawiamy na środku względem góry */
+  left: 50%; /* Ustawiamy na środku względem lewej krawędzi */
+  transform: translate(-50%, -50%);
 }
 
 .type-image_simple{

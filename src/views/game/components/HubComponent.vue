@@ -184,7 +184,7 @@ const cardBought = ref(false)
 
     <div id="user_part">
       <div class="info">
-        <div class="morale">
+        <div class="morale_hub">
           <img src="@/assets/imgs/morale.png" :alt="'morale image'" class="morale_image">
           {{ gameStateStore.playersMorale }}
         </div>
@@ -238,11 +238,6 @@ const cardBought = ref(false)
 </template>
 
 <style>
-.morale{
-  display: flex;
-  gap: 1vw;
-  font-size: 2.5vw;
-}
 
 .ready_button{
   font-size: 2.5vw;
@@ -254,7 +249,7 @@ const cardBought = ref(false)
   height: auto;
 }
 
-.money{
+.money, .morale_hub{
   display: flex;
   gap: 1vw;
   font-size: 2.5vw;
@@ -375,7 +370,11 @@ button:hover{
   width: 100%;
   height: 100%;
   max-width: 6vw;
+  height: 1vw;
   position: relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 #reaction_shop_layout, #action_shop_layout{
@@ -479,12 +478,6 @@ button:hover{
     max-width: 12vmin;
   } 
 
-  .morale{
-    display: flex;
-    gap: 1vw;
-    font-size: 5vmin;
-  }
-
   .ready_button{
     font-size: 5vmin;
     margin-bottom: -1vw;
@@ -495,7 +488,7 @@ button:hover{
     height: auto;
   }
 
-  .money{
+  .money, .morale_hub{
     display: flex;
     gap: 1vw;
     font-size: 5vmin;

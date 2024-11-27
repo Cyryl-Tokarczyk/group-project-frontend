@@ -33,7 +33,7 @@ const windowWidth = ref(window.innerWidth);
 
 
 const computedSize = computed(() => {
-  return windowWidth.value < 770 ? 1 : 0.5;
+  return windowWidth.value < 770 ? 1.5 : 0.5;
 });
 
 const updateWindowWidth = () => {
@@ -325,6 +325,12 @@ function undo(){
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-image: url(@/assets/imgs/paper.jpg);
+  box-shadow: 0 0 0.5vw;
+  border-radius: 1vw;
+  width: 10vw;
+  margin-top: -1vw;
+  margin-bottom: 0.5vw;
 }
 
 p{
@@ -337,6 +343,7 @@ p{
 
 .table_thrown_cards{
   width: 100%;
+  height: 90%;
   max-width: 10vw;
   position: relative;
 }
@@ -352,9 +359,7 @@ p{
   justify-content: center;
   box-shadow: 0 0 2.5vw inset;
 }
-.thrown_card, .oponnent_thrown_card{
-  margin-top: -7vw;
-}
+
 
 .hand_card{
   width: 100%;
@@ -465,6 +470,18 @@ p{
     width: auto;
   }
 
+  #oponnetn_stats{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(@/assets/imgs/paper.jpg);
+    box-shadow: 0 0 0.5vw;
+    border-radius: 1vw;
+    width: 20vmin;
+    margin-top: -1vw;
+    margin-bottom: 0.5vw;
+  }
 
   .table_thrown_cards{
     width: 100%;
@@ -480,33 +497,45 @@ p{
   #profile{
     width: 90vw;
     height: 50vmin;
-    gap: 10vmin;
+    gap: 15vmin;
     margin-top: 2vmin;
   }
 
   #clash_hand{
-    width: 50vw;
-    margin-top: -12.5vmin;
+    width: 50vmin;
+    margin-top: 4vmin;
+    height: 30vmin;
   }
 
   .stats{
     width: 50vw;
-    height: 20vmin;
+    height: 30vmin;
     border-radius: 0.5vmin;
     box-shadow: 0 0 0.5vmin;
+    font-size: 1vmin;
+  }
+
+  .stats p{
+    margin-top: 0;
+    font-size: 3vmin;
+  }
+
+  .morale p{
+    font-size: 3.5vmin;
+    margin-top: -2vmin;
+  }
+
+  .morale{
+    flex-direction: column;
   }
 
   .stats button{
     font-size: 3vmin;
   }
 
-  .morale p{
-    font-size: 5vmin;
-  }
-
   #oponnent_cards, #thrown_cards{
   width: 74vw;
-  height: 30vmin;
+  height: 45vmin;
   border: 0.2vw  inset rgba(255, 255, 255, 0.377);
   border-radius: 1vw;
   position: relative;
@@ -518,8 +547,13 @@ p{
   padding-right: 6vw;
 }
 
-.thrown_card, .oponnent_thrown_card{
-  margin-top: -14vw;
+.ready_undo{
+  gap: 10vmin;
+}
+
+.action{
+  max-width: 20vw;
+  --width: 12;
 }
 
 }

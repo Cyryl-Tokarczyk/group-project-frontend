@@ -272,6 +272,10 @@ h2{
   .tabOpen{
     transform: translateY(-10vmin);
   }
+
+  .notebookOpen{
+    transform: translateX(0vw);
+  }
   
   .tabSelect{
     animation: bounceRight 0.75s ease-in-out forwards;
