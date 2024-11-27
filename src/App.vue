@@ -10,9 +10,9 @@
 
   function parallax(e){
     const xAxis = (window.innerWidth / 2 - e.pageX)/400;
-    const yAxis = (window.innerHeight / 2 - e.pageY)/800;
-    document.body.style.transform = `translateX(${xAxis}vw) translateY(${yAxis}vw)`;
-    document.body.style.backgroundPosition = `${xAxis}vh ${yAxis}vh`;
+    const yAxis = (window.innerHeight / 2 - e.pageY)/400;
+    document.body.style.transform = `translateX(${xAxis}vw) translateY(${yAxis}vh)`;
+    document.body.style.backgroundPosition = `${xAxis*0.5}vw ${yAxis*0.5}vh`;
   }
 
   watch(() => settingsStore.parallax, (newValue) => {

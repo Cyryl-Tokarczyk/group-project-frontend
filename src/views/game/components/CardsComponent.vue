@@ -61,8 +61,8 @@ const handleClick = (card, index) => {
 .all_cards_div h1{
   color: #ffffff;
   background: rgba(0, 0, 0, 0.89);
-  font-size: 8vw;
-  margin-bottom: -25vh;
+  font-size: 5vw;
+  margin-top: -30vw;
   padding-left: 0.5vw;
   padding-right: 0.5vw;
 }
@@ -104,9 +104,12 @@ box-shadow: 0 0 0.1vw inset;
   gap: 1vw;
   overflow-y: auto;
   overscroll-behavior-inline: contain;
-}
+  }
 
-
+  .all_cards_div h1{
+    margin-bottom: 110vw;
+  }
+  
 }
 
 
